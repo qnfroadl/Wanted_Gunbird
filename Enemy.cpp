@@ -33,9 +33,20 @@ void Enemy::Update()
 	{		
 		FPOINT pos = GetPos();
 		
-		ActionPattern* actionPattern = getPattern();
-		
+		// update position
+		getPattern()->move();
 
+		//update animation frame
+		elapsedTime += TimerManager::GetInstance()->GetDeltaTime();
+		if (elapsedTime > 0.1f)
+		{
+			animFrame++;
+			if (animFrame >= image->GetMaxFrameX())
+			{
+				animFrame = 0;
+			}
+			elapsedTime = 0.0f;
+		}
 	}
 }
 

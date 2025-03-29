@@ -13,6 +13,7 @@ class Enemy: public GameActor
 	class Image* image;
 	int animFrame;
 	float speed;
+	float elapsedTime;
 	class Collision* collision;
 	class ActionPattern* pattern;
 	class MissileManager* missileManager;
@@ -26,6 +27,7 @@ public:
 		image = nullptr;
 		animFrame = 0;
 		speed = 0;
+		elapsedTime = 0;
 		collision = nullptr;
 		pattern = nullptr;
 		missileManager = nullptr;
