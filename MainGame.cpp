@@ -8,6 +8,7 @@
 #include "Timer.h"
 #include "TimerManager.h"
 #include "KeyManager.h"
+#include "EnemyManager.h"
 
 void MainGame::Init()
 {
@@ -34,6 +35,8 @@ void MainGame::Init()
 	}
 	KeyManager::GetInstance()->Init();
 
+	enemyManager = new EnemyManager;
+	enemyManager->Init();
 	
 }
 
@@ -57,6 +60,13 @@ void MainGame::Release()
 		backBuffer = nullptr;
 	}
 
+	if (enemyManager)
+	{
+		enemyManager->Release();
+		delete enemyManager;
+		enemyManager = nullptr;
+	}
+
 	ReleaseDC(g_hWnd, hdc);
 }
 
@@ -75,6 +85,7 @@ void MainGame::Update()
 		InvalidateRect(g_hWnd, NULL, false);
 	}
 
+	enemyManager->Update();
 }
 
 void MainGame::Render()
@@ -86,9 +97,12 @@ void MainGame::Render()
 
 	CollisionManager::GetInstance()->Render(hBackBufferDC);
 	TimerManager::GetInstance()->Render(hBackBufferDC);
+	
+	enemyManager->Render(hBackBufferDC);
 
 	wsprintf(szText, TEXT("Mouse X : %d, Y : %d"), mousePosX, mousePosY);
 	TextOut(hBackBufferDC, 20, 60, szText, wcslen(szText));
+
 
 	// 백버퍼에 있는 내용을 메인 hdc에 복사
 	backBuffer->Render(hdc);
