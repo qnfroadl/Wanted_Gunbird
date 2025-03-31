@@ -8,6 +8,7 @@
 #include "Timer.h"
 #include "TimerManager.h"
 #include "KeyManager.h"
+#include "Player.h"
 
 void MainGame::Init()
 {
@@ -34,7 +35,8 @@ void MainGame::Init()
 	}
 	KeyManager::GetInstance()->Init();
 
-	
+	player = new Player;
+	player->Init();
 }
 
 void MainGame::Release()
@@ -43,6 +45,13 @@ void MainGame::Release()
 	KeyManager::GetInstance()->Release();
 	ImageManager::GetInstance()->Release();
 	
+	if (player)
+	{
+		player->Release();
+		delete player;
+		player = nullptr;
+	}
+
 	if (backGround)
 	{
 		backGround->Release();
@@ -72,6 +81,7 @@ void MainGame::Update()
 
 		CollisionManager::GetInstance()->Update();
 		KeyManager* keyManager = KeyManager::GetInstance();
+		player->Update();
 		InvalidateRect(g_hWnd, NULL, false);
 	}
 
@@ -83,6 +93,8 @@ void MainGame::Render()
 	HDC hBackBufferDC = backBuffer->GetMemDC();
 
 	backGround->Render(hBackBufferDC);
+
+	player->Render(hBackBufferDC);
 
 	CollisionManager::GetInstance()->Render(hBackBufferDC);
 	TimerManager::GetInstance()->Render(hBackBufferDC);

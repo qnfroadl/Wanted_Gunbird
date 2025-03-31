@@ -8,6 +8,7 @@ class MissileManager;
 class Player : public GameActor
 {
 public:
+	bool isActive;
 	FPOINT pos;
 	int hp;
 	int power;
@@ -18,10 +19,11 @@ public:
 	float speed;
 	CollisionManager* collision;
 public:
-	void Move(float degree);
-	
 	void Init();
 	void Release();
 	void Update();
 	void Render(HDC hdc);
+
+	void Move(float degree);
+	void Fire();
 };

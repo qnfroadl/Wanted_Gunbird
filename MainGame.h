@@ -3,6 +3,7 @@
 
 class Image;
 class Timer;
+class Player;
 class MainGame : public GameObject
 {
 private:
@@ -16,6 +17,7 @@ private:
 	FPOINT mousePos;
 	wchar_t szText[128];
 
+	Player* player;
 	Image* backBuffer;
 	Image* backGround;
 
