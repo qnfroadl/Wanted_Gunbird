@@ -73,7 +73,7 @@ void MainGame::Update()
 {
 	timer->Tick();
 
-	elapsedTime += TimerManager::GetInstance()->GetDeltaTime();
+	elapsedTime += 60;// TimerManager::GetInstance()->GetDeltaTime();
 
 	if (0.01 <= elapsedTime)	// 초당 100프레임?
 	{
