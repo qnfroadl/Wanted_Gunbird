@@ -17,6 +17,30 @@ using namespace std;
 #define DEG_TO_RAD(degree) ((3.14 / 180.0) * degree)
 #define RAD_TO_DEG(radian) ((180.0 / 3.14) * radian)
 
+typedef struct vector2d {
+	float x, y;
+
+	float length() const {
+		return std::sqrt(x * x + y * y);
+	}
+
+	void normalize() {
+		float len = length();
+		if (len > 0)
+		{
+			x /= len;
+			y /= len;
+		}
+	}
+
+	vector2d operator*(float mul)
+	{
+		x *= mul;
+		y *= mul;
+		return vector2d{ x, y };
+	}
+} VEC2;
+
 typedef struct tagFPOINT
 {
 	float x;
@@ -29,7 +53,7 @@ typedef struct _Ellipse
 	int centerY;
 	int width;
 	int height;
-}CEllipse;
+} CEllipse;
 
 /*
 	extern 키워드 : 변수나 함수가 다른 파일에 정의되어 있다 라는

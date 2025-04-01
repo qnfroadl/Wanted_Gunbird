@@ -1,14 +1,14 @@
 #include "MainGame.h"
-
 #include "CommonFunction.h"
 #include "Image.h"
-
 #include "CollisionManager.h"
 #include "ImageManager.h"
 #include "Timer.h"
 #include "TimerManager.h"
 #include "KeyManager.h"
+#include "EnemyManager.h"
 #include "BackgroundUI.h"
+
 
 #include "Item.h"
 void MainGame::Init()
@@ -25,8 +25,11 @@ void MainGame::Init()
 	if (FAILED(backBuffer->Init(WINSIZE_X, WINSIZE_Y)))
 	{
 		MessageBox(g_hWnd, 
-			TEXT("¹é¹öÆÛ »ý¼º ½ÇÆÐ"), TEXT("°æ°í"), MB_OK);
+			TEXT("ë°±ë²„í¼ ìƒì„± ì‹¤íŒ¨"), TEXT("ê²½ê³ "), MB_OK);
 	}
+
+	enemyManager = new EnemyManager;
+	enemyManager->Init();
 
 	backgroundUI = new BackgroundUI();
 	backgroundUI->Init();
@@ -59,7 +62,15 @@ void MainGame::Release()
 		backBuffer = nullptr;
 	}
 
+	if (enemyManager)
+	{
+		enemyManager->Release();
+		delete enemyManager;
+		enemyManager = nullptr;
+	}
+
 	backgroundUI->Release();
+
 
 	ReleaseDC(g_hWnd, hdc);
 }
@@ -73,25 +84,29 @@ void MainGame::Update()
 
 	item->Update();
 
-	InvalidateRect(g_hWnd, NULL, false);
+	enemyManager->Update();
+
 }
 
 void MainGame::Render()
 {
-	// ¹é¹öÆÛ¿¡ ¸ÕÀú º¹»ç
+	// ë°±ë²„í¼ì— ë¨¼ì € ë³µì‚¬
 	HDC hBackBufferDC = backBuffer->GetMemDC();
 
 	backgroundUI->Render(hBackBufferDC);
 
 	item->Render(hBackBufferDC);
 
-	 CollisionManager::GetInstance()->Render(hBackBufferDC);
-	// TimerManager::GetInstance()->Render(hBackBufferDC);
+	CollisionManager::GetInstance()->Render(hBackBufferDC);
+	enemyManager->Render(hBackBufferDC);
 
+	// std::deque<class Enemy*> enemys = enemyManager->getEnemys();
+	
 	wsprintf(szText, TEXT("Mouse X : %d, Y : %d"), mousePosX, mousePosY);
 	TextOut(hBackBufferDC, 20, 60, szText, wcslen(szText));
 
-	// ¹é¹öÆÛ¿¡ ÀÖ´Â ³»¿ëÀ» ¸ÞÀÎ hdc¿¡ º¹»ç
+
+	// ë°±ë²„í¼ì— ìžˆëŠ” ë‚´ìš©ì„ ë©”ì¸ hdcì— ë³µì‚¬
 	backBuffer->Render(hdc);
 
 }

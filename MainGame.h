@@ -22,12 +22,14 @@ private:
 	Image* backBuffer;
 	BackgroundUI* backgroundUI;
 
+	class EnemyManager* enemyManager;
 
 	// test
 	Item* item;
+
 public:
-	void Init();	// override (ºÎ¸ğÅ¬·¡½º¿Í °°Àº ÇÔ¼öÀÌ¸§, ·ÎÁ÷À» ´Ù¸£°Ô ±¸ÇöÇÏ°í ½ÍÀ» ¶§)
-					// <-> overload (°°Àº ÇÔ¼ö ÀÌ¸§, ¸Å°³º¯¼ö Å¸ÀÔ°ú °¹¼ö°¡ ´Ù¸£¸é ´Ù¸¥ ÇÔ¼ö·Î Ã³¸®)
+	void Init();	// override (ë¶€ëª¨í´ë˜ìŠ¤ì™€ ê°™ì€ í•¨ìˆ˜ì´ë¦„, ë¡œì§ì„ ë‹¤ë¥´ê²Œ êµ¬í˜„í•˜ê³  ì‹¶ì„ ë•Œ)
+					// <-> overload (ê°™ì€ í•¨ìˆ˜ ì´ë¦„, ë§¤ê°œë³€ìˆ˜ íƒ€ì…ê³¼ ê°¯ìˆ˜ê°€ ë‹¤ë¥´ë©´ ë‹¤ë¥¸ í•¨ìˆ˜ë¡œ ì²˜ë¦¬)
 	void Release();	
 	void Update();	
 	void Render();
