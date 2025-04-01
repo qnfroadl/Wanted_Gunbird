@@ -18,6 +18,8 @@ void Player::Init()
 
 	animFrame = 0;
 	elapsedFrame = 0;
+
+	attackLevel = 1;
 }
 
 void Player::Release()
@@ -127,4 +129,45 @@ void Player::Move(float degree)
 
 void Player::Fire()
 {
+	/*
+	레벨에 비례해서 공격력, 패턴, 판정크기 증가
+	(증가시킬 항목은 회의 후 선택)
+	*/
+	switch (attackLevel)
+	{
+	case 2:
+		//2레벨 공격
+		break;
+	case 3:
+		//3레벨 공격
+		break;
+	case 4:
+		//4레벨 공격
+		break;
+	default:
+		//기본(1레벨) 공격
+		break;
+	}
+}
+
+void Player::IncreaseAttackLevel()
+{
+	if (true/*레벨 업 조건*/)
+	{
+		if (attackLevel >= 4)
+			attackLevel = 4;
+		else
+			attackLevel++;
+	}
+}
+
+void Player::ActivateBomb()
+{
+	if (bombCount <= 0)
+		return;
+	/* 
+	 폭탄은 missileMgr에서 구현?
+	 폭탄의 collision과 겹치는 collision 계산
+	 겹치면 release()
+	*/
 }

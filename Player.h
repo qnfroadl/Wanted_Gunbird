@@ -18,6 +18,7 @@ public:
 	int score;
 	Image* image;
 	float speed;
+	int attackLevel;
 	CollisionManager* collision;
 public:
 	void Init();
@@ -27,4 +28,6 @@ public:
 
 	void Move(float degree);
 	void Fire();
+	void IncreaseAttackLevel();
+	void ActivateBomb();
 };
