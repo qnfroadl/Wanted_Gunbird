@@ -11,7 +11,7 @@ void Player::Init()
 	AddTag(GameTag::Player);
 	SetPos(WINSIZE_X / 2, WINSIZE_Y * 0.9);
 	speed = 300.0f;
-	image = ImageManager::GetInstance()->AddImage("Player",
+	image = ImageManager::GetInstance()->AddImage(EImageKey::Player,
 		TEXT("assets/Sprites/Characters/testu_idle_spriteMerge.bmp"),
 		744, 41, 24, 1, true, RGB(255, 0, 255));
 	if (!image)
@@ -101,7 +101,6 @@ void Player::Update()
 
 void Player::Render(HDC hdc)
 {
-	//스프라이트가 흔들리는걸 고쳐야함. 스프라이트 크기를 균일하게 다시 쪼갤것
 	if (image)
 	{
 		image->FrameRender(hdc, GetPos().x, GetPos().y, animFrame, 0, false);

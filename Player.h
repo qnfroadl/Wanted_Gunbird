@@ -20,6 +20,7 @@ public:
 	Image* playerMissileShotImage;
 	float speed;
 	int attackLevel;
+
 public:
 	void Init();
 	void Release();

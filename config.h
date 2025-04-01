@@ -22,9 +22,9 @@ enum class GameTag
 	PowerUp, BombUp, Player, Enemy, EliteEnemy, BossEnemy, 
 };
 
-enum EImageKey
+enum class EImageKey
 {
-
+	Player,
 
 };
 

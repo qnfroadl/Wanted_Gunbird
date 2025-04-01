@@ -34,17 +34,16 @@ public:
 	Image* FindImage(const string& key);
 
 
-
+	 
 	Image* AddImage(EImageKey key, const wchar_t* filePath, int width, int height,
 		bool isTransparent = FALSE, COLORREF transColor = FALSE);
-
+	
 	Image* AddImage(EImageKey key, const wchar_t* filePath, int width, int height,
 		int maxFrameX, int maxFrameY, bool isTransparent = FALSE, COLORREF transColor = FALSE);
-
+	
 	void DeleteImage(EImageKey key);
-
+	
 	Image* FindImage(EImageKey key);
-
 
 };
 
