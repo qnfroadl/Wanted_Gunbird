@@ -111,9 +111,6 @@ HRESULT Image::Init(const wchar_t* filePath, int width, int height, int maxFrame
 
 void Image::Render(HDC hdc, int destX, int destY)
 {
-    // destX = destX - imageInfo->width / 2;
-    // destY = destY - imageInfo->height / 2;
-
     if (isTransparent)
     {
         GdiTransparentBlt(hdc,
@@ -137,6 +134,20 @@ void Image::Render(HDC hdc, int destX, int destY)
         );
     }
 }
+void Image::RenderStretch(HDC hdc, int width, int height)
+{
+   
+    StretchBlt(hdc, 0, 0,
+        width, height, // 목적지
+
+        imageInfo->hMemDC,
+        0, 0, // 소스
+        imageInfo->width, imageInfo->height, // 이 크기로?
+        SRCCOPY
+    );
+
+}
+
 void Image::RenderCenter(HDC hdc, int destX, int destY)
 {
     destX = destX - imageInfo->width / 2;

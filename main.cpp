@@ -3,6 +3,7 @@
 #include "config.h"
 #include "MainGame.h"
 #include "TimerManager.h"
+#include "Timer.h"
 
 HINSTANCE g_hInstance;	// 프로그램 인스턴스 핸들
 HWND g_hWnd;
@@ -67,6 +68,11 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	TimerManager::GetInstance()->Init();
 
+	// 프레임 제한을 위한 타이머.
+	Timer fpsTimer;
+	fpsTimer.Init();
+	float deltaTime = 0.f;
+
 	MSG message;
 
 	while (true)
@@ -78,12 +84,18 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			TranslateMessage(&message);
 			DispatchMessage(&message);
 		}
-		else 
+		else
 		{
-			TimerManager::GetInstance()->Update();
-			g_mainGame.Update();
-			g_mainGame.Render();
+			fpsTimer.Tick();
+			deltaTime += fpsTimer.GetDeltaTime();
+			if ( 1.0f <= deltaTime * g_mainGame.GetFPS())
+			{
+				deltaTime = 0;
 
+				TimerManager::GetInstance()->Update();
+				g_mainGame.Update();
+				g_mainGame.Render();
+			}
 		}
 	}
 

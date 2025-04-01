@@ -1,4 +1,4 @@
-#include "Enemy.h"
+#include "SampleEnemy.h"
 #include "CommonFunction.h"
 #include "Image.h"
 
@@ -9,7 +9,7 @@
 #include "ImageManager.h"
 #include "TimerManager.h"
 
-void Enemy::CollisionDetected(GameObject* obj)
+void SampleEnemy::CollisionDetected(GameObject* obj)
 {
 	auto tags = obj->GetTags();
 	if (0 < tags.count(TEXT("Rocket")))
@@ -29,18 +29,18 @@ void Enemy::CollisionDetected(GameObject* obj)
 	}
 
 }
-void Enemy::SetActive(bool _bActive)
+void SampleEnemy::SetActive(bool _bActive)
 {
 	GameActor::SetActive(_bActive);
 	collision->SetActive(_bActive);
 }
 
-bool Enemy::IsTargeting()
+bool SampleEnemy::IsTargeting()
 {
 	return nullptr == this->target ? false : true;
 }
 
-void Enemy::Init()
+void SampleEnemy::Init()
 {
 	this->AddTag(TEXT("Enemy"));
 
@@ -73,7 +73,7 @@ void Enemy::Init()
 	bulletManager->Init();
 }
 
-void Enemy::Release()
+void SampleEnemy::Release()
 {
 	// if (nullptr != image)
 	// {
@@ -92,7 +92,7 @@ void Enemy::Release()
 	}
 }
 
-void Enemy::Update()
+void SampleEnemy::Update()
 {
 	if (IsActive())
 	{
@@ -120,7 +120,7 @@ void Enemy::Update()
 	bulletManager->Update();
 }
 
-void Enemy::Render(HDC hdc)
+void SampleEnemy::Render(HDC hdc)
 {
 	if (this->IsActive())
 	{
@@ -131,7 +131,7 @@ void Enemy::Render(HDC hdc)
 	bulletManager->Render(hdc);
 }
 
-void Enemy::MoveToTarget()
+void SampleEnemy::MoveToTarget()
 {
 	if (nullptr != target && target->IsActive())
 	{
@@ -154,10 +154,10 @@ void Enemy::MoveToTarget()
 	}
 }
 
-Enemy::Enemy()
+SampleEnemy::SampleEnemy()
 {
 }
 
-Enemy::~Enemy()
+SampleEnemy::~SampleEnemy()
 {
 }

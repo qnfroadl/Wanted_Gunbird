@@ -1,42 +1,49 @@
 #include "MainGame.h"
-
 #include "CommonFunction.h"
 #include "Image.h"
-
 #include "CollisionManager.h"
 #include "ImageManager.h"
 #include "Timer.h"
 #include "TimerManager.h"
 #include "KeyManager.h"
 #include "Player.h"
+#include "EnemyManager.h"
+#include "BackgroundUI.h"
 
+#include "Item.h"
 void MainGame::Init()
 {
 	CollisionManager::GetInstance()->Init();
 	KeyManager::GetInstance()->Init();
 	ImageManager::GetInstance()->Init();
 
-	this->hdc = GetDC(g_hWnd);
+	FPS = 60;
 
-	timer = new Timer();
-	timer->Init();
-	elapsedTime = 0.f;
+	this->hdc = GetDC(g_hWnd);
 
 	backBuffer = new Image();
 	if (FAILED(backBuffer->Init(WINSIZE_X, WINSIZE_Y)))
 	{
 		MessageBox(g_hWnd, 
-			TEXT("¹é¹öÆÛ »ý¼º ½ÇÆÐ"), TEXT("°æ°í"), MB_OK);
+			TEXT("ë°±ë²„í¼ ìƒì„± ì‹¤íŒ¨"), TEXT("ê²½ê³ "), MB_OK);
 	}
-	backGround = new Image();
-	if (FAILED(backGround->Init(TEXT("assets/LevelBackgrounds/bg_castle.bmp"), 228, 2108)))
-	{
-		MessageBox(g_hWnd, TEXT("BackGround »ý¼º ½ÇÆÐ"), TEXT("°æ°í"), MB_OK);
-	}
-	KeyManager::GetInstance()->Init();
 
 	player = new Player;
 	player->Init();
+
+	enemyManager = new EnemyManager;
+	enemyManager->Init();
+
+	backgroundUI = new BackgroundUI();
+	backgroundUI->Init();
+
+	KeyManager::GetInstance()->Init();
+	
+	item = new Item(ItemType::BombAdd);
+	item->Init();
+
+	item->SetPos(WINSIZE_X / 2, WINSIZE_Y / 2);
+
 }
 
 void MainGame::Release()
@@ -52,11 +59,11 @@ void MainGame::Release()
 		player = nullptr;
 	}
 
-	if (backGround)
+	if (backgroundUI)
 	{
-		backGround->Release();
-		delete backGround;
-		backGround = nullptr;
+		backgroundUI->Release();
+		delete backgroundUI;
+		backgroundUI = nullptr;
 	}
 
 	if (backBuffer)
@@ -66,43 +73,57 @@ void MainGame::Release()
 		backBuffer = nullptr;
 	}
 
+	if (enemyManager)
+	{
+		enemyManager->Release();
+		delete enemyManager;
+		enemyManager = nullptr;
+	}
+
+	backgroundUI->Release();
+
+
 	ReleaseDC(g_hWnd, hdc);
 }
 
 void MainGame::Update()
 {
-	timer->Tick();
+	CollisionManager::GetInstance()->Update();
+	KeyManager* keyManager = KeyManager::GetInstance();
 
-	elapsedTime += 60;// TimerManager::GetInstance()->GetDeltaTime();
+	backgroundUI->Update();
 
-	if (0.01 <= elapsedTime)	// ÃÊ´ç 100ÇÁ·¹ÀÓ?
-	{
-		elapsedTime = 0;
+	item->Update();
 
 		CollisionManager::GetInstance()->Update();
 		KeyManager* keyManager = KeyManager::GetInstance();
 		player->Update();
-		InvalidateRect(g_hWnd, NULL, false);
-	}
+
+	enemyManager->Update();
 
 }
 
 void MainGame::Render()
 {
-	// ¹é¹öÆÛ¿¡ ¸ÕÀú º¹»ç
+	// ë°±ë²„í¼ì— ë¨¼ì € ë³µì‚¬
 	HDC hBackBufferDC = backBuffer->GetMemDC();
 
-	backGround->Render(hBackBufferDC);
+	backgroundUI->Render(hBackBufferDC);
+
+	item->Render(hBackBufferDC);
 
 	player->Render(hBackBufferDC);
 
 	CollisionManager::GetInstance()->Render(hBackBufferDC);
-	TimerManager::GetInstance()->Render(hBackBufferDC);
+	enemyManager->Render(hBackBufferDC);
 
+	// std::deque<class Enemy*> enemys = enemyManager->getEnemys();
+	
 	wsprintf(szText, TEXT("Mouse X : %d, Y : %d"), mousePosX, mousePosY);
 	TextOut(hBackBufferDC, 20, 60, szText, wcslen(szText));
 
-	// ¹é¹öÆÛ¿¡ ÀÖ´Â ³»¿ëÀ» ¸ÞÀÎ hdc¿¡ º¹»ç
+
+	// ë°±ë²„í¼ì— ìžˆëŠ” ë‚´ìš©ì„ ë©”ì¸ hdcì— ë³µì‚¬
 	backBuffer->Render(hdc);
 
 }
@@ -158,3 +179,4 @@ MainGame::MainGame()
 MainGame::~MainGame()
 {
 }
+

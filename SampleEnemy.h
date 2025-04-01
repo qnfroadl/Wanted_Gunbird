@@ -5,7 +5,7 @@
 class Image;
 class CollisionRect;
 class BulletManager;
-class Enemy : public GameActor	
+class SampleEnemy : public GameActor	
 {
 private:
 	GameActor* target;
@@ -28,8 +28,8 @@ public:
 
 	void MoveToTarget();
 
-	Enemy();
-	~Enemy();
+	SampleEnemy();
+	~SampleEnemy();
 
 	void SetActive(bool _bActive);
 

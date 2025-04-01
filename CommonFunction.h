@@ -129,3 +129,14 @@ inline bool IsOutofScreen(const FPOINT& pos)
 
 	return false;
 }
+
+inline bool IsOutofScreen(const RECT& rt, int padding)
+{
+	if (rt.left < 0 + padding || WINSIZE_X  < rt.right + padding
+	|| rt.top < 0 + padding || WINSIZE_Y < rt.bottom + padding)
+	{
+		return true;
+	}
+
+	return false;
+}

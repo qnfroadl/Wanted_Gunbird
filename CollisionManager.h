@@ -85,13 +85,15 @@ class CollisionManager : public Singleton<CollisionManager>, public GameObject
 
 		void CollisionDetect(list<Collision*>& colList1, list<Collision*>& colList2);
 		void Detect(Collision* c1, Collision* c2);
-
+		HBRUSH brush;
+		HPEN pen;
 	public:
 		CollisionEllipse* CreateCollisionEllipse(GameObject* obj, int x, int y, int width, int height);
 		CollisionRect* CreateCollisionRect(GameObject* obj, const RECT& rt);
 
 		void DeleteCollision(Collision* coll);
 
+		void Init() override;
 		void Update() override;
 		void Render(HDC hdc) override;
 		void Release() override;
