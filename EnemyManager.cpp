@@ -12,14 +12,14 @@ bool EnemyManager::IsLiveEnmey()
 {
 
 	return false;
-}
+} 
 
 void EnemyManager::Init()
 {
 	Enemy* enemy = new Enemy(1);
 	
 	enemy->Init("Mid Boss", TEXT("assets/Sprites/Enemies/boss_dragon_death.bmp"), 
-		100, 100, 1, 1, false, RGB(0, 0, 0));
+		100, 100, 1, 1, true, RGB(255, 255, 255));
 	enemys.push_back(enemy);
 }
 

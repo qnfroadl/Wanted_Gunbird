@@ -35,8 +35,13 @@ typedef struct vector2d {
 
 	vector2d operator*(float mul)
 	{
-		x *= mul;
-		y *= mul;
+		return vector2d{ x * mul, y * mul };
+	}
+
+	vector2d operator-()
+	{
+		x = -x;
+		y = -y;
 		return vector2d{ x, y };
 	}
 } VEC2;
