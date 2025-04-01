@@ -9,11 +9,12 @@ class Player : public GameActor
 {
 public:
 	bool isActive;
-	FPOINT pos;
 	int hp;
 	int power;
 	int bombCount;
 	MissileManager* missileMgr;
+	int animFrame;
+	int elapsedFrame;
 	int score;
 	Image* image;
 	float speed;
