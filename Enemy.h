@@ -25,6 +25,8 @@ public:
 		score = 0;
 		this->hp = hp;
 		image = nullptr;
+		width = 0;
+		height = 0;
 		animFrame = 0;
 		speed = 0;
 		elapsedTime = 0;
