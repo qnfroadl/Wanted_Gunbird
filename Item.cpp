@@ -5,10 +5,17 @@
 #include "Image.h"
 #include "CommonFunction.h"
 #include "TimerManager.h"
+#include "config.h"
+
+#define LT 135
+#define RT 45
+#define LB 225
+#define RB 315
 
 Item::Item(ItemType type)
 {
 	this->type = type;
+	this->AddTag(type == ItemType::BombAdd? GameTag::BombUp : GameTag::PowerUp);
 }
 
 Item::~Item()
@@ -18,8 +25,8 @@ Item::~Item()
 
 void Item::Init()
 {
-	angle = 135.f;
-	speed = 7;
+	angle = RT;
+	speed = 300;
 	curFrame = 0;
 
 	if (ItemType::BombAdd == this->type)
@@ -41,7 +48,7 @@ void Item::Init()
 		MessageBox(NULL, TEXT("pickup_bomb not loaded"), NULL,NULL);
 	}
 
-	collision = CollisionManager::GetInstance()->CreateCollisionRect(this, RECT{});
+	collision = CollisionManager::GetInstance()->CreateCollisionRect(this, RECT{-100,-100, -80,-80});
 	collision->Bind([&](GameObject* obj)
 		{
 			this->On_CollisionDetected(obj);
@@ -83,17 +90,25 @@ void Item::MoveInWindow()
 {
 	FPOINT pos = GetPos();
 	
-	if (IsOutofScreen(collision->GetRect(), 30))
-	{
-		angle += 90;
-		if (360 < angle)
-		{
-			angle = angle - 360;
-		}
+	if (RectInRect(collision->GetRect(), RECT{ 0,0, 3, WINSIZE_Y }))
+	{	// 왼쪽 벽
+		angle = (angle == LT)? RT : RB;
 	}
-
-	pos.x += speed * cosf(DEG_TO_RAD(angle));
-	pos.y += -speed * sinf(DEG_TO_RAD(angle));
+	else if(RectInRect(collision->GetRect(), RECT{ 0,0, WINSIZE_X, 3 }))
+	{	// 상단
+		angle = (angle == LT) ? LB : RB;
+	}
+	else if (RectInRect(collision->GetRect(), RECT{ WINSIZE_X - 3,0, WINSIZE_X, WINSIZE_Y }))
+	{	//오른쪽 벽
+		angle = (angle == RT) ? LT : LB;
+	}
+	else if (RectInRect(collision->GetRect(), RECT{ 0,WINSIZE_Y - 3, WINSIZE_X, WINSIZE_Y }))
+	{	// 하단
+		angle = (angle == LB) ? LT : RT;
+	}
+	
+	pos.x += TimerManager::GetInstance()->GetDeltaTime() * speed * cosf(DEG_TO_RAD(angle));
+	pos.y += TimerManager::GetInstance()->GetDeltaTime()  * -speed * sinf(DEG_TO_RAD(angle));
 
 
 	SetPos(pos);

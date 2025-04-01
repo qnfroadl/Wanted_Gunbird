@@ -21,7 +21,7 @@ private:
 	Image* image;
 	CollisionRect* collision;
 
-	float angle;	// 45도로 시작해서, 벽에 충돌 할 떄 마다 90도씩 추가해줘
+	int angle;	// 45도로 시작해서, 벽에 충돌 할 떄 마다 90도씩 추가해줘
 	float speed;	// 아이템의 이동속도.
 
 public:
