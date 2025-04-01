@@ -89,15 +89,12 @@ void MainGame::Release()
 void MainGame::Update()
 {
 	CollisionManager::GetInstance()->Update();
-	KeyManager* keyManager = KeyManager::GetInstance();
-
 	backgroundUI->Update();
 
 	item->Update();
 
-		CollisionManager::GetInstance()->Update();
-		KeyManager* keyManager = KeyManager::GetInstance();
-		player->Update();
+	CollisionManager::GetInstance()->Update();
+	player->Update();
 
 	enemyManager->Update();
 
