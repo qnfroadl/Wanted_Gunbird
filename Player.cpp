@@ -8,6 +8,7 @@
 
 void Player::Init()
 {
+	AddTag(GameTag::Player);
 	SetPos(WINSIZE_X / 2, WINSIZE_Y * 0.9);
 	speed = 300.0f;
 	image = ImageManager::GetInstance()->AddImage("Player",
@@ -44,7 +45,7 @@ void Player::Update()
 			animFrame = 0;
 		}
 	}
-
+	// 시간이 나면 좌,우 움직임 스프라이트도 넣는다
 	float moveAngle = -999.0f;
 	bool movementActive = false;
 
@@ -118,10 +119,10 @@ void Player::Move(float degree)
 		currentPos.x = WINSIZE_X - 15;
 
 	currentPos.y += speed * TimerManager::GetInstance()->GetDeltaTime() * sinf(DEG_TO_RAD(degree));
-	if (currentPos.y <= 0 + 15)
-		currentPos.y = 0 + 15;
-	else if (currentPos.y >= WINSIZE_Y - 15)
-		currentPos.y = WINSIZE_Y - 15;
+	if (currentPos.y <= 0 + 24)
+		currentPos.y = 0 + 24;
+	else if (currentPos.y >= WINSIZE_Y - 24)
+		currentPos.y = WINSIZE_Y - 24;
 
 	SetPos(currentPos);
 }

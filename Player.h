@@ -2,7 +2,6 @@
 #include "config.h"
 #include "GameActor.h"
 
-class CollisionManager;
 class Image;
 class MissileManager;
 class Player : public GameActor
@@ -21,7 +20,6 @@ public:
 	Image* playerMissileShotImage;
 	float speed;
 	int attackLevel;
-	CollisionManager* playerCollision;
 public:
 	void Init();
 	void Release();

@@ -5,7 +5,11 @@
 
 void Missile::Init()
 {
-	
+	playerAttackDefault = ImageManager::GetInstance()->AddImage("Player",
+		L"assets/Sprites/Characters/tetsu_playerAttackDefault.bmp",
+		2, 29, true, RGB(255, 0, 255));
+	if (!playerAttackDefault)
+		return;
 }
 
 void Missile::Release()
@@ -30,4 +34,8 @@ void Missile::Update()
 
 void Missile::Render(HDC hdc)
 {
+	/*if (playerAttackDefault)
+	{
+		playerAttackDefault->Render(hdc, );
+	}*/
 }
