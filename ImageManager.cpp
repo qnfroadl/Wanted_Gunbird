@@ -99,3 +99,27 @@ Image* ImageManager::FindImage(const string& key)
     }
     return it->second;
 }
+
+Image* ImageManager::AddImage(EImageKey key, const wchar_t* filePath, int width, int height, bool isTransparent, COLORREF transColor)
+{
+    string keyString = std::to_string(key);
+    return this->AddImage(keyString, filePath, width, height, isTransparent, transColor);
+}
+
+Image* ImageManager::AddImage(EImageKey key, const wchar_t* filePath, int width, int height, int maxFrameX, int maxFrameY, bool isTransparent, COLORREF transColor)
+{
+    string keyString = std::to_string(key);
+    return this->AddImage(keyString, filePath, width, height, maxFrameX, maxFrameY, isTransparent, transColor);
+}
+
+void ImageManager::DeleteImage(EImageKey key)
+{
+    string keyString = std::to_string(key);
+    this->DeleteImage(keyString);
+}
+
+Image* ImageManager::FindImage(EImageKey key)
+{
+    string keyString = std::to_string(key);
+    return this->FindImage(keyString);
+}
