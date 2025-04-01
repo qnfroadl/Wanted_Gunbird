@@ -8,18 +8,18 @@
 #include "Timer.h"
 #include "TimerManager.h"
 #include "KeyManager.h"
+#include "BackgroundUI.h"
 
+#include "Item.h"
 void MainGame::Init()
 {
 	CollisionManager::GetInstance()->Init();
 	KeyManager::GetInstance()->Init();
 	ImageManager::GetInstance()->Init();
 
-	this->hdc = GetDC(g_hWnd);
+	FPS = 60;
 
-	timer = new Timer();
-	timer->Init();
-	elapsedTime = 0.f;
+	this->hdc = GetDC(g_hWnd);
 
 	backBuffer = new Image();
 	if (FAILED(backBuffer->Init(WINSIZE_X, WINSIZE_Y)))
@@ -27,14 +27,16 @@ void MainGame::Init()
 		MessageBox(g_hWnd, 
 			TEXT("백버퍼 생성 실패"), TEXT("경고"), MB_OK);
 	}
-	backGround = new Image();
-	if (FAILED(backGround->Init(TEXT("assets/LevelBackgrounds/bg_castle.bmp"), 228, 2108)))
-	{
-		MessageBox(g_hWnd, TEXT("BackGround 생성 실패"), TEXT("경고"), MB_OK);
-	}
-	KeyManager::GetInstance()->Init();
 
+	backgroundUI = new BackgroundUI();
+	backgroundUI->Init();
+
+	KeyManager::GetInstance()->Init();
 	
+	item = new Item(ItemType::BombAdd);
+	item->Init();
+
+	item->SetPos(WINSIZE_X / 2, WINSIZE_Y / 2);
 }
 
 void MainGame::Release()
@@ -43,11 +45,11 @@ void MainGame::Release()
 	KeyManager::GetInstance()->Release();
 	ImageManager::GetInstance()->Release();
 	
-	if (backGround)
+	if (backgroundUI)
 	{
-		backGround->Release();
-		delete backGround;
-		backGround = nullptr;
+		backgroundUI->Release();
+		delete backgroundUI;
+		backgroundUI = nullptr;
 	}
 
 	if (backBuffer)
@@ -57,24 +59,21 @@ void MainGame::Release()
 		backBuffer = nullptr;
 	}
 
+	backgroundUI->Release();
+
 	ReleaseDC(g_hWnd, hdc);
 }
 
 void MainGame::Update()
 {
-	timer->Tick();
+	CollisionManager::GetInstance()->Update();
+	KeyManager* keyManager = KeyManager::GetInstance();
 
-	elapsedTime += TimerManager::GetInstance()->GetDeltaTime();
+	backgroundUI->Update();
 
-	if (0.01 <= elapsedTime)	// 초당 100프레임?
-	{
-		elapsedTime = 0;
+	item->Update();
 
-		CollisionManager::GetInstance()->Update();
-		KeyManager* keyManager = KeyManager::GetInstance();
-		InvalidateRect(g_hWnd, NULL, false);
-	}
-
+	InvalidateRect(g_hWnd, NULL, false);
 }
 
 void MainGame::Render()
@@ -82,10 +81,12 @@ void MainGame::Render()
 	// 백버퍼에 먼저 복사
 	HDC hBackBufferDC = backBuffer->GetMemDC();
 
-	backGround->Render(hBackBufferDC);
+	backgroundUI->Render(hBackBufferDC);
 
-	CollisionManager::GetInstance()->Render(hBackBufferDC);
-	TimerManager::GetInstance()->Render(hBackBufferDC);
+	item->Render(hBackBufferDC);
+
+	 CollisionManager::GetInstance()->Render(hBackBufferDC);
+	// TimerManager::GetInstance()->Render(hBackBufferDC);
 
 	wsprintf(szText, TEXT("Mouse X : %d, Y : %d"), mousePosX, mousePosY);
 	TextOut(hBackBufferDC, 20, 60, szText, wcslen(szText));
@@ -146,3 +147,4 @@ MainGame::MainGame()
 MainGame::~MainGame()
 {
 }
+
