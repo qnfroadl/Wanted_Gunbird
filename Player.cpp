@@ -12,7 +12,7 @@ void Player::Init()
 	speed = 300.0f;
 	image = ImageManager::GetInstance()->AddImage("Player",
 		TEXT("assets/Sprites/Characters/testu_idle_spriteMerge.bmp"),
-		720, 37, 24, 1, true, RGB(255, 0, 255));
+		744, 41, 24, 1, true, RGB(255, 0, 255));
 	if (!image)
 		return;
 
@@ -44,7 +44,6 @@ void Player::Update()
 			animFrame = 0;
 		}
 	}
-
 
 	float moveAngle = -999.0f;
 	bool movementActive = false;
@@ -101,7 +100,7 @@ void Player::Update()
 
 void Player::Render(HDC hdc)
 {
-	//RenderRectAtCenter(hdc, GetPos().x, GetPos().y, 30, 30);	//임시 렌더링
+	//스프라이트가 흔들리는걸 고쳐야함. 스프라이트 크기를 균일하게 다시 쪼갤것
 	if (image)
 	{
 		image->FrameRender(hdc, GetPos().x, GetPos().y, animFrame, 0, false);
@@ -130,8 +129,9 @@ void Player::Move(float degree)
 void Player::Fire()
 {
 	/*
-	레벨에 비례해서 공격력, 패턴, 판정크기 증가
-	(증가시킬 항목은 회의 후 선택)
+	레벨에 비례해서 총알 추가
+	4레벨에는 미사일 추가
+	미사일 매니저가 있어야 하겟는데
 	*/
 	switch (attackLevel)
 	{
@@ -146,6 +146,7 @@ void Player::Fire()
 		break;
 	default:
 		//기본(1레벨) 공격
+		
 		break;
 	}
 }

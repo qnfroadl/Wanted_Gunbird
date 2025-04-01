@@ -17,9 +17,11 @@ public:
 	int elapsedFrame;
 	int score;
 	Image* image;
+	Image* playerDefaultShotImage;
+	Image* playerMissileShotImage;
 	float speed;
 	int attackLevel;
-	CollisionManager* collision;
+	CollisionManager* playerCollision;
 public:
 	void Init();
 	void Release();
