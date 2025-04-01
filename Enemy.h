@@ -37,7 +37,7 @@ public:
 
 	void Init(const string& key, const wchar_t* filePath, float width, float height,
 		int maxFrameX, int maxFrameY, bool isTransparent, COLORREF transColor);
-
+	void Release() override;
 	void Update() override;
 	void Render(HDC hdc) override;
 

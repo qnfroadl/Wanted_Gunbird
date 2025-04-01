@@ -12,10 +12,8 @@ void Enemy::Init(const string& key, const wchar_t* filePath, float width, float 
 {
 	image = ImageManager::GetInstance()->AddImage(key, filePath, width, height, 
 		maxFrameX, maxFrameY, isTransparent, transColor);
-	if (nullptr == image)
-	{		
-		return;
-	}
+
+	pattern = new ActionPattern();
 
 	FPOINT pos = this->GetPos();
 	RECT rt = { pos.x, pos.y, pos.x + width, pos.y + height };
@@ -27,6 +25,15 @@ void Enemy::Init(const string& key, const wchar_t* filePath, float width, float 
 
 }
 
+void Enemy::Release()
+{
+	if (pattern)
+	{
+		delete pattern;
+		pattern = nullptr;
+	}
+}
+
 void Enemy::Update()
 {
 	if (IsActive())
@@ -34,7 +41,14 @@ void Enemy::Update()
 		FPOINT pos = GetPos();
 		
 		// update position
-		getPattern()->move();
+		VEC2 step{0.0f, 0.0f};
+		if (pattern)
+		{
+			step = pattern->move();
+		}
+
+		pos.x += step.x;
+		pos.y += step.y;
 
 		//update animation frame
 		elapsedTime += TimerManager::GetInstance()->GetDeltaTime();

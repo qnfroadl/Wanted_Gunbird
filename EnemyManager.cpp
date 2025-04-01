@@ -18,6 +18,8 @@ void EnemyManager::Init()
 {
 	Enemy* enemy = new Enemy(1);
 	
+	enemy->Init("Mid Boss", TEXT("assets/Sprites/Enemies/boss_dragon_death.bmp"), 
+		100, 100, 1, 1, false, RGB(0, 0, 0));
 	enemys.push_back(enemy);
 }
 
@@ -33,14 +35,14 @@ void EnemyManager::Release()
 
 void EnemyManager::Update()
 {
-	//for (int i = 0; i < enemys.size(); i++)
-		//enemys[i]->Update();
+	for (int i = 0; i < enemys.size(); i++)
+		enemys[i]->Update();
 }
 
 void EnemyManager::Render(HDC hdc)
 {
-	//for (int i = 0; i<enemys.size(); i++)
-	//	enemys[i]->Render(hdc);
+	for (int i = 0; i<enemys.size(); i++)
+		enemys[i]->Render(hdc);
 }
 
 

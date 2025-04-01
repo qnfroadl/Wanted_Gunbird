@@ -1,8 +1,6 @@
 #include "MainGame.h"
-
 #include "CommonFunction.h"
 #include "Image.h"
-
 #include "CollisionManager.h"
 #include "ImageManager.h"
 #include "Timer.h"
@@ -100,6 +98,8 @@ void MainGame::Render()
 	
 	enemyManager->Render(hBackBufferDC);
 
+	// std::deque<class Enemy*> enemys = enemyManager->getEnemys();
+	
 	wsprintf(szText, TEXT("Mouse X : %d, Y : %d"), mousePosX, mousePosY);
 	TextOut(hBackBufferDC, 20, 60, szText, wcslen(szText));
 

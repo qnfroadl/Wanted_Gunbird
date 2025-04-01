@@ -64,7 +64,7 @@
       <Filter>2D Framework</Filter>
     </ClCompile>
     <ClCompile Include="ActionPattern.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>2D Framework</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -114,7 +114,7 @@
       <Filter>2D Framework</Filter>
     </ClInclude>
     <ClInclude Include="ActionPattern.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>2D Framework</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
