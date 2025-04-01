@@ -57,6 +57,9 @@
     <ClCompile Include="Image.cpp">
       <Filter>2D Framework</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>소스 파일</Filter>
+
 
     <ClCompile Include="Enemy.cpp">
       <Filter>2D Framework</Filter>
@@ -117,6 +120,7 @@
     <ClInclude Include="Image.h">
       <Filter>2D Framework</Filter>
     </ClInclude>
+    <ClInclude Include="Player.h">
     <ClInclude Include="Enemy.h">
       <Filter>2D Framework</Filter>
     </ClInclude>

@@ -6,9 +6,9 @@
 #include "Timer.h"
 #include "TimerManager.h"
 #include "KeyManager.h"
+#include "Player.h"
 #include "EnemyManager.h"
 #include "BackgroundUI.h"
-
 
 #include "Item.h"
 void MainGame::Init()
@@ -28,6 +28,9 @@ void MainGame::Init()
 			TEXT("백버퍼 생성 실패"), TEXT("경고"), MB_OK);
 	}
 
+	player = new Player;
+	player->Init();
+
 	enemyManager = new EnemyManager;
 	enemyManager->Init();
 
@@ -40,6 +43,7 @@ void MainGame::Init()
 	item->Init();
 
 	item->SetPos(WINSIZE_X / 2, WINSIZE_Y / 2);
+
 }
 
 void MainGame::Release()
@@ -48,6 +52,13 @@ void MainGame::Release()
 	KeyManager::GetInstance()->Release();
 	ImageManager::GetInstance()->Release();
 	
+	if (player)
+	{
+		player->Release();
+		delete player;
+		player = nullptr;
+	}
+
 	if (backgroundUI)
 	{
 		backgroundUI->Release();
@@ -84,6 +95,10 @@ void MainGame::Update()
 
 	item->Update();
 
+		CollisionManager::GetInstance()->Update();
+		KeyManager* keyManager = KeyManager::GetInstance();
+		player->Update();
+
 	enemyManager->Update();
 
 }
@@ -96,6 +111,8 @@ void MainGame::Render()
 	backgroundUI->Render(hBackBufferDC);
 
 	item->Render(hBackBufferDC);
+
+	player->Render(hBackBufferDC);
 
 	CollisionManager::GetInstance()->Render(hBackBufferDC);
 	enemyManager->Render(hBackBufferDC);
