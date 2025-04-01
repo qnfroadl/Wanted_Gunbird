@@ -36,12 +36,12 @@ GameObject::~GameObject()
 {
 }
 
-void GameObject::AddTag(const wstring& tag)
+void GameObject::AddTag(GameTag tag)
 {
     this->tags.insert(tag);
 }
 
-void GameObject::AddTags(const unordered_set<wstring> tags)
+void GameObject::AddTags(const unordered_set<GameTag>& tags)
 {
     for (const auto& tag : tags)
     {
@@ -49,7 +49,17 @@ void GameObject::AddTags(const unordered_set<wstring> tags)
     }
 }
 
-const unordered_set<wstring>& GameObject::GetTags()
+const unordered_set<GameTag>& GameObject::GetTags()
 {
     return this->tags;
+}
+
+bool GameObject::FindTag(GameTag tag)
+{
+    if (0 < this->tags.count(tag))
+    {
+        return true;
+    }
+
+    return false;
 }

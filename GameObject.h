@@ -6,7 +6,7 @@ class GameObject
 {
 private:
 	bool bActive;
-	unordered_set<wstring> tags;
+	unordered_set<GameTag> tags;
 
 public:
 	virtual void Init();		// 멤버 변수의 초기화, 메모리 할당
@@ -20,8 +20,9 @@ public:
 	GameObject();
 	virtual ~GameObject();
 
-	void AddTag(const wstring& tag);
-	void AddTags(const unordered_set<wstring> tags);
-	const unordered_set<wstring>& GetTags();
+	void AddTag(GameTag tag);
+	void AddTags(const unordered_set<GameTag>& tags);
+	const unordered_set<GameTag>& GetTags();
+	bool FindTag(GameTag tag);
 };
 
