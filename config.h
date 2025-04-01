@@ -22,6 +22,12 @@ enum class GameTag
 	PowerUp, BombUp, Player, Enemy, EliteEnemy, BossEnemy, 
 };
 
+enum EImageKey
+{
+
+
+};
+
 typedef struct vector2d {
 	float x, y;
 
