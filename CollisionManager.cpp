@@ -111,6 +111,12 @@ void CollisionManager::DeleteCollision(Collision* coll)
     }
 }
 
+void CollisionManager::Init()
+{
+    brush = (HBRUSH)GetStockObject(HOLLOW_BRUSH);
+    pen = CreatePen(PS_SOLID, 3, RGB(0, 255, 0));
+}
+
 void CollisionManager::Update()
 {
     CollisionDetect();
@@ -118,6 +124,9 @@ void CollisionManager::Update()
 
 void CollisionManager::Render(HDC hdc)
 {
+    HBRUSH oldBrush = (HBRUSH)SelectObject(hdc, brush);
+    HPEN oldPen = (HPEN)SelectObject(hdc, pen);
+
     list<GameObject*> ownerList;
 
     for (const auto& pair : collisionMap)
@@ -130,6 +139,9 @@ void CollisionManager::Render(HDC hdc)
             }
         }
     }
+
+    SelectObject(hdc, oldBrush);
+    SelectObject(hdc, oldPen);
 }
 
 void CollisionManager::Release()
