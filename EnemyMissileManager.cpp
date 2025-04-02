@@ -2,6 +2,7 @@
 #include "EnemyMissile.h"
 #include "MissilePattern.h"
 #include "TimerManager.h"
+#include "CommonFunction.h"
 
 
 EnemyMissileManager::EnemyMissileManager()
