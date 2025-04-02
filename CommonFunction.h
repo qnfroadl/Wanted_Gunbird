@@ -140,3 +140,14 @@ inline bool IsOutofScreen(const RECT& rt, int padding)
 
 	return false;
 }
+
+inline bool IsOutofScreen(const RECT& rt, int paddingX, int paddingUpY, int paddingDownY)
+{
+	if (rt.left < 0 + paddingX || WINSIZE_X < rt.right + paddingX
+		|| rt.top < 0 + paddingUpY || WINSIZE_Y < rt.bottom + paddingDownY)
+	{
+		return true;
+	}
+
+	return false;
+}
