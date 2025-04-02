@@ -4,24 +4,21 @@
 #include "TimerManager.h"
 #include "CollisionManager.h"
 #include "GameActor.h"
+#include "CommonFunction.h"
+#include "Enemy.h"
 
+#define PDA_WIDTH 2
+#define PDA_HEIGHT 29
 void PlayerDefaultAttack::CollisionDetected(GameObject* obj)
 {
-	auto tags = obj->GetTags();
-	if (0 < tags.count(GameTag::PlayerDefaultAttack))
+ 	auto tags = obj->GetTags();
+	if (0 < tags.count(GameTag::Enemy))
 	{
-		if (0 < tags.count(GameTag::Enemy))
-		{
-			// 로켓이 쏜 총알과 부딪혔따.
-			this->SetActive(false);	//Enemy비활성
-			obj->SetActive(false);	//Bullet비활성
-		}
-		else
-		{
-			//로켓과 부딪혔따.
-			this->SetActive(false);	// Enemy비활성
-			obj->SetActive(false);	// Rocket 비활성
-		}
+		Enemy* enemy = static_cast<Enemy*>(obj);
+		enemy->Damaged(10);
+
+		this->SetActive(false);	// Enemy비활성
+		this->attackDefaultCollision->SetActive(false);
 	}
 }
 
@@ -84,4 +81,6 @@ void PlayerDefaultAttack::Move()
 	position.x += speed * TimerManager::GetInstance()->GetDeltaTime() * cosf(DEG_TO_RAD(-90));
 	position.y += speed * TimerManager::GetInstance()->GetDeltaTime() * sinf(DEG_TO_RAD(-90));
 	SetPos(position);
+
+	attackDefaultCollision->SetRect(GetRectAtCenter(position.x, position.y, PDA_WIDTH, PDA_HEIGHT));
 }

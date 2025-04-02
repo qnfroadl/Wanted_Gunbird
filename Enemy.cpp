@@ -11,6 +11,7 @@
 void Enemy::Init(const string& key, const wchar_t* filePath, float width, float height,
 	int maxFrameX, int maxFrameY, bool isTransparent, COLORREF transColor)
 {
+	this->AddTag(GameTag::Enemy);
 	image = ImageManager::GetInstance()->AddImage(key, filePath, width, height, 
 		maxFrameX, maxFrameY, isTransparent, transColor);
 
@@ -116,4 +117,22 @@ void Enemy::Render(HDC hdc)
 
 void Enemy::On_CollisionDetected(GameObject* obj)
 {
+	
+
+}
+
+void Enemy::Dead()
+{
+	SetActive(false);
+	collision->SetActive(false);
+}
+
+void Enemy::Damaged(int damage)
+{
+	hp -= damage;
+
+	if (hp <= 0)
+	{
+		Dead();
+	}
 }
