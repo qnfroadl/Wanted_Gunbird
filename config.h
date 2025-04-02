@@ -64,11 +64,19 @@ typedef struct vector2d {
 	}
 } VEC2;
 
+
 typedef struct tagFPOINT
 {
 	float x;
 	float y;
 } FPOINT;
+
+typedef struct missileInfo {
+	FPOINT startPos;
+	float fireDelay;
+	float speed;
+	float angle;
+} MissileInfo;
 
 typedef struct _Ellipse
 {

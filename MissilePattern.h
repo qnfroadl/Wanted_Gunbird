@@ -1,25 +1,28 @@
 #pragma once
 #include "config.h"
+#include <vector>
 
 class MissilePattern
 {
 private:
-	FPOINT startPoint;
-	int firecount;
+	FPOINT startPos;
+	int fireCount;
 	float fireDelay;
+	float speed;
 	class MissileType* type;
 	float angleMin;
 	float angleMax;
+	float accumulatedTime;
 
 public:
-	MissilePattern() {
-		startPoint = { 0.0f, 0.0f };
-	};
+	MissilePattern();
 
 	virtual ~MissilePattern() {};
 
+	void Init(FPOINT startPos, int fireCount, float fireDelay, float speed, float angleMin, float angleMax);
+
 	FPOINT getStartPoint();
 
-	void move();
+	std::vector<MissileInfo> getMissilesInfo();
 };
 

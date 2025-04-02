@@ -55,6 +55,18 @@
     <ClCompile Include="StageManager.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Missile.cpp" />
+    <ClCompile Include="MissileManager.cpp" />
+    <ClCompile Include="EnemyMissile.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyMissileManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="MissilePattern.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+
 
     <ClCompile Include="PlayerMissileAttack.cpp" />
     <ClCompile Include="PlayerAttackManager.cpp" />
@@ -127,6 +139,15 @@
       <Filter>Header</Filter>
     </ClInclude>
 
+    <ClInclude Include="EnemyMissile.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyMissileManager.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="MissilePattern.h">
+      <Filter>Header</Filter>
+    </ClInclude>
     <ClInclude Include="PlayerMissileAttack.h" />
     <ClInclude Include="PlayerAttackManager.h" />
     <ClInclude Include="PlayerDefaultAttack.h" />

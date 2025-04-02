@@ -10,6 +10,10 @@
 #include "EnemyManager.h"
 #include "StageManager.h"
 #include "BackgroundUI.h"
+
+#include "EnemyMissileManager.h"
+#include "Item.h"
+
 #include "ItemManager.h"
 
 void MainGame::InitResoureces()
@@ -32,6 +36,7 @@ void MainGame::Init()
 	CollisionManager::GetInstance()->Init();
 	KeyManager::GetInstance()->Init();
 	ImageManager::GetInstance()->Init();
+	EnemyMissileManager::GetInstance()->Init();
 	EnemyManager::GetInstance()->Init();
 
 	FPS = 60;
@@ -52,6 +57,9 @@ void MainGame::Init()
 	stageManager = new StageManager();
 	stageManager->Init();
 
+	/*enemyMissileManager = new EnemyMissileManager();
+	enemyMissileManager->Init();*/
+
 	backgroundUI = new BackgroundUI();
 	backgroundUI->Init();
 
@@ -62,6 +70,7 @@ void MainGame::Release()
 	CollisionManager::GetInstance()->Release();
 	KeyManager::GetInstance()->Release();
 	ImageManager::GetInstance()->Release();
+	EnemyMissileManager::GetInstance()->Release();
 	EnemyManager::GetInstance()->Release();
 
 	if (player)
@@ -92,8 +101,14 @@ void MainGame::Release()
 		stageManager = nullptr;
 	}
 
-	backgroundUI->Release();
+	/*if (enemyMissileManager)
+	{
+		enemyMissileManager->Release();
+		delete enemyMissileManager;
+		enemyMissileManager = nullptr;
+	}*/
 
+	backgroundUI->Release();
 
 	ReleaseDC(g_hWnd, hdc);
 }
@@ -104,6 +119,8 @@ void MainGame::Update()
 	backgroundUI->Update();
 	player->Update();
 	stageManager->Update();
+
+	EnemyMissileManager::GetInstance()->Update();
 
 	CollisionManager::GetInstance()->Update();
 }
@@ -120,8 +137,9 @@ void MainGame::Render()
 
 	CollisionManager::GetInstance()->Render(hBackBufferDC);
 
-	// std::deque<class Enemy*> enemys = enemyManager->getEnemys();
-	
+	//enemyMissileManager->Render(hBackBufferDC);
+	EnemyMissileManager::GetInstance()->Render(hBackBufferDC);
+
 	wsprintf(szText, TEXT("Mouse X : %d, Y : %d"), mousePosX, mousePosY);
 	TextOut(hBackBufferDC, 20, 60, szText, wcslen(szText));
 

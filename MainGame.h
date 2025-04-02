@@ -25,6 +25,8 @@ private:
 	Image* backBuffer;
 	BackgroundUI* backgroundUI;
 
+	class EnemyManager* enemyManager;
+
 	StageManager* stageManager;
 
 	void InitResoureces();

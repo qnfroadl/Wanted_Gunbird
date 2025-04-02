@@ -13,6 +13,8 @@ private:
 
 	uint32_t maxFrame;
 	float elapsedTime;
+	float accumulatedTime;
+
 public:
 	void Init();
 	void Update();
@@ -21,7 +23,7 @@ public:
 
 	unsigned long GetFPS();
 	float GetDeltaTime();
-
+	float GetAccumulatedTime();
 	bool GetFrame();
 	void SetMaxFrame(uint32_t maxFrame);	// 최대 프레임 설정.
 	

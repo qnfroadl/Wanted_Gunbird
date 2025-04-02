@@ -1,10 +1,11 @@
 #pragma once
-
+#include "Singleton.h"
 #include <bitset>
 #include "config.h"
 #include "Singleton.h"
 #include "GameObject.h"
 #include <deque>
+
 
 class Enemy;
 class EnemyManager: public Singleton<EnemyManager>
@@ -18,6 +19,7 @@ public:
 	bool IsLiveEnmey();
 
 	void Init();
+
 	void Release();		
 	void Update();		
 	void Render(HDC hdc);
