@@ -2,16 +2,9 @@
 #include  "Enemy.h"
 
 
-bool EnemyManager::IsOutofScreen()
-{
-
-	return false;
-}
-
 bool EnemyManager::IsLiveEnmey()
 {
-
-	return false;
+	return !enemys.empty();
 } 
 
 void EnemyManager::Init()
@@ -20,6 +13,7 @@ void EnemyManager::Init()
 	
 	enemy->Init("Mid Boss", TEXT("assets/Sprites/Enemies/boss_dragon_death.bmp"), 
 		100, 100, 1, 1, true, RGB(255, 255, 255));
+
 	enemys.push_back(enemy);
 }
 
@@ -35,14 +29,35 @@ void EnemyManager::Release()
 
 void EnemyManager::Update()
 {
-	for (int i = 0; i < enemys.size(); i++)
-		enemys[i]->Update();
+	Enemy* enemy = nullptr;
+
+	auto it = enemys.begin();
+	while (it != enemys.end())
+	{
+		enemy = (*it);
+		if (enemy->IsActive())
+		{
+			enemy->Update();
+		}
+		else {
+			enemys.erase(it);
+			continue;
+		}
+		it++;
+	}
 }
 
 void EnemyManager::Render(HDC hdc)
 {
-	for (int i = 0; i<enemys.size(); i++)
-		enemys[i]->Render(hdc);
+	Enemy* enemy = nullptr;
+
+	auto it = enemys.begin();
+	while (it != enemys.end())
+	{
+		enemy = (*it);
+		enemy->Render(hdc);
+		it++;
+	}
 }
 
 

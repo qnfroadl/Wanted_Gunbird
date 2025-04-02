@@ -19,6 +19,7 @@ class ImageManager : public Singleton<ImageManager>
 private:
 	map<string, Image*> mapImages;
 	map<EImageKey, Image*> mapImages2;
+
 public:
 	void Init();
 	void Release();
@@ -33,8 +34,6 @@ public:
 
 	Image* FindImage(const string& key);
 
-
-	 
 	Image* AddImage(EImageKey key, const wchar_t* filePath, int width, int height,
 		bool isTransparent = FALSE, COLORREF transColor = FALSE);
 	
@@ -44,6 +43,7 @@ public:
 	void DeleteImage(EImageKey key);
 	
 	Image* FindImage(EImageKey key);
+
 
 };
 
