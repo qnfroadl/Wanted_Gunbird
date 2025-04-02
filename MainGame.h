@@ -25,6 +25,8 @@ private:
 
 	class EnemyManager* enemyManager;
 
+	class EnemyMissileManager* enemyMissileManager;
+
 	// test
 	Item* item;
 

@@ -15,6 +15,7 @@ void TimerManager::Update()
 		timer->Tick();
 
 		elapsedTime += timer->GetDeltaTime();
+		accumulatedTime += timer->GetDeltaTime();
 	}
 }
 
@@ -37,6 +38,11 @@ unsigned long TimerManager::GetFPS()
 float TimerManager::GetDeltaTime()
 {
 	return timer->GetDeltaTime();
+}
+
+float TimerManager::GetAccumulatedTime()
+{
+	return accumulatedTime;
 }
 
 bool TimerManager::GetFrame()

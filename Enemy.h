@@ -4,6 +4,7 @@
 #include "config.h"
 #include "GameActor.h"
 #include <deque>
+#include <vector>
 
 class Enemy: public GameActor
 {
@@ -14,10 +15,11 @@ class Enemy: public GameActor
 	int animFrame;
 	float speed;
 	float elapsedTime;
+	float fireTime;
 	class CollisionRect* collision;
-	class ActionPattern* pattern;
-	class EnemyMissileManager* missileManager;
-	std::deque<class MissilePattern*> missilePattern;
+	class ActionPattern* pattern;		
+	std::deque<class MissilePattern*> missilePatterns;
+	class EnemyMissileManager* enemyMissileManager;
 
 public:
 	Enemy(int hp)
@@ -32,13 +34,18 @@ public:
 		elapsedTime = 0;
 		collision = nullptr;
 		pattern = nullptr;
-		missileManager = nullptr;
+		enemyMissileManager = nullptr;
 	};
 
 	virtual ~Enemy() {};
 
 	void Init(const string& key, const wchar_t* filePath, float width, float height,
 		int maxFrameX, int maxFrameY, bool isTransparent, COLORREF transColor);
+
+	void setMissilePattern(int fireCount, float fireDelay, float speed, float angleMin, float angleMax);
+
+	void Fire();
+
 	void Release() override;
 	void Update() override;
 	void Render(HDC hdc) override;

@@ -9,17 +9,19 @@ private:
 	class Image* image;
 	float speed;
 	int damage;
+	float width, height;
+	float elapsedTime;
 	class CollisionRect* collision;
-	class MissilePattern* pattern;
+	float angle;
 	int animFrame;
 
 public:
-	EnemyMissile();
+	EnemyMissile(float speed, float angle);
 
 	virtual ~EnemyMissile();
 
-	void Init(const string& key, const wchar_t* filePath, float width, float height,
-		int maxFrameX, int maxFrameY, bool isTransparent, COLORREF transColor);
+	void Init(const string& key, const wchar_t* filePath, FPOINT startingPos, float width,
+		float height, int maxFrameX, int maxFrameY, bool isTransparent, COLORREF transColor);
 	void Release() override;
 	void Update() override;
 	void Render(HDC hdc) override;
