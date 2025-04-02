@@ -8,17 +8,36 @@
 #include "KeyManager.h"
 #include "Player.h"
 #include "EnemyManager.h"
+#include "StageManager.h"
 #include "BackgroundUI.h"
+
 #include "EnemyMissileManager.h"
 #include "Item.h"
 
+#include "ItemManager.h"
+
+void MainGame::InitResoureces()
+{
+	// 이펙트들 추가 할 예정
+	ImageManager::GetInstance()->AddImage(EImageKey::ExplosionPlayer,
+		L"assets/Sprites/Effects/PlayerExplosion.bmp", 253,31, 9, 1, true, RGB(255, 0, 255));
+
+	ImageManager::GetInstance()->AddImage(EImageKey::ExplosionSmall,
+		L"assets/Sprites/Effects/PlayerExplosion.bmp", 253, 31, 9, 1, true, RGB(255, 0, 255));
+
+	ImageManager::GetInstance()->AddImage(EImageKey::ExplosionBig,
+		L"assets/Sprites/Effects/PlayerExplosion.bmp", 253, 31, 9, 1, true, RGB(255, 0, 255));
+}
 
 void MainGame::Init()
 {
+	InitResoureces();
+
 	CollisionManager::GetInstance()->Init();
 	KeyManager::GetInstance()->Init();
 	ImageManager::GetInstance()->Init();
 	EnemyMissileManager::GetInstance()->Init();
+	EnemyManager::GetInstance()->Init();
 
 	FPS = 60;
 
@@ -30,25 +49,19 @@ void MainGame::Init()
 		MessageBox(g_hWnd, 
 			TEXT("백버퍼 생성 실패"), TEXT("경고"), MB_OK);
 	}
-
+	
 	player = new Player();
 	player->Init();
 
-	enemyManager = new EnemyManager;
-	enemyManager->Init();
+
+	stageManager = new StageManager();
+	stageManager->Init();
 
 	/*enemyMissileManager = new EnemyMissileManager();
 	enemyMissileManager->Init();*/
 
 	backgroundUI = new BackgroundUI();
 	backgroundUI->Init();
-
-	KeyManager::GetInstance()->Init();
-	
-	item = new Item(ItemType::BombAdd);
-	item->Init();
-
-	item->SetPos(WINSIZE_X / 2, WINSIZE_Y / 2);
 
 }
 
@@ -58,6 +71,7 @@ void MainGame::Release()
 	KeyManager::GetInstance()->Release();
 	ImageManager::GetInstance()->Release();
 	EnemyMissileManager::GetInstance()->Release();
+	EnemyManager::GetInstance()->Release();
 
 	if (player)
 	{
@@ -80,11 +94,11 @@ void MainGame::Release()
 		backBuffer = nullptr;
 	}
 
-	if (enemyManager)
+	if (stageManager)
 	{
-		enemyManager->Release();
-		delete enemyManager;
-		enemyManager = nullptr;
+		stageManager->Release();
+		delete stageManager;
+		stageManager = nullptr;
 	}
 
 	/*if (enemyMissileManager)
@@ -101,19 +115,14 @@ void MainGame::Release()
 
 void MainGame::Update()
 {
-	CollisionManager::GetInstance()->Update();
+	EnemyManager::GetInstance()->Update();
 	backgroundUI->Update();
-
-	item->Update();
-
-	CollisionManager::GetInstance()->Update();
 	player->Update();
-
-	enemyManager->Update();
-
-	//enemyMissileManager->Update();
+	stageManager->Update();
 
 	EnemyMissileManager::GetInstance()->Update();
+
+	CollisionManager::GetInstance()->Update();
 }
 
 void MainGame::Render()
@@ -122,14 +131,11 @@ void MainGame::Render()
 	HDC hBackBufferDC = backBuffer->GetMemDC();
 
 	backgroundUI->Render(hBackBufferDC);
-
-	item->Render(hBackBufferDC);
-
+	EnemyManager::GetInstance()->Render(hBackBufferDC);
 	player->Render(hBackBufferDC);
+	stageManager->Render(hBackBufferDC);
 
 	CollisionManager::GetInstance()->Render(hBackBufferDC);
-
-	enemyManager->Render(hBackBufferDC);
 
 	//enemyMissileManager->Render(hBackBufferDC);
 	EnemyMissileManager::GetInstance()->Render(hBackBufferDC);

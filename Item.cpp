@@ -12,10 +12,10 @@
 #define LB 225
 #define RB 315
 
-Item::Item(ItemType type)
+Item::Item(ItemType type, int lifeTime)
 {
-	this->type = type;
-	this->AddTag(type == ItemType::BombAdd? GameTag::BombUp : GameTag::PowerUp);
+	SetItemType(type);
+	SetLifeTime(lifeTime);
 }
 
 Item::~Item()
@@ -60,6 +60,9 @@ void Item::Update()
 	if (IsActive())
 	{
 		curFrame++;
+
+		// LifeTime을 점점 깍다가, 시간이 n초 이하가 되면 깜빡이게 만든다. to do
+
 		MoveInWindow();
 	}
 	
@@ -110,10 +113,19 @@ void Item::MoveInWindow()
 	pos.x += TimerManager::GetInstance()->GetDeltaTime() * speed * cosf(DEG_TO_RAD(angle));
 	pos.y += TimerManager::GetInstance()->GetDeltaTime()  * -speed * sinf(DEG_TO_RAD(angle));
 
-
 	SetPos(pos);
 	collision->SetRect(GetRectAtCenter(pos.x, pos.y, width, height));
-
 	
+}
+
+void Item::SetLifeTime(int lifeTime)
+{
+	this->lifeTime = lifeTime;
+}
+
+void Item::SetItemType(ItemType type)
+{
+	this->type = type;
+	this->AddTag(type == ItemType::BombAdd ? GameTag::BombUp : GameTag::PowerUp);
 }
 

@@ -4,10 +4,35 @@
 #include "TimerManager.h"
 #include "Image.h"
 #include "ImageManager.h"
+#include "PlayerDefaultAttack.h"
+#include "CollisionManager.h"
 
+void Player::CollisionDetected(GameObject* obj)
+{
+	auto tags = obj->GetTags();
+	if (0 < tags.count(GameTag::Player))
+	{
+		if (0 < tags.count(GameTag::Enemy))
+		{
+			// 로켓이 쏜 총알과 부딪혔따.
+			this->SetActive(false);	//Enemy비활성
+			obj->SetActive(false);	//Bullet비활성
+		}
+		else
+		{
+			//로켓과 부딪혔따.
+			this->SetActive(false);	// Enemy비활성
+			obj->SetActive(false);	// Rocket 비활성
+		}
+	}
+}
 
 void Player::Init()
 {
+	animFrame = 0;
+	elapsedFrame = 0;
+	attackLevel = 1;
+
 	AddTag(GameTag::Player);
 	SetPos(WINSIZE_X / 2, WINSIZE_Y * 0.9);
 	speed = 300.0f;
@@ -17,10 +42,8 @@ void Player::Init()
 	if (!image)
 		return;
 
-	animFrame = 0;
-	elapsedFrame = 0;
-
-	attackLevel = 1;
+	missile = new PlayerDefaultAttack;
+	missile->Init();
 }
 
 void Player::Release()
@@ -30,6 +53,13 @@ void Player::Release()
 		image->Release();
 		delete image;
 		image = nullptr;
+	}
+
+	if (missile)
+	{
+		missile->Release();
+		delete missile;
+		missile = nullptr;
 	}
 }
 
@@ -46,7 +76,7 @@ void Player::Update()
 		}
 	}
 	// 시간이 나면 좌,우 움직임 스프라이트도 넣는다
-	float moveAngle = -999.0f;
+	float moveAngle = 0;
 	bool movementActive = false;
 
 	if (KeyManager::GetInstance()->IsStayKeyDown(VK_UP))
@@ -95,8 +125,11 @@ void Player::Update()
 	}
 	if(movementActive)
 		Move(moveAngle);
+
 	if (KeyManager::GetInstance()->IsOnceKeyDown(VK_SPACE))
 		Fire();
+
+	missile->Update();
 }
 
 void Player::Render(HDC hdc)
@@ -104,6 +137,10 @@ void Player::Render(HDC hdc)
 	if (image)
 	{
 		image->FrameRender(hdc, GetPos().x, GetPos().y, animFrame, 0, false);
+	}
+	if (missile)
+	{
+		missile->Render(hdc);
 	}
 }
 
@@ -133,22 +170,7 @@ void Player::Fire()
 	4레벨에는 미사일 추가
 	미사일 매니저가 있어야 하겟는데
 	*/
-	switch (attackLevel)
-	{
-	case 2:
-		//2레벨 공격
-		break;
-	case 3:
-		//3레벨 공격
-		break;
-	case 4:
-		//4레벨 공격
-		break;
-	default:
-		//기본(1레벨) 공격
-		
-		break;
-	}
+	missile->Fire(GetPos(), attackLevel);
 }
 
 void Player::IncreaseAttackLevel()
