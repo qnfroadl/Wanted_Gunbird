@@ -23,12 +23,12 @@ EnemyMissile::EnemyMissile(float speed, float angle)
 
 EnemyMissile::~EnemyMissile()
 {
-	if (image)
-	{
-		image->Release();
-		delete image;
-		image = nullptr;
-	}
+	//if (image)
+	//{
+	//	image->Release();
+	//	delete image;
+	//	image = nullptr;
+	//}
 }
 
 void EnemyMissile::Init(const string& key, const wchar_t* filePath, FPOINT startingPos, float width,
@@ -51,6 +51,7 @@ void EnemyMissile::Init(const string& key, const wchar_t* filePath, FPOINT start
 
 void EnemyMissile::Release()
 {
+
 }
 
 void EnemyMissile::Update()
@@ -87,6 +88,11 @@ void EnemyMissile::Render(HDC hdc)
 		const FPOINT& pos = this->GetPos();
 		image->FrameRender(hdc, pos.x, pos.y, animFrame, 0, false);
 	}
+}
+
+const RECT& EnemyMissile::getRect()
+{
+	return collision->GetRect();
 }
 
 void EnemyMissile::On_CollisionDetected(GameObject* obj)
