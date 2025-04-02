@@ -4,7 +4,7 @@
 #include "Image.h"
 
 Effect::Effect()
-	:image(nullptr), curFrame(0), skipFrame(5), elapsedFrame(0)
+	:image(nullptr), curFrame(0), skipFrame(5)
 {
 	
 }
@@ -18,14 +18,10 @@ void Effect::Update()
 {
 	if (nullptr != image)
 	{
-		elapsedFrame++;
-		if (elapsedFrame % skipFrame == 0)
-		{
-			curFrame++;
-		}
+		curFrame++;
 		
 		int maxFrameX = image->GetMaxFrameX();
-		if (maxFrameX < curFrame)
+		if (maxFrameX < curFrame/skipFrame)
 		{
 			image = nullptr;
 			SetActive(false);
@@ -40,9 +36,9 @@ void Effect::Render(HDC hdc)
 		const FPOINT& pos = GetPos();
 
 		int maxFrameX = image->GetMaxFrameX();
-		if (curFrame <= maxFrameX)
+		if (curFrame / skipFrame <= maxFrameX)
 		{
-			image->FrameRender(hdc, pos.x,pos.y, curFrame, 1, false);
+			image->FrameRender(hdc, pos.x,pos.y, curFrame / skipFrame, 0, false);
 		}
 	}
 }
@@ -58,15 +54,16 @@ void EffectManager::Init()
 
 	// 이펙트들 추가 할 예정
 	ImageManager::GetInstance()->AddImage(EImageKey::ExplosionPlayer,
-		L"assets/Sprites/Effects/PlayerExplosion.bmp", 253, 31, 9, 1, true, RGB(255, 0, 255));
+		L"assets/Sprites/Effects/PlayerExplosion.bmp", 279, 31, 9, 1, true, RGB(255, 0, 255));
 
 	ImageManager::GetInstance()->AddImage(EImageKey::ExplosionSmall,
-		L"assets/Sprites/Effects/PlayerExplosion.bmp", 253, 31, 9, 1, true, RGB(255, 0, 255));
+		L"assets/Sprites/Effects/PlayerExplosion.bmp", 279, 31, 9, 1, true, RGB(255, 0, 255));
 
-	// ImageManager::GetInstance()->AddImage(EImageKey::ExplosionBig,
-	// 	L"assets/Sprites/Effects/PlayerExplosion.bmp", 253, 31, 9, 1, true, RGB(255, 0, 255));
+	ImageManager::GetInstance()->AddImage(EImageKey::ExplosionBig,
+		L"assets/Sprites/Effects/PlayerExplosion.bmp", 279, 31, 9, 1, true, RGB(255, 0, 255));
 
-	ImageManager::GetInstance()->AddImage(EImageKey::ExplosionBig, TEXT("assets/Sprites/Misc/pickup_bomb.bmp"), 216, 16, 8, 1, true, RGB(255, 0, 255));
+	ImageManager::GetInstance()->AddImage(EImageKey::ShotImpact,
+		L"assets/Sprites/Effects/ShotImpact.bmp", 255, 42, 17, 1, true, RGB(255, 0, 255));
 }
 
 void EffectManager::Update()
@@ -91,6 +88,8 @@ void EffectManager::Update()
 		}
 		it++;
 	}
+
+
 }
 
 void EffectManager::Render(HDC hdc)
@@ -127,6 +126,7 @@ void EffectManager::Release()
 
 	ReleaseInstance();
 }
+#include "ItemManager.h"
 
 void EffectManager::PlayEffect(const FPOINT& pos, EEffectType key)
 {
@@ -134,6 +134,6 @@ void EffectManager::PlayEffect(const FPOINT& pos, EEffectType key)
 	effect->Init();
 	effect->SetPos(pos);
 	effect->SetEffectKey(key);
-
+	
 	vecEffects.push_back(effect);
 }

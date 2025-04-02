@@ -10,7 +10,6 @@ class Effect : public GameActor
 {
 private:
 	Image* image;
-	int elapsedFrame;
 	int curFrame;
 	int skipFrame;
 

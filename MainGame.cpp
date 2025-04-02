@@ -16,6 +16,42 @@
 
 #include "ItemManager.h"
 
+void MainGame::EffectSimulation()
+{
+	// test
+
+	if (KeyManager::GetInstance()->IsOnceKeyDown(VK_F1))
+	{
+		EffectManager::GetInstance()->PlayEffect(FPOINT{ WINSIZE_X / 2,WINSIZE_Y / 2 }, EEffectType::ExplosionBig);
+	}
+	else if (KeyManager::GetInstance()->IsOnceKeyDown(VK_F2))
+	{
+		EffectManager::GetInstance()->PlayEffect(FPOINT{ WINSIZE_X / 2,WINSIZE_Y / 2 }, EEffectType::ExplosionSmall);
+	}
+	else if (KeyManager::GetInstance()->IsOnceKeyDown(VK_F3))
+	{
+		EffectManager::GetInstance()->PlayEffect(FPOINT{ WINSIZE_X / 2,WINSIZE_Y / 2 }, EEffectType::ExplosionPlayer);
+	}
+	else if (KeyManager::GetInstance()->IsOnceKeyDown(VK_F4))
+	{
+		EffectManager::GetInstance()->PlayEffect(FPOINT{ WINSIZE_X / 2,WINSIZE_Y / 2 }, EEffectType::ShotImpact);
+	}
+
+}
+
+void MainGame::ItemSpawnSimulation()
+{
+	if (KeyManager::GetInstance()->IsOnceKeyDown(VK_LSHIFT))
+	{
+		ItemManager::GetInstance()->SpawnItem(FPOINT{ WINSIZE_X / 2,WINSIZE_Y / 2 }, ItemType::PowerUp);
+	}
+	else if (KeyManager::GetInstance()->IsOnceKeyDown(VK_RSHIFT))
+	{
+		ItemManager::GetInstance()->SpawnItem(FPOINT{ WINSIZE_X / 2,WINSIZE_Y / 2 }, ItemType::BombAdd);
+	}
+	
+}
+
 void MainGame::Init()
 {
 	CollisionManager::GetInstance()->Init();
@@ -115,6 +151,10 @@ void MainGame::Update()
 	ItemManager::GetInstance()->Update();
 
 	CollisionManager::GetInstance()->Update();
+
+
+	EffectSimulation();
+	ItemSpawnSimulation();
 }
 
 void MainGame::Render()

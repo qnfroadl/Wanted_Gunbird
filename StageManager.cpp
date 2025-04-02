@@ -94,5 +94,5 @@ void StageManager::Start()
 
 
 	// test
-	EnemyManager::GetInstance()->SpawnEnemy(FPOINT{200,200}, 0);
+	// EnemyManager::GetInstance()->SpawnEnemy(FPOINT{200,200}, 0);
 }
