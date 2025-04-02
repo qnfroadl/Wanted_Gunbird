@@ -16,7 +16,7 @@ class Enemy: public GameActor
 	float elapsedTime;
 	class CollisionRect* collision;
 	class ActionPattern* pattern;
-	class MissileManager* missileManager;
+	class EnemyMissileManager* missileManager;
 	std::deque<class MissilePattern*> missilePattern;
 
 public:

@@ -3,7 +3,7 @@
 #include "GameActor.h"
 
 
-class Missile: public GameActor
+class EnemyMissile: public GameActor
 {
 private:
 	class Image* image;
@@ -14,9 +14,9 @@ private:
 	int animFrame;
 
 public:
-	Missile();
+	EnemyMissile();
 
-	virtual ~Missile();
+	virtual ~EnemyMissile();
 
 	void Init(const string& key, const wchar_t* filePath, float width, float height,
 		int maxFrameX, int maxFrameY, bool isTransparent, COLORREF transColor);

@@ -1,4 +1,4 @@
-#include "Missile.h"
+#include "EnemyMissile.h"
 #include "ImageManager.h"
 #include "CommonFunction.h"
 #include "Image.h"
@@ -7,7 +7,7 @@
 #include "MissilePattern.h"
 
 
-Missile::Missile()
+EnemyMissile::EnemyMissile()
 {
 	image = nullptr;
 	damage = 1;
@@ -16,7 +16,7 @@ Missile::Missile()
 	animFrame = 0;
 }
 
-Missile::~Missile()
+EnemyMissile::~EnemyMissile()
 {
 	if (image)
 	{
@@ -26,7 +26,7 @@ Missile::~Missile()
 	}
 }
 
-void Missile::Init(const string& key, const wchar_t* filePath, float width, float height,
+void EnemyMissile::Init(const string& key, const wchar_t* filePath, float width, float height,
 	int maxFrameX, int maxFrameY, bool isTransparent, COLORREF transColor)
 {
 	image = ImageManager::GetInstance()->AddImage(key, filePath, width, height,
@@ -44,7 +44,7 @@ void Missile::Init(const string& key, const wchar_t* filePath, float width, floa
 		});
 }
 
-void Missile::Release()
+void EnemyMissile::Release()
 {
 	if (pattern)
 	{
@@ -53,11 +53,11 @@ void Missile::Release()
 	}
 }
 
-void Missile::Update()
+void EnemyMissile::Update()
 {
 }
 
-void Missile::Render(HDC hdc)
+void EnemyMissile::Render(HDC hdc)
 {
 	if (this->IsActive())
 	{
@@ -66,6 +66,6 @@ void Missile::Render(HDC hdc)
 	}
 }
 
-void Missile::On_CollisionDetected(GameObject* obj)
+void EnemyMissile::On_CollisionDetected(GameObject* obj)
 {
 }

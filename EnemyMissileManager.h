@@ -3,16 +3,16 @@
 #include <vector>
 #include "GameObject.h"
 
-class MissileManager : public GameObject
+class EnemyMissileManager : public GameObject
 {
 private:
-	vector<class Missile*> vecMissiles;
-	vector<Missile*>::iterator iterMissiles;
+	vector<class EnemyMissile*> vecMissiles;
+	vector<EnemyMissile*>::iterator iterMissiles;
 
 public:
-	MissileManager();
+	EnemyMissileManager();
 
-	virtual ~MissileManager();
+	virtual ~EnemyMissileManager();
 	
 	void Fire(FPOINT pos, float angle, class MissileType* type);
 

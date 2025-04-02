@@ -4,7 +4,7 @@
 
 class CollisionManager;
 class Image;
-class MissileManager;
+class EnemyMissileManager;
 class Player : public GameActor
 {
 public:
@@ -12,7 +12,7 @@ public:
 	int hp;
 	int power;
 	int bombCount;
-	MissileManager* missileMgr;
+	EnemyMissileManager* missileMgr;
 	int animFrame;
 	int elapsedFrame;
 	int score;
