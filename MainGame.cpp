@@ -63,6 +63,10 @@ void MainGame::Init()
 	backgroundUI = new BackgroundUI();
 	backgroundUI->Init();
 
+
+
+	// test
+	stageManager->Start();
 }
 
 void MainGame::Release()

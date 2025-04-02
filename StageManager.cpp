@@ -6,6 +6,7 @@
 #include "Image.h"
 #include <fstream>
 #include <sstream>
+#include "EnemyManager.h"
 
 void StageManager::LoadStageInfo()
 {
@@ -89,4 +90,9 @@ void StageManager::Release()
 void StageManager::Start()
 {
 	curStep = 0;
+
+
+
+	// test
+	EnemyManager::GetInstance()->SpawnEnemy(FPOINT{200,200}, 0);
 }

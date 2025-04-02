@@ -52,6 +52,9 @@ public:
 
 	void On_CollisionDetected(GameObject* obj);
 
+	void Damaged(int damage);
+	void Dead();
+
 	ActionPattern* getPattern()
 	{
 		return pattern;

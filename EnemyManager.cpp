@@ -45,7 +45,7 @@ void EnemyManager::Update()
 			enemy->Update();
 		}
 		else {
-			enemys.erase(it);
+			it = enemys.erase(it);
 			continue;
 		}
 		it++;
