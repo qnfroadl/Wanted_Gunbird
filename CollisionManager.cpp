@@ -115,6 +115,9 @@ void CollisionManager::Init()
 {
     brush = (HBRUSH)GetStockObject(HOLLOW_BRUSH);
     pen = CreatePen(PS_SOLID, 3, RGB(0, 255, 0));
+
+
+
 }
 
 void CollisionManager::Update()
@@ -146,6 +149,9 @@ void CollisionManager::Render(HDC hdc)
 
 void CollisionManager::Release()
 {
+    DeleteObject(brush);
+    DeleteObject(pen);
+
     Singleton::ReleaseInstance();
 }
 

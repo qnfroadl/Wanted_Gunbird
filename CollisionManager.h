@@ -2,7 +2,7 @@
 #include "config.h"
 #include "GameObject.h"
 #include <list>
-#include <map>
+#include <unordered_map>
 #include <functional>
 #include <unordered_set>
 #include "Singleton.h"
@@ -11,6 +11,16 @@ enum class CollisionType
 {
 	RECT, ELLIPSE
 };
+
+enum class CollisionLayer : uint8_t
+{
+	Player = 1,				// 00000001
+	PlayerAttack = 1 << 1,	// 00000010
+	Enemy = 1 << 2,			// 00000100
+	EnemyAttack = 1 << 3,	// 00001000
+	Item = 1 << 4,			// 00010000
+};
+
 
 class Collision : public GameObject
 {
@@ -81,7 +91,11 @@ public:
 class CollisionManager : public Singleton<CollisionManager>, public GameObject
 {
 	private:
-		map<GameObject*, list<Collision*>> collisionMap;
+	
+		unordered_map<GameObject*, list<Collision*>> collisionMap;
+
+		unordered_map<CollisionLayer, std::pair<GameObject*, list<Collision*>>> layerMap;
+		unordered_map<CollisionLayer, uint8_t> layerMaskMap;
 
 		void CollisionDetect(list<Collision*>& colList1, list<Collision*>& colList2);
 		void Detect(Collision* c1, Collision* c2);
