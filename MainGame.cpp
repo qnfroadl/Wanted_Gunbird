@@ -10,34 +10,20 @@
 #include "EnemyManager.h"
 #include "StageManager.h"
 #include "BackgroundUI.h"
-
+#include "EffectManager.h"
 #include "EnemyMissileManager.h"
 #include "Item.h"
 
 #include "ItemManager.h"
 
-void MainGame::InitResoureces()
-{
-	// 이펙트들 추가 할 예정
-	ImageManager::GetInstance()->AddImage(EImageKey::ExplosionPlayer,
-		L"assets/Sprites/Effects/PlayerExplosion.bmp", 253,31, 9, 1, true, RGB(255, 0, 255));
-
-	ImageManager::GetInstance()->AddImage(EImageKey::ExplosionSmall,
-		L"assets/Sprites/Effects/PlayerExplosion.bmp", 253, 31, 9, 1, true, RGB(255, 0, 255));
-
-	ImageManager::GetInstance()->AddImage(EImageKey::ExplosionBig,
-		L"assets/Sprites/Effects/PlayerExplosion.bmp", 253, 31, 9, 1, true, RGB(255, 0, 255));
-}
-
 void MainGame::Init()
 {
-	InitResoureces();
-
 	CollisionManager::GetInstance()->Init();
 	KeyManager::GetInstance()->Init();
 	ImageManager::GetInstance()->Init();
 	EnemyMissileManager::GetInstance()->Init();
 	EnemyManager::GetInstance()->Init();
+	EffectManager::GetInstance()->Init();
 
 	FPS = 60;
 
@@ -63,8 +49,6 @@ void MainGame::Init()
 	backgroundUI = new BackgroundUI();
 	backgroundUI->Init();
 
-
-
 	// test
 	stageManager->Start();
 
@@ -78,6 +62,7 @@ void MainGame::Release()
 	ImageManager::GetInstance()->Release();
 	EnemyMissileManager::GetInstance()->Release();
 	EnemyManager::GetInstance()->Release();
+	EffectManager::GetInstance()->Release();
 
 	if (player)
 	{
@@ -125,7 +110,7 @@ void MainGame::Update()
 	backgroundUI->Update();
 	player->Update();
 	stageManager->Update();
-
+	EffectManager::GetInstance()->Update();
 	EnemyMissileManager::GetInstance()->Update();
 	ItemManager::GetInstance()->Update();
 
@@ -142,15 +127,14 @@ void MainGame::Render()
 	player->Render(hBackBufferDC);
 	stageManager->Render(hBackBufferDC);
 	ItemManager::GetInstance()->Render(hBackBufferDC);
-
-
-	CollisionManager::GetInstance()->Render(hBackBufferDC);
+	
 	//enemyMissileManager->Render(hBackBufferDC);
 	EnemyMissileManager::GetInstance()->Render(hBackBufferDC);
+	EffectManager::GetInstance()->Render(hBackBufferDC);
+	CollisionManager::GetInstance()->Render(hBackBufferDC);
 
-	wsprintf(szText, TEXT("Mouse X : %d, Y : %d"), mousePosX, mousePosY);
-	TextOut(hBackBufferDC, 20, 60, szText, wcslen(szText));
-
+	// wsprintf(szText, TEXT("Mouse X : %d, Y : %d"), mousePosX, mousePosY);
+	// TextOut(hBackBufferDC, 20, 60, szText, wcslen(szText));
 
 	// 백버퍼에 있는 내용을 메인 hdc에 복사
 	backBuffer->Render(hdc);

@@ -180,10 +180,8 @@ void Image::RenderCenter(HDC hdc, int destX, int destY)
 
 void Image::FrameRender(HDC hdc, int destX, int destY, int frameX, int frameY, bool isFlip)
 {
-
     destX = destX - imageInfo->frameWidth/2;
     destY = destY - imageInfo->frameHeight/2;
-
 
     if (isFlip && isTransparent)
     {

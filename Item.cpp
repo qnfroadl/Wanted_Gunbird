@@ -7,6 +7,9 @@
 #include "TimerManager.h"
 #include "config.h"
 
+//test
+#include "EffectManager.h"
+
 #define LT 135
 #define RT 45
 #define LB 225
@@ -86,7 +89,11 @@ void Item::Release()
 
 void Item::On_CollisionDetected(GameObject* obj)
 {
-	
+	if (obj->FindTag(GameTag::Player))
+	{
+		SetActive(false);
+		collision->SetActive(false);
+	}
 }
 
 void Item::MoveInWindow()
@@ -96,18 +103,25 @@ void Item::MoveInWindow()
 	if (RectInRect(collision->GetRect(), RECT{ 0,0, 3, WINSIZE_Y }))
 	{	// 왼쪽 벽
 		angle = (angle == LT)? RT : RB;
+		EffectManager::GetInstance()->PlayEffect(pos, EEffectType::ExplosionBig);
 	}
 	else if(RectInRect(collision->GetRect(), RECT{ 0,0, WINSIZE_X, 3 }))
 	{	// 상단
 		angle = (angle == LT) ? LB : RB;
+		EffectManager::GetInstance()->PlayEffect(pos, EEffectType::ExplosionBig);
+
 	}
 	else if (RectInRect(collision->GetRect(), RECT{ WINSIZE_X - 3,0, WINSIZE_X, WINSIZE_Y }))
 	{	//오른쪽 벽
 		angle = (angle == RT) ? LT : LB;
+		EffectManager::GetInstance()->PlayEffect(pos, EEffectType::ExplosionBig);
+
 	}
 	else if (RectInRect(collision->GetRect(), RECT{ 0,WINSIZE_Y - 3, WINSIZE_X, WINSIZE_Y }))
 	{	// 하단
 		angle = (angle == LB) ? LT : RT;
+		EffectManager::GetInstance()->PlayEffect(pos, EEffectType::ExplosionBig);
+
 	}
 	
 	pos.x += TimerManager::GetInstance()->GetDeltaTime() * speed * cosf(DEG_TO_RAD(angle));
