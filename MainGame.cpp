@@ -67,6 +67,8 @@ void MainGame::Init()
 
 	// test
 	stageManager->Start();
+
+	ItemManager::GetInstance()->SpawnItem(FPOINT{200,200}, ItemType::BombAdd);
 }
 
 void MainGame::Release()
@@ -125,6 +127,7 @@ void MainGame::Update()
 	stageManager->Update();
 
 	EnemyMissileManager::GetInstance()->Update();
+	ItemManager::GetInstance()->Update();
 
 	CollisionManager::GetInstance()->Update();
 }
@@ -138,9 +141,10 @@ void MainGame::Render()
 	EnemyManager::GetInstance()->Render(hBackBufferDC);
 	player->Render(hBackBufferDC);
 	stageManager->Render(hBackBufferDC);
+	ItemManager::GetInstance()->Render(hBackBufferDC);
+
 
 	CollisionManager::GetInstance()->Render(hBackBufferDC);
-
 	//enemyMissileManager->Render(hBackBufferDC);
 	EnemyMissileManager::GetInstance()->Render(hBackBufferDC);
 

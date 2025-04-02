@@ -35,6 +35,14 @@ enum class EImageKey
 
 };
 
+enum class EEffectType
+{
+	ExplosionPlayer = EImageKey::ExplosionPlayer,
+	ExplosionSmall= EImageKey::ExplosionSmall,
+	ExplosionBig = EImageKey::ExplosionBig,
+
+};
+
 typedef struct vector2d {
 	float x, y;
 

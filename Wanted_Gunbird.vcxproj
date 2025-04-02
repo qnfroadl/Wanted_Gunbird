@@ -130,6 +130,7 @@
     <ClCompile Include="ActionPattern.cpp" />
     <ClCompile Include="BackgroundUI.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
+    <ClCompile Include="EffectManager.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="EnemyMissile.cpp" />
@@ -143,9 +144,7 @@
     <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainGame.cpp" />
-
     <ClCompile Include="MissilePattern.cpp" />
-
     <ClCompile Include="PlayerDefaultAttack.cpp" />
     <ClCompile Include="PlayerMissileAttack.cpp" />
     <ClCompile Include="PlayerAttackManager.cpp" />
@@ -163,6 +162,7 @@
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="CommonFunction.h" />
     <ClInclude Include="config.h" />
+    <ClInclude Include="EffectManager.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyManager.h" />
     <ClInclude Include="EnemyMissile.h" />
@@ -175,10 +175,8 @@
     <ClInclude Include="ItemManager.h" />
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="MainGame.h" />
-
     <ClInclude Include="MissileManager.h" />
     <ClInclude Include="MissilePattern.h" />
-
     <ClInclude Include="PlayerDefaultAttack.h" />
     <ClInclude Include="PlayerMissileAttack.h" />
     <ClInclude Include="PlayerAttackManager.h" />
