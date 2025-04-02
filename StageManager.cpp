@@ -31,7 +31,7 @@ void StageManager::LoadStageInfo()
 			{
 				stringstream sInfo(line);
 				sInfo >> info.deadCheck >> info.stepTime >> info.startPos.x >> info.startPos.y
-					>> info.actionPattern >> info.missilePattern >> info.enemyType >> info.enemyCount >> info.spawnDelay;
+					>> info.enemyType >> info.enemyCount >> info.spawnDelay;
 
 				deqStageInfo.push_back(info);
 			}
@@ -43,9 +43,13 @@ void StageManager::LoadStageInfo()
 
 void StageManager::StepCheck()
 {
-	if (deqStageInfo.size() <= curStep)
+	if (deqStageInfo.size() <= curStep && curStep < deqStageInfo.size())
 	{
 		deqStageInfo[curStep];
+
+
+
+
 	}
 	
 }

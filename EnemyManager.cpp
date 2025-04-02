@@ -2,6 +2,16 @@
 #include  "Enemy.h"
 
 
+Enemy* EnemyManager::CreateEnemy(int enemytType)
+{
+	// 타입에 따른 적 생성.
+	Enemy* enemy = new Enemy(1);
+	enemy->Init("Mid Boss", TEXT("assets/Sprites/Enemies/boss_dragon_death.bmp"),
+		100, 100, 1, 1, true, RGB(255, 255, 255));
+
+	return enemy;
+}
+
 bool EnemyManager::IsLiveEnmey()
 {
 	return !enemys.empty();
@@ -9,12 +19,7 @@ bool EnemyManager::IsLiveEnmey()
 
 void EnemyManager::Init()
 {
-	Enemy* enemy = new Enemy(1);
 	
-	enemy->Init("Mid Boss", TEXT("assets/Sprites/Enemies/boss_dragon_death.bmp"), 
-		100, 100, 1, 1, true, RGB(255, 255, 255));
-
-	enemys.push_back(enemy);
 }
 
 void EnemyManager::Release()
@@ -57,6 +62,16 @@ void EnemyManager::Render(HDC hdc)
 		enemy = (*it);
 		enemy->Render(hdc);
 		it++;
+	}
+}
+
+void EnemyManager::SpawnEnemy(const FPOINT& pos, int enemyType)
+{
+	Enemy* enemy = CreateEnemy(enemyType);
+	if (nullptr != enemy)
+	{
+		enemy->SetPos(pos);
+		enemys.push_back(enemy);
 	}
 }
 

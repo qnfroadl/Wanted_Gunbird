@@ -12,6 +12,8 @@ class EnemyManager: public Singleton<EnemyManager>
 private:
 	std::deque<Enemy*> enemys;
 
+	Enemy* CreateEnemy(int enemytType);
+
 public:
 	bool IsLiveEnmey();
 
@@ -21,4 +23,6 @@ public:
 	void Render(HDC hdc);
 
 	inline std::deque<class Enemy*> getEnemys() { return enemys; }
+
+	void SpawnEnemy(const FPOINT& pos, int enemyType);
 };

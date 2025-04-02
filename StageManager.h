@@ -12,8 +12,6 @@ typedef struct _StageInfo
 	bool deadCheck;						//앞서 스폰된 적들이 죽었는지 체크가 필요하면 true, 아니면 false
 	int stepTime;						//해당 시간이 지나면 스폰 해준다.
 	FPOINT startPos;					//적 스폰 위치,
-	int actionPattern;					//적 이동 패턴,
-	int missilePattern;					//적 미사일 패턴
 	int enemyType;						//적 종류
 	int enemyCount;						//적 수
 	int spawnDelay;						//적 여러마리 스폰시 딜레이
