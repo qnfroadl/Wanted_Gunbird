@@ -30,5 +30,6 @@ public:
 	void Move(float degree);
 	void Fire();
 	void IncreaseAttackLevel();
+	void IncreaseBomb();
 	void ActivateBomb();
 };

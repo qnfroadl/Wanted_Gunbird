@@ -6,24 +6,18 @@
 #include "ImageManager.h"
 #include "PlayerDefaultAttack.h"
 #include "CollisionManager.h"
+#include "Item.h"
 
 void Player::CollisionDetected(GameObject* obj)
 {
 	auto tags = obj->GetTags();
-	if (0 < tags.count(GameTag::Player))
+	if (0 < tags.count(GameTag::PowerUp))
 	{
-		if (0 < tags.count(GameTag::Enemy))
-		{
-			// 로켓이 쏜 총알과 부딪혔따.
-			this->SetActive(false);	//Enemy비활성
-			obj->SetActive(false);	//Bullet비활성
-		}
-		else
-		{
-			//로켓과 부딪혔따.
-			this->SetActive(false);	// Enemy비활성
-			obj->SetActive(false);	// Rocket 비활성
-		}
+		IncreaseAttackLevel();
+	}
+	else if (0 < tags.count(GameTag::BombUp))
+	{
+		IncreaseBomb();
 	}
 }
 
@@ -32,6 +26,7 @@ void Player::Init()
 	animFrame = 0;
 	elapsedFrame = 0;
 	attackLevel = 1;
+	bombCount = 2;
 
 	AddTag(GameTag::Player);
 	SetPos(WINSIZE_X / 2, WINSIZE_Y * 0.9);
@@ -182,6 +177,11 @@ void Player::IncreaseAttackLevel()
 		else
 			attackLevel++;
 	}
+}
+
+void Player::IncreaseBomb()
+{
+	bombCount++;
 }
 
 void Player::ActivateBomb()

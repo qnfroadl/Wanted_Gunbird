@@ -24,7 +24,7 @@ void PlayerDefaultAttack::CollisionDetected(GameObject* obj)
 
 void PlayerDefaultAttack::Init()
 {
-	speed = 100;
+	speed = 2000;
 	angle = 0;
 	playerAttackDefault = ImageManager::GetInstance()->AddImage(EImageKey::PlayerAttackDefault,
 		L"assets/Sprites/Characters/tetsu_playerAttackDefault.bmp",
