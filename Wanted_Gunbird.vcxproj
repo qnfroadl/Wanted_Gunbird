@@ -140,8 +140,9 @@
     <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainGame.cpp" />
-    <ClCompile Include="Missile.cpp" />
-    <ClCompile Include="MissileManager.cpp" />
+    <ClCompile Include="PlayerDefaultAttack.cpp" />
+    <ClCompile Include="PlayerMissileAttack.cpp" />
+    <ClCompile Include="PlayerAttackManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SampleEnemy.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -165,8 +166,9 @@
     <ClInclude Include="Item.h" />
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="MainGame.h" />
-    <ClInclude Include="Missile.h" />
-    <ClInclude Include="MissileManager.h" />
+    <ClInclude Include="PlayerDefaultAttack.h" />
+    <ClInclude Include="PlayerMissileAttack.h" />
+    <ClInclude Include="PlayerAttackManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SampleEnemy.h">

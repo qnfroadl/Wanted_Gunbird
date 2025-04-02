@@ -19,13 +19,14 @@ using namespace std;
 
 enum class GameTag
 {
-	PowerUp, BombUp, Player, Enemy, EliteEnemy, BossEnemy, 
+	PowerUp, BombUp, Player, PlayerDefaultAttack, PlayerMissileAttack, Enemy, EliteEnemy, BossEnemy, 
 };
 
 enum class EImageKey
 {
 	Player,
-
+	PlayerAttackDefault,
+	PlayerAttackMissile,
 };
 
 typedef struct vector2d {

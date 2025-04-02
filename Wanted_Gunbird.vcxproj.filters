@@ -55,6 +55,9 @@
     <ClCompile Include="StageManager.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerMissileAttack.cpp" />
+    <ClCompile Include="PlayerAttackManager.cpp" />
+    <ClCompile Include="PlayerDefaultAttack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -118,6 +121,9 @@
     <ClInclude Include="StageManager.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerMissileAttack.h" />
+    <ClInclude Include="PlayerAttackManager.h" />
+    <ClInclude Include="PlayerDefaultAttack.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Wanted_Gunbird.rc" />
