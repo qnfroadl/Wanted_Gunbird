@@ -3,7 +3,8 @@
 #include "GameActor.h"
 
 class Image;
-class EnemyMissileManager;
+class PlayerDefaultAttack;
+class CollisionRect;
 class Player : public GameActor
 {
 public:
@@ -11,16 +12,15 @@ public:
 	int hp;
 	int power;
 	int bombCount;
-	EnemyMissileManager* missileMgr;
 	int animFrame;
 	int elapsedFrame;
 	int score;
-	Image* image;
-	Image* playerDefaultShotImage;
-	Image* playerMissileShotImage;
 	float speed;
 	int attackLevel;
-
+	Image* image;
+	PlayerDefaultAttack* missile;
+	CollisionRect* playerRect;
+	void CollisionDetected(GameObject* obj);
 public:
 	void Init();
 	void Release();
