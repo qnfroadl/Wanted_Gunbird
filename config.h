@@ -10,7 +10,7 @@
 using namespace std;
 
 /*
-	ÄÄÆÄÀÏ·¯¿¡¼­ ÇØ´ç ÄÚµå¸¦ µÚ¿¡ Á¤ÀÇµÈ ÄÚµå·Î º¯°æÇÑ´Ù. 
+	ì»´íŒŒì¼ëŸ¬ì—ì„œ í•´ë‹¹ ì½”ë“œë¥¼ ë’¤ì— ì •ì˜ëœ ì½”ë“œë¡œ ë³€ê²½í•œë‹¤. 
 */
 #define WINSIZE_X	600
 #define WINSIZE_Y	800
@@ -25,8 +25,14 @@ enum class GameTag
 enum class EImageKey
 {
 	Player,
+
 	PlayerAttackDefault,
 	PlayerAttackMissile,
+
+
+	// í•˜ë‹¨ì˜ Effect ì¢…ë¥˜ë“¤ì€ FindImageë¡œ ì°¾ì•„ì„œ ì“°ê¸°ë§Œ í•˜ë©´ë©ë‹ˆë‹¤.
+	ExplosionPlayer, ExplosionSmall, ExplosionBig,
+
 };
 
 typedef struct vector2d {
@@ -47,8 +53,13 @@ typedef struct vector2d {
 
 	vector2d operator*(float mul)
 	{
-		x *= mul;
-		y *= mul;
+		return vector2d{ x * mul, y * mul };
+	}
+
+	vector2d operator-()
+	{
+		x = -x;
+		y = -y;
 		return vector2d{ x, y };
 	}
 } VEC2;
@@ -68,8 +79,8 @@ typedef struct _Ellipse
 } CEllipse;
 
 /*
-	extern Å°¿öµå : º¯¼ö³ª ÇÔ¼ö°¡ ´Ù¸¥ ÆÄÀÏ¿¡ Á¤ÀÇµÇ¾î ÀÖ´Ù ¶ó´Â
-	»ç½ÇÀ» ¾Ë¸®´Â Å°¿öµå.
+	extern í‚¤ì›Œë“œ : ë³€ìˆ˜ë‚˜ í•¨ìˆ˜ê°€ ë‹¤ë¥¸ íŒŒì¼ì— ì •ì˜ë˜ì–´ ìˆë‹¤ ë¼ëŠ”
+	ì‚¬ì‹¤ì„ ì•Œë¦¬ëŠ” í‚¤ì›Œë“œ.
 */
 extern HWND g_hWnd;
 extern HINSTANCE g_hInstance;

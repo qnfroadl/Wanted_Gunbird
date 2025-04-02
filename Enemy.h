@@ -5,18 +5,18 @@
 #include "GameActor.h"
 #include <deque>
 
-
 class Enemy: public GameActor
 {
 	int score;
 	int hp;
 	class Image* image;
+	float width, height;
 	int animFrame;
 	float speed;
 	float elapsedTime;
-	class Collision* collision;
+	class CollisionRect* collision;
 	class ActionPattern* pattern;
-	class MissileManager* missileManager;
+	class EnemyMissileManager* missileManager;
 	std::deque<class MissilePattern*> missilePattern;
 
 public:
@@ -25,6 +25,8 @@ public:
 		score = 0;
 		this->hp = hp;
 		image = nullptr;
+		width = 0;
+		height = 0;
 		animFrame = 0;
 		speed = 0;
 		elapsedTime = 0;
@@ -40,6 +42,8 @@ public:
 	void Release() override;
 	void Update() override;
 	void Render(HDC hdc) override;
+
+	void On_CollisionDetected(GameObject* obj);
 
 	ActionPattern* getPattern()
 	{

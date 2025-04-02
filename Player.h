@@ -5,7 +5,6 @@
 class Image;
 class PlayerDefaultAttack;
 class CollisionRect;
-
 class Player : public GameActor
 {
 public:
