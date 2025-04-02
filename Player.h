@@ -19,7 +19,7 @@ public:
 	int attackLevel;
 	Image* image;
 	PlayerDefaultAttack* missile;
-	CollisionRect* playerRect;
+	CollisionRect* playerCollision;
 	void CollisionDetected(GameObject* obj);
 public:
 	void Init();

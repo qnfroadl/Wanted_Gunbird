@@ -8,6 +8,9 @@
 #include "CollisionManager.h"
 #include "Item.h"
 
+#define PLAYERWITHD (744/24)
+#define PLAYERHEIGHT 41
+
 void Player::CollisionDetected(GameObject* obj)
 {
 	auto tags = obj->GetTags();
@@ -36,6 +39,14 @@ void Player::Init()
 		744, 41, 24, 1, true, RGB(255, 0, 255));
 	if (!image)
 		return;
+
+	FPOINT pos = GetPos();
+	RECT defaultRect = { pos.x-(PLAYERWITHD/2), pos.y-(PLAYERHEIGHT/2), pos.x + (PLAYERWITHD/2), pos.y + (PLAYERHEIGHT/2)};
+	playerCollision = CollisionManager::GetInstance()->CreateCollisionRect(this, defaultRect);
+	playerCollision->Bind([&](GameObject* obj)
+		{
+			this->CollisionDetected(obj);
+		});
 
 	missile = new PlayerDefaultAttack;
 	missile->Init();
@@ -156,6 +167,7 @@ void Player::Move(float degree)
 		currentPos.y = WINSIZE_Y - 24;
 
 	SetPos(currentPos);
+	playerCollision->SetRect(GetRectAtCenter(currentPos.x, currentPos.y, PLAYERWITHD, PLAYERHEIGHT));
 }
 
 void Player::Fire()

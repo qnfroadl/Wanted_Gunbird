@@ -38,7 +38,8 @@ void PlayerDefaultAttack::Init()
 	attackDefaultCollision->Bind([&](GameObject* obj)
 		{
 			this->CollisionDetected(obj);
-		});	SetActive(false);
+		});
+	SetActive(false);
 }
 
 void PlayerDefaultAttack::Release()
