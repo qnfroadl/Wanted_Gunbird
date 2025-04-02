@@ -8,8 +8,8 @@ class PlayerMissileAttack;
 class PlayerAttackManager : GameObject
 {
 private:
-	PlayerDefaultAttack* defaultAttack;
 	vector<PlayerDefaultAttack*> defaultAttackVec;
+	vector<PlayerMissileAttack*> missileAttackVec;
 public:
 	void Init();
 	void Release();

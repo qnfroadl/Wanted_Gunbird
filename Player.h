@@ -3,7 +3,7 @@
 #include "GameActor.h"
 
 class Image;
-class PlayerDefaultAttack;
+class PlayerAttackManager;
 class CollisionRect;
 class Player : public GameActor
 {
@@ -18,7 +18,8 @@ public:
 	float speed;
 	int attackLevel;
 	Image* image;
-	PlayerDefaultAttack* missile;
+	//PlayerDefaultAttack* missile;
+	PlayerAttackManager* attackManager;
 	CollisionRect* playerCollision;
 	void CollisionDetected(GameObject* obj);
 public:

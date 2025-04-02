@@ -1,9 +1,19 @@
 #include "PlayerAttackManager.h"
 #include "PlayerDefaultAttack.h"
+#include "PlayerMissileAttack.h"
 
 void PlayerAttackManager::Init()
 {
 	defaultAttackVec.reserve(AMMUNITION);
+	for (int i = 0; i < AMMUNITION; i++)
+	{
+		PlayerDefaultAttack* defaultAttack = new PlayerDefaultAttack();
+		defaultAttack->Init();
+		defaultAttackVec.push_back(defaultAttack);
+	}
+	PlayerMissileAttack* missile = new PlayerMissileAttack();
+	missile->Init();
+	missileAttackVec.push_back(missile);
 }
 
 void PlayerAttackManager::Release()
@@ -13,27 +23,37 @@ void PlayerAttackManager::Release()
 		iter->Release();
 		delete iter;
 	}
+	defaultAttackVec.clear();
+
+	for (auto const& iter : missileAttackVec)
+	{
+		iter->Release();
+		delete iter;
+	}
+	missileAttackVec.clear();
 }
 
 void PlayerAttackManager::Update()
 {
-	PlayerDefaultAttack* attack = nullptr;
-	vector<PlayerDefaultAttack*>::iterator iter;
-	for (iter = defaultAttackVec.begin(); iter != defaultAttackVec.end(); iter++)
+	for (auto const& defaultAttack : defaultAttackVec)
 	{
-		attack = *iter;
-		attack->Update();
+		defaultAttack->Update();
+	}
+	for (auto const& missileAttack : missileAttackVec)
+	{
+		missileAttack->Update();
 	}
 }
 
 void PlayerAttackManager::Render(HDC hdc)
 {
-	PlayerDefaultAttack* attack = nullptr;
-	vector<PlayerDefaultAttack*>::iterator iter;
-	for (iter = defaultAttackVec.begin(); iter != defaultAttackVec.end(); iter++)
+	for (auto const& defaultAttack : defaultAttackVec)
 	{
-		attack = *iter;
-		attack->Render(hdc);
+		defaultAttack->Render(hdc);
+	}
+	for (auto const& missileAttack : missileAttackVec)
+	{
+		missileAttack->Render(hdc);
 	}
 }
 
