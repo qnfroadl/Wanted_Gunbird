@@ -11,8 +11,8 @@
 #include "CollisionManager.h"
 #include "Item.h"
 
-#define PLAYERWITHD (744/24)
-#define PLAYERHEIGHT 41
+#define PLAYERWITHD (744/24*2)
+#define PLAYERHEIGHT 41*2
 
 void Player::CollisionDetected(GameObject* obj)
 {
@@ -36,10 +36,10 @@ void Player::Init()
 
 	AddTag(GameTag::Player);
 	SetPos(WINSIZE_X / 2, WINSIZE_Y * 0.9);
-	speed = 300.0f;
+	speed = 500.0f;
 	image = ImageManager::GetInstance()->AddImage(EImageKey::Player,
 		TEXT("assets/Sprites/Characters/testu_idle_spriteMerge.bmp"),
-		744, 41, 24, 1, true, RGB(255, 0, 255));
+		744*2, 41*2, 24, 1, true, RGB(255, 0, 255));
 	if (!image)
 		return;
 
@@ -48,7 +48,7 @@ void Player::Init()
 	playerBomb = new PlayerBomb;
 	playerBomb->Init(GetPos());
 	FPOINT pos = GetPos();
-	RECT defaultRect = { pos.x - (PLAYERWITHD / 2), pos.y - (PLAYERHEIGHT / 2), pos.x + (PLAYERWITHD / 2), pos.y + (PLAYERHEIGHT / 2) };
+	RECT defaultRect = { pos.x - (PLAYERWITHD/2), pos.y - (PLAYERHEIGHT/2), pos.x + (PLAYERWITHD/2), pos.y + (PLAYERHEIGHT/2) };
 	playerCollision = CollisionManager::GetInstance()->CreateCollisionRect(this, defaultRect);
 	playerCollision->Bind([&](GameObject* obj)
 		{

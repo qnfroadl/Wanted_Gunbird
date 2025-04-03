@@ -7,11 +7,14 @@ void PlayerAttackManager::Fire(const FPOINT& pos, int level, vector<PlayerDefaul
 {
 	FPOINT leftPos = pos;
 	FPOINT rightPos = pos;
-
+	int gap_X = 9;
+	int gap_Y = 15;
 	for (int i = 0; i < level; i++)
 	{
-		leftPos.x -= 5;
-		rightPos.x += 5;
+		leftPos.x -= gap_X;
+		leftPos.y += gap_Y;
+		rightPos.x += gap_X;
+		rightPos.y += gap_Y;
 
 		attack[(i * 2)]->Fire(leftPos);
 		attack[(i * 2) + 1]->Fire(rightPos);
@@ -20,8 +23,10 @@ void PlayerAttackManager::Fire(const FPOINT& pos, int level, vector<PlayerDefaul
 
 	if (level == 3)
 	{
-		leftPos.x -= 5;
-		rightPos.x += 5;
+		leftPos.x -= gap_X;
+		leftPos.y += gap_Y;
+		rightPos.x += gap_X;
+		rightPos.y += gap_Y;
 
 		attack[6]->Fire(leftPos);
 		attack[7]->Fire(rightPos);
