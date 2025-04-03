@@ -1,7 +1,7 @@
 #pragma once
 #include "GameActor.h"
 #include <vector>
-#define AMMUNITION 100
+#define AMMUNITION 10
 
 class PlayerDefaultAttack;
 class PlayerMissileAttack;
