@@ -8,6 +8,7 @@
 
 class Enemy: public GameActor
 {
+	EEnemyType type;
 	EImageKey key;
 	int score;
 	int hp;
@@ -19,7 +20,7 @@ class Enemy: public GameActor
 	float fireTime;
 	float firePeriod;
 	class CollisionRect* collision;
-	class ActionPattern* pattern;		
+	class ActionPattern* actionPattern;		
 	std::deque<class MissilePattern*> missilePatterns;
 	class EnemyMissileManager* enemyMissileManager;
 
@@ -37,20 +38,18 @@ public:
 		fireTime = 0;
 		firePeriod = 2.0;
 		collision = nullptr;
-		pattern = nullptr;
+		actionPattern = nullptr;
 		enemyMissileManager = nullptr;
 	};
 
 	virtual ~Enemy() {};
 
-	void Init(EImageKey key, const wchar_t* filePath, float width, float height,
+	void Init(EEnemyType type, EImageKey key, const wchar_t* filePath, float width, float height,
 		int maxFrameX, int maxFrameY, bool isTransparent, COLORREF transColor);
 
 	void setMissilePattern(int fireCount, float fireDelay, float speed, float angleMin, float angleMax);
 
 	void Fire();
-
-	void Fire(EImageKey key);
 
 	void Release() override;
 	void Update() override;
@@ -63,9 +62,11 @@ public:
 
 	inline ActionPattern* getPattern()
 	{
-		return pattern;
+		return actionPattern;
 	}
 
-	inline int getHp() { return hp; }
+	const RECT& getRect();
+
+ 	inline int getHp() { return hp; }
 };
 

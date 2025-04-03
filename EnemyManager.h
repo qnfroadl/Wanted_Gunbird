@@ -14,6 +14,7 @@ private:
 	std::deque<Enemy*> enemys;
 	std::unordered_map<EEnemyType, EnemyImgInfo> enemyInfoMap;
 	Enemy* CreateEnemy(EEnemyType enemyType);
+	float generateTime;
 
 public:
 	void InitEnemy();
