@@ -65,7 +65,7 @@ void ShipCannon::Init()
 {
 	this->AddTag(GameTag::Boss_Canon);
 
-	this->hp = 5;
+	this->hp = 20;
 	this->ratio = 1.5;
 
 	ImageManager::GetInstance()->AddImage(EImageKey::Canon_210,

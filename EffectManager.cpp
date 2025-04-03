@@ -125,7 +125,6 @@ void EffectManager::Release()
 
 	ReleaseInstance();
 }
-#include "ItemManager.h"
 
 void EffectManager::PlayEffect(const FPOINT& pos, EEffectType key)
 {

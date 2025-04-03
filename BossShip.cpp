@@ -60,20 +60,82 @@ void BossShip::Destroyed()
 {
 	// nÃÊµ¿¾È ÆÄ±« ÀÌÆåÆ®
 	elapsedTime += TimerManager::GetInstance()->GetDeltaTime();
-
-	EffectManager::GetInstance();
-	
-
-
-	if (10 < elapsedTime)
+	if (0 == step && 0.5 < elapsedTime)
 	{
-		state = State::Disappear;
+		step++;
+		DestroyedEffect(60,70,EEffectType::ExplosionNormal);
+		DestroyedEffect(60, -50, EEffectType::ExplosionBig);
+	}else if (1 == step && 1 < elapsedTime)
+	{
+		step++;
+		DestroyedEffect(-80, -80, EEffectType::ExplosionSmall);
+		DestroyedEffect(-80, 80, EEffectType::ExplosionBig);
 	}
+	else if (2 == step && 1.5 < elapsedTime)
+	{
+		step++;
+		DestroyedEffect(-80, -80, EEffectType::ExplosionBig);
+		DestroyedEffect(-80, 110, EEffectType::ExplosionSmall);
+	}
+	else if (3 == step && 2 < elapsedTime)
+	{
+		step++;
+		DestroyedEffect(-100, -80, EEffectType::ExplosionBig);
+		DestroyedEffect(-80, 110, EEffectType::ExplosionSmall);
+	}
+	else if (4 == step && 2.5 < elapsedTime)
+	{
+		step++;
+		DestroyedEffect(-50, -100, EEffectType::ExplosionNormal);
+		DestroyedEffect(-80, 90, EEffectType::ExplosionBig);
+	}
+	else if (5 == step && 3 < elapsedTime)
+	{
+		step++;
+		DestroyedEffect(-100, -100, EEffectType::ExplosionNormal);
+		DestroyedEffect(-80, 90, EEffectType::ExplosionBig);
+	}
+	else if (6 == step && 3.5 < elapsedTime)
+	{
+		step++;
+		DestroyedEffect(-80, -100, EEffectType::ExplosionNormal);
+		DestroyedEffect(-100, 90, EEffectType::ExplosionBig);
+	}
+	else if (7 == step && 4 < elapsedTime)
+	{
+		step++;
+		DestroyedEffect(-100, -80, EEffectType::ExplosionBig);
+		DestroyedEffect(-80, 110, EEffectType::ExplosionSmall);
+	}
+	
+	if (4 < elapsedTime)
+	{
+		step = 0;
+		elapsedTime = 0;
+		state = State::Disappear;
+		speed = 200;
+		baseImage = ImageManager::GetInstance()->FindImage(EImageKey::ShipDestroyed);
+	}
+}
+
+void BossShip::DestroyedEffect(float dx, float dy, EEffectType type)
+{
+	FPOINT pos = GetPos();
+	
+	pos.x += dx;
+	pos.y -= dy;
+
+	EffectManager::GetInstance()->PlayEffect(pos, type);
+
+	pos.x -= dx*2;
+	pos.y += dy*2;
+
+	EffectManager::GetInstance()->PlayEffect(pos, type);
 }
 
 void BossShip::Disappear()
 {
-	FPOINT destPos = FPOINT{ GetPos().x, WINSIZE_Y + WINSIZE_Y/3};
+	FPOINT destPos = FPOINT{ GetPos().x, WINSIZE_Y + WINSIZE_Y/2};
 	float angle = -90.f;
 
 	float deltaTime = TimerManager::GetInstance()->GetDeltaTime();
@@ -87,7 +149,6 @@ void BossShip::Disappear()
 	if (10 > abs(GetPos().x - destPos.x) && 10 > abs(GetPos().y - destPos.y))
 	{
 		this->state = State::End;
-		moveAngle = 180;
 	}
 }
 void BossShip::Init()
@@ -96,7 +157,7 @@ void BossShip::Init()
 	elapsedTime = 0;
 	this->width = 193 * 1.5;
 	this->height = 441 * 1.5;
-	speed = 50;
+	speed = 70;
 
 	baseImage = ImageManager::GetInstance()->AddImage(EImageKey::ShipBase,
 		L"assets/Sprites/Enemies/Boss/Base.bmp", width, height, true, RGB(255,0,255));
@@ -107,9 +168,6 @@ void BossShip::Init()
 	ImageManager::GetInstance()->AddImage(EImageKey::ShipDestroyed,
 		L"assets/Sprites/Enemies/Boss/Base_Destroyed.bmp", width, height, true, RGB(255, 0, 255));
 	
-	baseDestroyLeft = nullptr;
-	baseDestroyRight = nullptr;
-
 	for (int i = 0; i < 8; i++)
 	{
 		aryCannons[i] = new ShipCannon();
@@ -146,13 +204,13 @@ void BossShip::Update()
 	}
 	else if(State::Destroyed == state)
 	{
-		Destroyed();	// ÆÄ±« ÀÌÆåÆ® ÆãÆã?
+		this->Destroyed();	// ÆÄ±« ÀÌÆåÆ® ÆãÆã?
 	}
 	else if(State::Disappear == state)
 	{
 		Disappear();
 	}
-	else {
+	else if(State::End == state){
 
 		SetActive(false);
 		// dead.

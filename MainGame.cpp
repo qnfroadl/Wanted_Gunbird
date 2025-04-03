@@ -154,13 +154,13 @@ void MainGame::Update()
 	backgroundUI->Update();
 	player->Update();
 	stageManager->Update();
-	EffectManager::GetInstance()->Update();
 	EnemyMissileManager::GetInstance()->Update();
 	ItemManager::GetInstance()->Update();
 	ShotManager::GetInstance()->Update();
 	CollisionManager::GetInstance()->Update();
 
 	canon->Update();
+	EffectManager::GetInstance()->Update();
 
 	EffectSimulation();
 	ItemSpawnSimulation();

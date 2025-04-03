@@ -13,21 +13,21 @@ private:
 	};
 	State state;
 	Image* baseImage;	//	
-	Image* baseDestroyLeft;
-	Image* baseDestroyRight;
 	GameActor* target;
 	int speed;
 	float moveAngle;
 	int width;
 	int height;
 	bool bCannonsLive;
-	int elapsedTime;
+	int step;
+	float elapsedTime;
 
 	array<ShipCannon*, 8> aryCannons;
 
 	void Appear();
 	void MoveMove();
 	void Destroyed();
+	void DestroyedEffect(float dx, float dy, EEffectType type);
 	void Disappear();
 
 public:
