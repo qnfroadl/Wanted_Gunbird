@@ -13,8 +13,12 @@
 #include "EffectManager.h"
 #include "EnemyMissileManager.h"
 #include "Item.h"
-
+#include "ShotManager.h"
 #include "ItemManager.h"
+
+
+//
+#include "ShipCanon.h"
 
 void MainGame::EffectSimulation()
 {
@@ -60,6 +64,7 @@ void MainGame::Init()
 	EnemyMissileManager::GetInstance()->Init();
 	EnemyManager::GetInstance()->Init();
 	EffectManager::GetInstance()->Init();
+	ShotManager::GetInstance()->Init();
 
 	FPS = 60;
 
@@ -88,7 +93,10 @@ void MainGame::Init()
 	// test
 	stageManager->Start();
 
-	ItemManager::GetInstance()->SpawnItem(FPOINT{200,200}, ItemType::BombAdd);
+	canon = new ShipCanon();
+	canon->Init();
+	canon->SetPos(WINSIZE_X / 2, WINSIZE_Y / 2);
+	canon->SetTarget(this->player);
 }
 
 void MainGame::Release()
@@ -149,9 +157,10 @@ void MainGame::Update()
 	EffectManager::GetInstance()->Update();
 	EnemyMissileManager::GetInstance()->Update();
 	ItemManager::GetInstance()->Update();
-
+	ShotManager::GetInstance()->Update();
 	CollisionManager::GetInstance()->Update();
 
+	canon->Update();
 
 	EffectSimulation();
 	ItemSpawnSimulation();
@@ -167,7 +176,9 @@ void MainGame::Render()
 	player->Render(hBackBufferDC);
 	stageManager->Render(hBackBufferDC);
 	ItemManager::GetInstance()->Render(hBackBufferDC);
-	
+	canon->Render(hBackBufferDC);
+	ShotManager::GetInstance()->Render(hBackBufferDC);
+
 	//enemyMissileManager->Render(hBackBufferDC);
 	EnemyMissileManager::GetInstance()->Render(hBackBufferDC);
 	EffectManager::GetInstance()->Render(hBackBufferDC);

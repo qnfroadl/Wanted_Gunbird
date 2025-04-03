@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="ActionPattern.cpp" />
     <ClCompile Include="BackgroundUI.cpp" />
+    <ClCompile Include="BossShip.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="EffectManager.cpp" />
     <ClCompile Include="Enemy.cpp" />
@@ -152,6 +153,9 @@
     <ClCompile Include="SampleEnemy.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="ShipCanon.cpp" />
+    <ClCompile Include="Shot.cpp" />
+    <ClCompile Include="ShotManager.cpp" />
     <ClCompile Include="StageManager.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="TimerManager.cpp" />
@@ -159,6 +163,7 @@
   <ItemGroup>
     <ClInclude Include="ActionPattern.h" />
     <ClInclude Include="BackgroundUI.h" />
+    <ClInclude Include="BossShip.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="CommonFunction.h" />
     <ClInclude Include="config.h" />
@@ -184,6 +189,9 @@
     <ClInclude Include="SampleEnemy.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="ShipCanon.h" />
+    <ClInclude Include="Shot.h" />
+    <ClInclude Include="ShotManager.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="StageManager.h" />
     <ClInclude Include="Timer.h" />

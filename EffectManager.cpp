@@ -110,7 +110,7 @@ void EffectManager::Render(HDC hdc)
 void EffectManager::Release()
 {
 	Effect* effect = nullptr;
-
+	
 	auto it = vecEffects.begin();
 	while (it != vecEffects.end())
 	{

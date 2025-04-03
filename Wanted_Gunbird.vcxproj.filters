@@ -71,6 +71,18 @@
       <Filter>Item</Filter>
     </ClCompile>
     <ClCompile Include="EffectManager.cpp" />
+    <ClCompile Include="BossShip.cpp">
+      <Filter>Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="Shot.cpp">
+      <Filter>Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="ShipCanon.cpp">
+      <Filter>Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="ShotManager.cpp">
+      <Filter>Boss</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -150,6 +162,18 @@
       <Filter>Item</Filter>
     </ClInclude>
     <ClInclude Include="EffectManager.h" />
+    <ClInclude Include="BossShip.h">
+      <Filter>Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="Shot.h">
+      <Filter>Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="ShipCanon.h">
+      <Filter>Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="ShotManager.h">
+      <Filter>Boss</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Wanted_Gunbird.rc" />
@@ -175,6 +199,9 @@
     </Filter>
     <Filter Include="Item">
       <UniqueIdentifier>{0fb13915-191b-4e0f-92ef-fded4b241aa3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Boss">
+      <UniqueIdentifier>{bab04b7f-6a60-4eda-835c-1ccc2f6e8fa2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

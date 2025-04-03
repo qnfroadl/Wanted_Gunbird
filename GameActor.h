@@ -16,10 +16,10 @@ public:
 
 	const FPOINT& GetPos();
 
-	virtual void SetPos(const float& x, const float& y);
-	virtual void SetPos(const FPOINT& pos);
+	void SetPos(const float& x, const float& y);
+	void SetPos(const FPOINT& pos);
 
-	virtual void AddPos(const float& x, const float& y);
-	virtual void AddPos(const FPOINT& pos);
+	void AddPos(const float& x, const float& y);
+	void AddPos(const FPOINT& pos);
 
 };

@@ -44,7 +44,7 @@ void EnemyMissileManager::Update()
 {
 	float accumulatedTime = TimerManager::GetInstance()->GetAccumulatedTime();
 	
-	for (MissileInfo info : vecMissileInfo)
+	for (const MissileInfo& info : vecMissileInfo)
 	{
 		if (info.fireDelay > accumulatedTime)
 		{			

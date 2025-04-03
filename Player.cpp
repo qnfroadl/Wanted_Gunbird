@@ -70,7 +70,7 @@ void Player::Update()
 	{
 		elapsedFrame = 0;
 		animFrame++;
-		if (animFrame > image->GetMaxFrameX())
+		if (animFrame >= image->GetMaxFrameX())
 		{
 			animFrame = 0;
 		}

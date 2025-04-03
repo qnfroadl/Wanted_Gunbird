@@ -31,19 +31,21 @@ void Item::Init()
 	angle = RT;
 	speed = 300;
 	curFrame = 0;
+	
+	int ratio = 2;
 
 	if (ItemType::BombAdd == this->type)
 	{
-		this->image = ImageManager::GetInstance()->AddImage(EImageKey::PickupBomb, TEXT("assets/Sprites/Misc/pickup_bomb.bmp"), 216, 16, 8, 1, true, RGB(255, 0, 255));
-		width = 27; // 216 / 8;
-		height = 16;
+		this->image = ImageManager::GetInstance()->AddImage(EImageKey::PickupBomb, TEXT("assets/Sprites/Misc/pickup_bomb.bmp"), 216 * ratio, 16 * ratio, 8, 1, true, RGB(255, 0, 255));
+		width = 27 * ratio; // 216 / 8;
+		height = 16 * ratio;
 	}
 	else 
 	{
 		// 파워업으로 변경 필요.
-		this->image = ImageManager::GetInstance()->AddImage(EImageKey::PickupPower, TEXT("assets/Sprites/Misc/puckup_power.bmp"), 418, 13, 19, 1, true, RGB(255, 0, 255));
-		width = 27; //418 / 19;
-		height = 13;
+		this->image = ImageManager::GetInstance()->AddImage(EImageKey::PickupPower, TEXT("assets/Sprites/Misc/puckup_power.bmp"), 418 * ratio, 13 * ratio, 19, 1, true, RGB(255, 0, 255));
+		width = 27 * ratio; //418 / 19;
+		height = 13 * ratio;
 	}
 	
 	if (nullptr == image)

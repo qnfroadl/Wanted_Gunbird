@@ -76,5 +76,3 @@ void EnemyManager::SpawnEnemy(const FPOINT& pos, int enemyType)
 		enemys.push_back(enemy);
 	}
 }
-
-
