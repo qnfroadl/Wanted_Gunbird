@@ -41,17 +41,17 @@ void Item::Init()
 	else 
 	{
 		// 파워업으로 변경 필요.
-		this->image = ImageManager::GetInstance()->AddImage(EImageKey::PickupPower, TEXT("assets/Sprites/Misc/pickup_bomb.bmp"), 216, 16, 8, 1, true, RGB(255, 0, 255));
-		width = 27; //216 / 8;
-		height = 16;
+		this->image = ImageManager::GetInstance()->AddImage(EImageKey::PickupPower, TEXT("assets/Sprites/Misc/puckup_power.bmp"), 418, 13, 19, 1, true, RGB(255, 0, 255));
+		width = 27; //418 / 19;
+		height = 13;
 	}
 	
 	if (nullptr == image)
 	{
-		MessageBox(NULL, TEXT("pickup_bomb not loaded"), NULL,NULL);
+		MessageBox(NULL, TEXT("item not loaded"), NULL,NULL);
 	}
 
-	collision = CollisionManager::GetInstance()->CreateCollisionRect(this, RECT{-100,-100, -80,-80});
+	collision = CollisionManager::GetInstance()->CreateCollisionRect(this, RECT{-100,-100, -100,-100});
 	collision->Bind([&](GameObject* obj)
 		{
 			this->On_CollisionDetected(obj);
@@ -63,22 +63,28 @@ void Item::Update()
 	if (IsActive())
 	{
 		curFrame++;
+		if (image->GetMaxFrameX() <= curFrame/4)
+		{
+			curFrame = 0;
+		}
 
-		// LifeTime을 점점 깍다가, 시간이 n초 이하가 되면 깜빡이게 만든다. to do
+		this->lifeTime -= TimerManager::GetInstance()->GetDeltaTime();
 
 		MoveInWindow();
+
+		// LifeTime을 점점 깍다가, 시간이 n초 이하가 되면 깜빡이게 만든다. to do, 일단은 바로 없애버려
+		if (lifeTime < 0)
+		{
+			SetActive(false);
+			collision->SetActive(false);
+		}
 	}
-	
 }
 
 void Item::Render(HDC hdc)
 {
 	FPOINT pos = GetPos();
 	
-	if (image->GetMaxFrameX() * 4 <= curFrame)
-	{
-		curFrame = 0;
-	}
 	image->FrameRender(hdc, pos.x, pos.y, curFrame/4, 0);
 
 }

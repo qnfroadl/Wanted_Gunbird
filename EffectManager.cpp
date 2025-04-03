@@ -20,8 +20,7 @@ void Effect::Update()
 	{
 		curFrame++;
 		
-		int maxFrameX = image->GetMaxFrameX();
-		if (maxFrameX < curFrame/skipFrame)
+		if (image->GetMaxFrameX() <= curFrame/skipFrame)
 		{
 			image = nullptr;
 			SetActive(false);
