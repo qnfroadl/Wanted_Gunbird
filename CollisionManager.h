@@ -22,7 +22,6 @@ enum class CollisionLayer : uint8_t
 	Item = 1 << 4,			// 00010000
 };
 
-
 class Collision : public GameObject
 {
 
@@ -99,4 +98,5 @@ public:
 
 	int GetCheckCount();
 	int GetCollisionCount();
+	int GetActivecollisionCount();
 };

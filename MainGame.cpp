@@ -20,6 +20,21 @@
 //
 #include "BossShip.h"
 
+void MainGame::UpdateCollisionPerformance()
+{
+	static float elapsedTime = 0;
+
+	elapsedTime += TimerManager::GetInstance()->GetDeltaTime();
+
+	if (1 < elapsedTime)	//1초에 한번만 해
+	{
+		elapsedTime = 0;
+		collCount = CollisionManager::GetInstance()->GetCollisionCount();
+		activeCollCount = CollisionManager::GetInstance()->GetActivecollisionCount();
+		collCheckCount = CollisionManager::GetInstance()->GetCheckCount();
+	}
+}
+
 void MainGame::EffectSimulation()
 {
 	// test
@@ -79,7 +94,7 @@ void MainGame::Init()
 	
 	player = new Player();
 	player->Init();
-
+	playerLife = 2;
 
 	stageManager = new StageManager();
 	stageManager->Init();
@@ -152,6 +167,8 @@ void MainGame::Update()
 {
 	EnemyManager::GetInstance()->Update();
 	backgroundUI->Update();
+	backgroundUI->SetLife(this->playerLife);
+	backgroundUI->SetBomb(player->GetBombCount());
 	player->Update();
 	stageManager->Update();
 	EnemyMissileManager::GetInstance()->Update();
@@ -162,6 +179,7 @@ void MainGame::Update()
 	canon->Update();
 	EffectManager::GetInstance()->Update();
 
+	UpdateCollisionPerformance();
 	EffectSimulation();
 	ItemSpawnSimulation();
 }
@@ -172,6 +190,8 @@ void MainGame::Render()
 	HDC hBackBufferDC = backBuffer->GetMemDC();
 
 	backgroundUI->Render(hBackBufferDC);
+	
+
 	EnemyManager::GetInstance()->Render(hBackBufferDC);
 	player->Render(hBackBufferDC);
 	stageManager->Render(hBackBufferDC);
@@ -187,6 +207,9 @@ void MainGame::Render()
 	// wsprintf(szText, TEXT("Mouse X : %d, Y : %d"), mousePosX, mousePosY);
 	// TextOut(hBackBufferDC, 20, 60, szText, wcslen(szText));
 
+	wsprintf(szText, TEXT("CollCount: %d, Active: %d Check: %d"), collCount, activeCollCount, collCheckCount);
+	TextOut(hBackBufferDC, 5, 10, szText, wcslen(szText));
+	
 	// 백버퍼에 있는 내용을 메인 hdc에 복사
 	backBuffer->Render(hdc);
 

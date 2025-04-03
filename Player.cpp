@@ -235,3 +235,8 @@ void Player::ActivateBomb()
 	 °ãÄ¡¸é release()
 	*/
 }
+
+int Player::GetBombCount()
+{
+	return this->bombCount;
+}

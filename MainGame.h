@@ -7,13 +7,11 @@ class Player;
 class BackgroundUI;
 class Item;
 class StageManager;
-
 class BossShip;
 class MainGame : public GameObject
 {
 private:
-	int FPS;
-
+	Image* backBuffer;
 	HDC hdc;
 	PAINTSTRUCT ps;
 	//HANDLE hTimer;
@@ -22,15 +20,20 @@ private:
 	FPOINT mousePos;
 	wchar_t szText[128];
 
+	int FPS;
 	Player* player;
-	Image* backBuffer;
+	int playerLife;
 	BackgroundUI* backgroundUI;
-
-	class EnemyManager* enemyManager;
-
 	StageManager* stageManager;
 
 	BossShip* canon;
+
+	// 콜리젼매니저 체크용
+	int collCount;
+	int activeCollCount;
+	int collCheckCount;
+
+	void UpdateCollisionPerformance();
 	void EffectSimulation();
 	void ItemSpawnSimulation();
 

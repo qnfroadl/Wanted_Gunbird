@@ -180,6 +180,24 @@ int CollisionManager::GetCollisionCount()
     return collisionCount;
 }
 
+int CollisionManager::GetActivecollisionCount()
+{
+    // 성능 문제되면 호출 금지.
+    int collisionCount = 0;
+    for (const auto& pair : *layerCollisionMap)
+    {
+        for (const auto& col : pair.second)
+        {
+            if (col->IsActive())
+            {
+                collisionCount++;
+            }
+        }
+    }
+   
+    return collisionCount;
+}
+
 void CollisionManager::CollisionDetect(const unordered_set<Collision*>& setColl1, const  unordered_set<Collision*>& setColl2)
 {
     for (auto c1 : setColl1)

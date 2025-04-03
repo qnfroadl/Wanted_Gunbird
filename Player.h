@@ -8,7 +8,7 @@ class CollisionRect;
 class PlayerBomb;
 class Player : public GameActor
 {
-public:
+private:
 	bool isActive;
 	int hp;
 	int power;
@@ -24,6 +24,7 @@ public:
 	CollisionRect* playerCollision;
 	PlayerBomb* playerBomb;
 	void CollisionDetected(GameObject* obj);
+
 public:
 	void Init();
 	void Release();
@@ -35,4 +36,6 @@ public:
 	void IncreaseAttackLevel();
 	void IncreaseBomb();
 	void ActivateBomb();
+
+	int GetBombCount();
 };

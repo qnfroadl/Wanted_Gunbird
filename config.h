@@ -52,6 +52,9 @@ enum class EImageKey
 
 	// Missile
 	MidBossStar, MidBossPyramid,
+
+	//Background
+	BG_SeaBottom, BG_SeaLoop,
 };
 
 typedef struct EnemyInformation {

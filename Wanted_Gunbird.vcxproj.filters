@@ -94,6 +94,9 @@
     <ClCompile Include="EffectManager.cpp">
       <Filter>2D GameFramework</Filter>
     </ClCompile>
+    <ClCompile Include="BossBird.cpp">
+      <Filter>Boss</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -195,6 +198,9 @@
     </ClInclude>
     <ClInclude Include="EffectManager.h">
       <Filter>2D GameFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="BossBird.h">
+      <Filter>Boss</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
