@@ -25,14 +25,22 @@ enum class GameTag
 enum class EImageKey
 {
 	Player,
-
+	PickupBomb,PickupPower,
 	PlayerAttackDefault,
 	PlayerAttackMissile,
 
 
 	// 하단의 Effect 종류들은 FindImage로 찾아서 쓰기만 하면됩니다.
-	ExplosionPlayer, ExplosionSmall, ExplosionBig,
+	ExplosionPlayer, ExplosionSmall, ExplosionBig, ShotImpact,
 
+};
+
+enum class EEffectType
+{
+	ExplosionPlayer = EImageKey::ExplosionPlayer,
+	ExplosionSmall= EImageKey::ExplosionSmall,
+	ExplosionBig = EImageKey::ExplosionBig,
+	ShotImpact = EImageKey::ShotImpact,
 };
 
 typedef struct vector2d {

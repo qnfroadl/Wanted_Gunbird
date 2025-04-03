@@ -55,8 +55,6 @@
     <ClCompile Include="StageManager.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Missile.cpp" />
-    <ClCompile Include="MissileManager.cpp" />
     <ClCompile Include="EnemyMissile.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -66,15 +64,13 @@
     <ClCompile Include="MissilePattern.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-
-
     <ClCompile Include="PlayerMissileAttack.cpp" />
     <ClCompile Include="PlayerAttackManager.cpp" />
     <ClCompile Include="PlayerDefaultAttack.cpp" />
     <ClCompile Include="ItemManager.cpp">
       <Filter>Item</Filter>
     </ClCompile>
-
+    <ClCompile Include="EffectManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -138,7 +134,6 @@
     <ClInclude Include="StageManager.h">
       <Filter>Header</Filter>
     </ClInclude>
-
     <ClInclude Include="EnemyMissile.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -154,7 +149,7 @@
     <ClInclude Include="ItemManager.h">
       <Filter>Item</Filter>
     </ClInclude>
-
+    <ClInclude Include="EffectManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Wanted_Gunbird.rc" />
