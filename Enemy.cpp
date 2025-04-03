@@ -8,9 +8,10 @@
 #include "MissilePattern.h"
 #include "EnemyMissileManager.h"
 
-void Enemy::Init(const string& key, const wchar_t* filePath, float width, float height,
+void Enemy::Init(EImageKey key, const wchar_t* filePath, float width, float height,
 	int maxFrameX, int maxFrameY, bool isTransparent, COLORREF transColor)
 {
+	this->key = key;
 	this->AddTag(GameTag::Enemy);
 
 	image = ImageManager::GetInstance()->AddImage(key, filePath, width, height, 
@@ -133,11 +134,10 @@ void Enemy::Damaged(int damage)
 {
 	hp -= damage;
 
-	if (hp >0 && hp < 40)
+	if (hp >0 && hp < 100)
 	{
-		//image 바꾸기, missile 바꾸기
-		Init("Mid Boss Upgrade", TEXT("assets/Sprites/Enemies/MidBoss.bmp"),
-			410, 73, 5, 1, true, RGB(255, 0, 255));
+		if (key == EImageKey::MidBoss)
+			image = ImageManager::GetInstance()->FindImage(EImageKey::MidBossUpgrade);
 	}
 		
 	if (hp <= 0)

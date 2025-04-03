@@ -5,17 +5,18 @@
 #include "Singleton.h"
 #include "GameObject.h"
 #include <deque>
-
+#include <unordered_map>
 
 class Enemy;
 class EnemyManager: public Singleton<EnemyManager>
 {
 private:
 	std::deque<Enemy*> enemys;
-
-	Enemy* CreateEnemy(int enemyType);
+	std::unordered_map<EEnemyType, EnemyImgInfo> enemyInfoMap;
+	Enemy* CreateEnemy(EEnemyType enemyType);
 
 public:
+	void InitEnemy();
 	bool IsLiveEnmey();
 
 	void Init();
@@ -26,5 +27,5 @@ public:
 
 	inline std::deque<class Enemy*> getEnemys() { return enemys; }
 
-	void SpawnEnemy(const FPOINT& pos, int enemyType);
+	void SpawnEnemy(const FPOINT& pos, EEnemyType enemyType);
 };
