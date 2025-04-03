@@ -4,13 +4,6 @@
 #include "TimerManager.h"
 #include "CommonFunction.h"
 
-EnemyMissileManager::EnemyMissileManager()
-{	
-}
-
-EnemyMissileManager::~EnemyMissileManager()
-{
-}
 
 void EnemyMissileManager::Fire(FPOINT pos, float angle, MissileType* type)
 {
@@ -20,10 +13,9 @@ void EnemyMissileManager::Fire(FPOINT pos, MissilePattern* pattern)
 {
 	std::vector<MissileInfo> missilesInfo = pattern->getMissilesInfo();
 
+	// fire 정보 넣어두고 Update 때 조건에 맞으면 fire
 	for (int i = 0; i < missilesInfo.size(); i++)
-	{
-		vecMissileInfo.push_back(missilesInfo[i]);
-	}
+		listMissileInfo.push_back(missilesInfo[i]);
 }
 
 void EnemyMissileManager::Init()
@@ -36,32 +28,36 @@ void EnemyMissileManager::Release()
 	{
 		(*it)->Release();
 		delete (*it);
+		it = listMissiles.erase(it);
 	}
-	listMissiles.clear();
 }
 
 void EnemyMissileManager::Update()
 {
 	float accumulatedTime = TimerManager::GetInstance()->GetAccumulatedTime();
 	
-	for (MissileInfo info : vecMissileInfo)
+	// 조건에 맞으면 미사일 생성
+	for (auto it = listMissileInfo.begin(); it != listMissileInfo.end();)
 	{
-		if (info.fireDelay > accumulatedTime)
-		{			
-			EnemyMissile* missile = new EnemyMissile(info.speed, info.angle);
-			//std::unique_ptr<EnemyMissile> missile = std::make_unique<EnemyMissile>(info.speed, info.angle);
+		if ((*it).fireDelay > accumulatedTime)
+		{						
+			EnemyMissile* missile = new EnemyMissile((*it).speed, (*it).angle);
+			missile->Init("Mid Boss Missile", TEXT("assets/Sprites/Enemies/MidBoss_Star.bmp"), 
+				(*it).startPos, 288, 45, 8, 1, true, RGB(255, 0, 255));
+			listMissiles.push_back(missile);	
 
-			missile->Init("Mid Boss Missile", TEXT("assets/Sprites/Enemies/boss_ball_one.bmp"), info.startPos, 5, 5, 1, 1, true, RGB(255, 255, 255));
-
-			listMissiles.push_back((missile));
-			//listMissiles.push_back(std::move(missile));
+			// 생성했으면 이 미사일에 대한 정보는 파기
+			it = listMissileInfo.erase(it);
+		}
+		else
+		{
+			it++;
 		}
 	}
 
-	for (auto it = listMissiles.begin(); it != listMissiles.end(); it++)
-	{
+	// 생성된 모든 미사일 Update
+	for (auto it = listMissiles.begin(); it != listMissiles.end(); it++)	
 		(*it)->Update();
-	}
 }
 
 void EnemyMissileManager::Render(HDC hdc)
@@ -80,4 +76,12 @@ void EnemyMissileManager::Render(HDC hdc)
 			it++;
 		}
 	}
+}
+
+EnemyMissileManager::EnemyMissileManager()
+{	
+}
+
+EnemyMissileManager::~EnemyMissileManager()
+{
 }

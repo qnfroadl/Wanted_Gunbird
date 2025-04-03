@@ -6,6 +6,7 @@
 #include <string>
 #include <iostream>
 #include "KeyManager.h"
+#include <string>
 
 using namespace std;
 
@@ -16,6 +17,23 @@ using namespace std;
 #define WINSIZE_Y	800
 #define DEG_TO_RAD(degree) ((3.14 / 180.0) * degree)
 #define RAD_TO_DEG(radian) ((180.0 / 3.14) * radian)
+
+
+typedef struct EnemyInformation {
+	const string& key;
+	const wchar_t* filePath;
+	float width;
+	float height;
+	int maxFrameX;
+	int maxFrameY; 
+	bool isTransparent; 
+	COLORREF transColor;
+} EnemyInfo;
+
+enum class EnemyType
+{
+};
+
 
 enum class GameTag
 {

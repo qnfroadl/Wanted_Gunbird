@@ -14,7 +14,7 @@ private:
 	//std::list<std::unique_ptr< EnemyMissile>> listMissiles;
 	std::vector<class EnemyMissile*>::iterator iterMissiles;
 	
-	std::list<MissileInfo> vecMissileInfo;
+	std::list<MissileInfo> listMissileInfo;
 
 public:
 	EnemyMissileManager();
