@@ -5,10 +5,34 @@
 
 void PlayerAttackManager::Fire(const FPOINT& pos, int level, vector<PlayerDefaultAttack*>& attack)
 {
-	for (auto const& iter : attack)
+	FPOINT leftPos = pos;
+	FPOINT rightPos = pos;
+	int gap_X = 9;
+	int gap_Y = 15;
+	for (int i = 0; i < level; i++)
 	{
-		iter->Fire(pos);
+		leftPos.x -= gap_X;
+		leftPos.y += gap_Y;
+		rightPos.x += gap_X;
+		rightPos.y += gap_Y;
+
+		attack[(i * 2)]->Fire(leftPos);
+		attack[(i * 2) + 1]->Fire(rightPos);
+
 	}
+
+	if (level == 3)
+	{
+		leftPos.x -= gap_X;
+		leftPos.y += gap_Y;
+		rightPos.x += gap_X;
+		rightPos.y += gap_Y;
+
+		attack[6]->Fire(leftPos);
+		attack[7]->Fire(rightPos);
+
+	}
+
 }
 void PlayerAttackManager::Init()
 {
@@ -73,8 +97,9 @@ void PlayerAttackManager::Fire(FPOINT pos, int level)
 
 	PlayerDefaultAttack* attack = nullptr;
 	vector<PlayerDefaultAttack*>::iterator iter;
-	
-	if(level < 4)
+
+	int attackCount = (1 << level);
+	if (level < 4)
 	{
 		for (iter = defaultAttackVec.begin(); iter != defaultAttackVec.end(); iter++)
 		{
@@ -83,13 +108,17 @@ void PlayerAttackManager::Fire(FPOINT pos, int level)
 			if (false == attack->IsActive())
 			{
 				vecAttack.push_back(attack);
-				if (sqrt(level) == vecAttack.size())
+				if (attackCount == vecAttack.size())
 				{
 					break;
 				}
 			}
 		}
 
-		Fire(pos, level, vecAttack);
+		if (attackCount == vecAttack.size())
+		{
+			Fire(pos, level, vecAttack);
+		}
+		
 	}
 }
