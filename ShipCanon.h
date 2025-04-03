@@ -9,7 +9,7 @@ class ShipCannon : public GameActor
 
 private:
 	Image* image;
-	int ratio;
+	float ratio;
 	float angle;
 	CollisionRect* collision;
 	float elapsedTime;

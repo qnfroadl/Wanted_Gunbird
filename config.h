@@ -45,7 +45,6 @@ enum class EImageKey
 	ShipBase, ShipDestroyedLeft, ShipDestroyedRight, ShipDestroyed,
 	PlayerBomb,
 
-	// 하단의 Effect 종류들은 FindImage로 찾아서 쓰기만 하면됩니다.
 	ExplosionPlayer, ExplosionSmall, ExplosionBig, ShotImpact,
 
 	// Enemy

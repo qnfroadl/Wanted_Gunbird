@@ -66,7 +66,7 @@ void ShipCannon::Init()
 	this->AddTag(GameTag::Boss_Canon);
 
 	this->hp = 5;
-	this->ratio = 1;
+	this->ratio = 1.5;
 
 	ImageManager::GetInstance()->AddImage(EImageKey::Canon_210,
 		L"assets/Sprites/Enemies/Boss/210.bmp", 40 * ratio, 40 * ratio, true, RGB(255,0,255));

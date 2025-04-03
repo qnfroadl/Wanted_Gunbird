@@ -9,7 +9,7 @@ class BossShip : public GameActor
 {
 private:
 	enum class State {
-		Begin, Fight, Destroyed, End
+		Begin, Fight, Destroyed, Disappear, End
 	};
 	State state;
 	Image* baseImage;	//	

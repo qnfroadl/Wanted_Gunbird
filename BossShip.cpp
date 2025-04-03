@@ -58,6 +58,7 @@ void BossShip::MoveMove()
 
 void BossShip::Destroyed()
 {
+	// nÃÊµ¿¾È ÆÄ±« ÀÌÆåÆ®
 	elapsedTime += TimerManager::GetInstance()->GetDeltaTime();
 
 	EffectManager::GetInstance();
@@ -66,14 +67,29 @@ void BossShip::Destroyed()
 
 void BossShip::Disappear()
 {
-	
+	FPOINT destPos = FPOINT{ GetPos().x, WINSIZE_Y + WINSIZE_Y/3};
+	float angle = -90.f;
+
+	float deltaTime = TimerManager::GetInstance()->GetDeltaTime();
+
+	FPOINT deltaPos;
+	deltaPos.x = deltaTime * speed * cosf(DEG_TO_RAD(angle));
+	deltaPos.y = deltaTime * speed * -sinf(DEG_TO_RAD(angle));
+
+	Move(deltaPos);
+
+	if (10 > abs(GetPos().x - destPos.x) && 10 > abs(GetPos().y - destPos.y))
+	{
+		this->state = State::End;
+		moveAngle = 180;
+	}
 }
 void BossShip::Init()
 {
 	state = State::Begin;
 	elapsedTime = 0;
-	this->width = 193;
-	this->height = 441;
+	this->width = 193 * 1.5;
+	this->height = 441 * 1.5;
 	speed = 50;
 
 	baseImage = ImageManager::GetInstance()->AddImage(EImageKey::ShipBase,
@@ -126,8 +142,14 @@ void BossShip::Update()
 	{
 		Destroyed();	// ÆÄ±« ÀÌÆåÆ® ÆãÆã?
 	}
-	else {
+	else if(State::Disappear == state)
+	{
 		Disappear();
+	}
+	else {
+
+		SetActive(false);
+		// dead.
 	}
 	
 }
@@ -172,9 +194,9 @@ void BossShip::CannonPosUpdate()
 	FPOINT pos = GetPos();
 	for (int i = 0; i < 2; i++)
 	{
-		aryCannons[0 + (4 * i)]->SetPos(pos.x - 70 * (1 - i * 2), pos.y - 50);
-		aryCannons[1 + (4 * i)]->SetPos(pos.x - 76 * (1 - i * 2), pos.y + 61);
-		aryCannons[2 + (4 * i)]->SetPos(pos.x - 45 * (1 - i * 2), pos.y + 88);
-		aryCannons[3 + (4 * i)]->SetPos(pos.x - 35 * (1 - i * 2), pos.y + 169);
+		aryCannons[0 + (4 * i)]->SetPos(pos.x - 65 * 1.5 * (1 - i * 2), pos.y - 50 * 1.5);
+		aryCannons[1 + (4 * i)]->SetPos(pos.x - 70 * 1.5 * (1 - i * 2), pos.y + 61 * 1.5);
+		aryCannons[2 + (4 * i)]->SetPos(pos.x - 42 * 1.5 * (1 - i * 2), pos.y + 88 * 1.5);
+		aryCannons[3 + (4 * i)]->SetPos(pos.x - 30 * 1.5 * (1 - i * 2), pos.y + 169 * 1.5);
 	}
 }

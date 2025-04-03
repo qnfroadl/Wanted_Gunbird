@@ -10,7 +10,7 @@ private:
 	Image* shotImage;
 	int width;
 	int height;
-
+	float ratio;
 	float speed;
 	float angle;
 	int curFrame;

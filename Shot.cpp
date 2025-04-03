@@ -31,8 +31,9 @@ void Shot::On_CollisionDetected(GameObject* obj)
 
 void Shot::Init()
 {
+	ratio = 2.0;
 	shotImage = ImageManager::GetInstance()->AddImage(EImageKey::CanonShot, 
-	L"assets/Sprites/Misc/shot.bmp",70,7,10,1,true, RGB(255,0,255));
+	L"assets/Sprites/Misc/shot.bmp",70 * ratio,7 * ratio,10,1,true, RGB(255,0,255));
 
 	collision = CollisionManager::GetInstance()->CreateCollisionRect(this, RECT{0,0,0,0});
 	collision->Bind([&](GameObject* obj)
@@ -92,8 +93,8 @@ void Shot::SetShotImage(EImageKey key, const wchar_t* filePath, int width, int h
 {
 	shotImage = ImageManager::GetInstance()->AddImage(key,filePath, width, height, maxFrameX, maxFrameY, isTransparent, transColor);
 
-	this->width = width / maxFrameX;
-	this->height = height / maxFrameY;
+	this->width = (width / maxFrameX) * ratio;
+	this->height = (height / maxFrameY) * ratio;
 }
 
 void Shot::SetSpeed(float speed)
