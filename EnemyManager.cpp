@@ -1,7 +1,8 @@
 #include "EnemyManager.h"
 #include  "Enemy.h"
 #include "ImageManager.h"
-
+#include "TimerManager.h"
+#include "CommonFunction.h"
 
 Enemy* EnemyManager::CreateEnemy(EEnemyType enemyType)
 {
@@ -9,6 +10,7 @@ Enemy* EnemyManager::CreateEnemy(EEnemyType enemyType)
 	EnemyImgInfo info = enemyInfoMap[enemyType];
 	Enemy* enemy = new Enemy(info.hp);
 	enemy->Init(
+		enemyType,
 		info.key,
 		info.filePath,
 		info.width,
@@ -23,10 +25,13 @@ Enemy* EnemyManager::CreateEnemy(EEnemyType enemyType)
 
 void EnemyManager::InitEnemy()
 {
-	enemyInfoMap[EEnemyType::MidBoss] = { EImageKey::MidBoss, 
+	enemyInfoMap[EEnemyType::MidBoss] = { EImageKey::MidBossBasic, 
 		TEXT("assets/Sprites/Enemies/MidBoss_Idle.bmp"), 2000, 410.0f * 1.5, 73.0f * 1.5, 5, 1, true, RGB(255, 0, 255) };
 	ImageManager::GetInstance()->AddImage(EImageKey::MidBossUpgrade, 
 		TEXT("assets/Sprites/Enemies/MidBossUpgrade.bmp"), 552.0f * 1.5, 91.0f * 1.5, 6, 1, true, RGB(255, 0, 255));
+
+	enemyInfoMap[EEnemyType::FlyingEnemy] = { EImageKey::FlyingEnemy,
+	TEXT("assets/Sprites/Enemies/flying_missile.bmp"), 50, 240.0f, 30.0f, 8, 1, true, RGB(255, 0, 255) };
 }
 
 bool EnemyManager::IsLiveEnmey()
@@ -38,8 +43,7 @@ void EnemyManager::Init()
 {
 	// enemy들 정보 초기화
 	InitEnemy();
-	
-	SpawnEnemy(FPOINT{300.0, 100.0}, EEnemyType::MidBoss);
+	generateTime = 0.0f;
 }
 
 void EnemyManager::Release()
@@ -54,8 +58,17 @@ void EnemyManager::Release()
 
 void EnemyManager::Update()
 {
-	Enemy* enemy = nullptr;
+	// Enemy 일정시간마다 스폰
+	generateTime += TimerManager::GetInstance()->GetDeltaTime();
+	if (generateTime > 0.8f)
+	{
+		int x = rand() % WINSIZE_X;
+		SpawnEnemy(FPOINT{ float(x), 50.0}, EEnemyType::FlyingEnemy);
+		generateTime = 0.0f;
+	}
 
+	// Enemy 업데이트
+	Enemy* enemy = nullptr;
 	auto it = enemys.begin();
 	while (it != enemys.end())
 	{
@@ -81,9 +94,19 @@ void EnemyManager::Render(HDC hdc)
 	auto it = enemys.begin();
 	while (it != enemys.end())
 	{
-		enemy = (*it);
-		enemy->Render(hdc);
-		it++;
+		// 화면 밖으로 벗어나면 제거
+		if (IsOutofScreen((*it)->getRect(), 0.0f))
+		{
+			(*it)->Release();
+			delete (*it);
+			it = enemys.erase(it);
+		}
+		else		// 남은 애들은 렌더
+		{
+			enemy = (*it);
+			enemy->Render(hdc);
+			it++;
+		}
 	}
 }
 

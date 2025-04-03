@@ -35,7 +35,7 @@ std::vector<SpawnMissileInfo> MissilePattern::getMissilesInfo()
 {
     std::vector<SpawnMissileInfo> missilesInfo;
 
-    if (angleMin == angleMax)
+    if (angleMin == angleMax)       // 같은 방향이지만 delay 가 있음
     {
         for (int i = 0; i < fireCount; i++)
         {
@@ -43,7 +43,7 @@ std::vector<SpawnMissileInfo> MissilePattern::getMissilesInfo()
             missilesInfo.push_back(info);
         }
     }
-    else
+    else    // 부채꼴로 퍼져나감
     {
         float theta = (angleMax - angleMin) / float(fireCount);
         for (int i = 0; i < fireCount; i++)
