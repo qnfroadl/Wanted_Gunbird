@@ -16,7 +16,7 @@ void PlayerDefaultAttack::CollisionDetected(GameObject* obj)
 	if (0 < tags.count(GameTag::Enemy))
 	{ 
 		Enemy* enemy = static_cast<Enemy*>(obj);
-		enemy->Damaged(10);
+		enemy->Damaged(damage);
 
 		if (enemy->getHp() <= 0) this->SetActive(false);	// EnemyºñÈ°¼º
 		this->attackDefaultCollision->SetActive(false);
@@ -29,6 +29,7 @@ void PlayerDefaultAttack::Init()
 {
 	speed = 2000;
 	angle = 0;
+	damage = 1;
 	playerAttackDefault = ImageManager::GetInstance()->AddImage(EImageKey::PlayerAttackDefault,
 		L"assets/Sprites/Characters/tetsu_playerAttackDefault.bmp",
 		2, 29, true, RGB(255, 0, 255));
