@@ -4,7 +4,9 @@
 #include "TimerManager.h"
 #include "Image.h"
 #include "ImageManager.h"
+#include "PlayerAttackManager.h"
 #include "PlayerDefaultAttack.h"
+#include "PlayerMissileAttack.h"
 #include "CollisionManager.h"
 #include "Item.h"
 
@@ -40,6 +42,9 @@ void Player::Init()
 	if (!image)
 		return;
 
+	attackManager = new PlayerAttackManager();
+	attackManager->Init();
+
 	FPOINT pos = GetPos();
 	RECT defaultRect = { pos.x-(PLAYERWITHD/2), pos.y-(PLAYERHEIGHT/2), pos.x + (PLAYERWITHD/2), pos.y + (PLAYERHEIGHT/2)};
 	playerCollision = CollisionManager::GetInstance()->CreateCollisionRect(this, defaultRect);
@@ -47,9 +52,6 @@ void Player::Init()
 		{
 			this->CollisionDetected(obj);
 		});
-
-	missile = new PlayerDefaultAttack;
-	missile->Init();
 }
 
 void Player::Release()
@@ -60,12 +62,11 @@ void Player::Release()
 		delete image;
 		image = nullptr;
 	}
-
-	if (missile)
+	if (attackManager)
 	{
-		missile->Release();
-		delete missile;
-		missile = nullptr;
+		attackManager->Release();
+		delete attackManager;
+		attackManager = nullptr;
 	}
 }
 
@@ -135,7 +136,10 @@ void Player::Update()
 	if (KeyManager::GetInstance()->IsOnceKeyDown(VK_SPACE))
 		Fire();
 
-	missile->Update();
+	if (attackManager)
+	{
+		attackManager->Update();
+	}
 }
 
 void Player::Render(HDC hdc)
@@ -144,9 +148,9 @@ void Player::Render(HDC hdc)
 	{
 		image->FrameRender(hdc, GetPos().x, GetPos().y, animFrame, 0, false);
 	}
-	if (missile)
+	if (attackManager)
 	{
-		missile->Render(hdc);
+		attackManager->Render(hdc);
 	}
 }
 
@@ -177,7 +181,10 @@ void Player::Fire()
 	4레벨에는 미사일 추가
 	미사일 매니저가 있어야 하겟는데
 	*/
-	missile->Fire(GetPos(), attackLevel);
+	if (attackManager)
+	{
+		attackManager->Fire(GetPos(), attackLevel);
+	}
 }
 
 void Player::IncreaseAttackLevel()

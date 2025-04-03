@@ -74,6 +74,7 @@ void PlayerDefaultAttack::Fire(FPOINT pos, int level)
 {
 	SetPos(pos);
 	SetActive(true);
+	attackDefaultCollision->SetActive(true);
 }
 
 void PlayerDefaultAttack::Move()
