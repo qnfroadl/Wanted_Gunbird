@@ -49,7 +49,7 @@ enum class EImageKey
 	ExplosionPlayer, ExplosionSmall, ExplosionBig, ShotImpact,
 
 	// Enemy
-	FlyingEnemy, MidBoss, MidBossUpgrade,
+	FlyingEnemy, MidBossBasic, MidBossUpgrade,
 
 	// Missile
 	MidBossStar, MidBossPyramid,

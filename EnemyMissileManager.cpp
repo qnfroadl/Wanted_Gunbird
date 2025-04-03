@@ -7,7 +7,7 @@
 
 void EnemyMissileManager::InitMissile()
 {
-	missileImgInfoMap[EImageKey::MidBoss] = { EImageKey::MidBossStar,
+	missileImgInfoMap[EImageKey::MidBossBasic] = { EImageKey::MidBossStar,
 		TEXT("assets/Sprites/Enemies/MidBoss_Star.bmp"), 288, 45, 8, 1, true, RGB(255, 0, 255) };
 	missileImgInfoMap[EImageKey::MidBossUpgrade] = { EImageKey::MidBossPyramid,
 	TEXT("assets/Sprites/Enemies/MidBoss_Pyramid.bmp"), 789.0f/2.0f, 195.0f / 2.0f, 10, 1, true, RGB(255, 0, 255) };
@@ -20,6 +20,7 @@ void EnemyMissileManager::Fire(FPOINT pos, float angle, MissileType* type)
 
 void EnemyMissileManager::Fire(FPOINT pos, MissilePattern* pattern)
 {
+	// 넘겨받은 pattern으로 각 missile info를 저장함, 나중에 update 때 제 시간에 호출
 	std::vector<SpawnMissileInfo> missilesInfo = pattern->getMissilesInfo();
 	
 	for (int i = 0; i < missilesInfo.size(); i++)

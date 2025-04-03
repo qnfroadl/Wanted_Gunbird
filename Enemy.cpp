@@ -8,9 +8,10 @@
 #include "MissilePattern.h"
 #include "EnemyMissileManager.h"
 
-void Enemy::Init(EImageKey key, const wchar_t* filePath, float width, float height,
+void Enemy::Init(EEnemyType type, EImageKey key, const wchar_t* filePath, float width, float height,
 	int maxFrameX, int maxFrameY, bool isTransparent, COLORREF transColor)
 {
+	this->type = type;
 	this->key = key;
 	this->AddTag(GameTag::Enemy);
 
@@ -20,9 +21,24 @@ void Enemy::Init(EImageKey key, const wchar_t* filePath, float width, float heig
 	this->width = width / float(maxFrameX);
 	this->height = height / float(maxFrameY);
 
-	pattern = new ActionPattern(100.0, 0.0, 500.0);
+	if (type == EEnemyType::MidBoss)
+	{
+		actionPattern = new ActionPattern(100.0, 0.0, 500.0);
+		actionPattern->setLinearDir();
+	}
+	if (type == EEnemyType::FlyingEnemy)
+	{
+		actionPattern = new ActionPattern(0.0, 0.0, 0.0);
+		actionPattern->setIsCurve(true);
+		float x = rand() % WINSIZE_X;
+		actionPattern->pushfront(FPOINT{ x / 2.0f, 200 });
+		if (rand() % 2==1)
+		{
+			actionPattern->setIsCurve(true);
+		}
+	}
 	
-	FPOINT startPos = pattern->getStartPoint();
+	FPOINT startPos = actionPattern->getStartPoint();
 	SetPos(startPos);
 
 	collision = CollisionManager::GetInstance()->CreateCollisionRect(this, RECT{});
@@ -49,17 +65,17 @@ void Enemy::Fire()
 		MissilePattern* pattern = missilePatterns.front();
 		missilePatterns.pop_front();
 
-		// missileManager한테 넘겨주기
+		// missileManager한테 pos, missile patern넘겨주기
 		EnemyMissileManager::GetInstance()->Fire(pos, pattern);
 	}
 }
 
 void Enemy::Release()
 {
-	if (pattern)
+	if (actionPattern)
 	{
-		delete pattern;
-		pattern = nullptr;
+		delete actionPattern;
+		actionPattern = nullptr;
 	}
 	
 	CollisionManager::GetInstance()->DeleteCollision(collision);
@@ -73,10 +89,10 @@ void Enemy::Update()
 		
 		// update position
 		VEC2 step{0.0f, 0.0f};
-		if (pattern)
+		if (actionPattern)
 		{
 			collision->SetRect(GetRectAtCenter(pos.x, pos.y, width, height));
-			step = pattern->move(collision->GetRect());
+			step = actionPattern->move(collision->GetRect());
 		}
 
 		pos.x += step.x;
@@ -96,27 +112,26 @@ void Enemy::Update()
 			elapsedTime = 0.0f;
 		}
 
-		// 주기마다 fire
-		if (key == EImageKey::MidBoss)
+		// Image마다 fire 주기가 다름
+		if (key == EImageKey::MidBossBasic)
 		{
 			if (fireTime > 1.0f)
 			{
 				float angle = float(rand() % 120 + 40);
 				setMissilePattern(2, 1.0f, 5, angle, angle);
-				Fire();
 				fireTime = 0.0f;
 			}
 		}
-		// 주기마다 fire
 		if (key == EImageKey::MidBossUpgrade)
 		{
 			if (fireTime > 0.5f)
 			{				
 				setMissilePattern(4, 1.0f, 5, 40, 160);
-				Fire();
 				fireTime = 0.0f;
 			}
 		}
+
+		Fire();
 	}
 }
 
@@ -141,12 +156,17 @@ void Enemy::Dead()
 	collision->SetRect(RECT{ 0,0,0,0 });
 	SetActive(false);
 }
+
+const RECT& Enemy::getRect()
+{
+	return collision->GetRect();
+}
  
 void Enemy::Damaged(int damage)
 {
 	hp -= damage;
 
-	if (key == EImageKey::MidBoss)
+	if (key == EImageKey::MidBossBasic)
 	{
 		if (hp > 0 && hp < 1000)
 		{
