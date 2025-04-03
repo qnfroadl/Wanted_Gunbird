@@ -4,26 +4,26 @@
 #include "TimerManager.h"
 #include "Image.h"
 #include "ImageManager.h"
+#include "PlayerAttackManager.h"
 #include "PlayerDefaultAttack.h"
+#include "PlayerMissileAttack.h"
+#include "PlayerBomb.h"
 #include "CollisionManager.h"
+#include "Item.h"
+
+#define PLAYERWITHD (744/24)
+#define PLAYERHEIGHT 41
 
 void Player::CollisionDetected(GameObject* obj)
 {
 	auto tags = obj->GetTags();
-	if (0 < tags.count(GameTag::Player))
+	if (0 < tags.count(GameTag::PowerUp))
 	{
-		if (0 < tags.count(GameTag::Enemy))
-		{
-			// 로켓이 쏜 총알과 부딪혔따.
-			this->SetActive(false);	//Enemy비활성
-			obj->SetActive(false);	//Bullet비활성
-		}
-		else
-		{
-			//로켓과 부딪혔따.
-			this->SetActive(false);	// Enemy비활성
-			obj->SetActive(false);	// Rocket 비활성
-		}
+		IncreaseAttackLevel();
+	}
+	else if (0 < tags.count(GameTag::BombUp))
+	{
+		IncreaseBomb();
 	}
 }
 
@@ -32,6 +32,7 @@ void Player::Init()
 	animFrame = 0;
 	elapsedFrame = 0;
 	attackLevel = 1;
+	bombCount = 2;
 
 	AddTag(GameTag::Player);
 	SetPos(WINSIZE_X / 2, WINSIZE_Y * 0.9);
@@ -42,8 +43,18 @@ void Player::Init()
 	if (!image)
 		return;
 
-	missile = new PlayerDefaultAttack;
-	missile->Init();
+	attackManager = new PlayerAttackManager;
+	attackManager->Init();
+	playerBomb = new PlayerBomb;
+	playerBomb->Init(GetPos());
+	FPOINT pos = GetPos();
+	RECT defaultRect = { pos.x - (PLAYERWITHD / 2), pos.y - (PLAYERHEIGHT / 2), pos.x + (PLAYERWITHD / 2), pos.y + (PLAYERHEIGHT / 2) };
+	playerCollision = CollisionManager::GetInstance()->CreateCollisionRect(this, defaultRect);
+	playerCollision->Bind([&](GameObject* obj)
+		{
+			this->CollisionDetected(obj);
+		}
+	);
 }
 
 void Player::Release()
@@ -55,11 +66,18 @@ void Player::Release()
 		image = nullptr;
 	}
 
-	if (missile)
+	if (attackManager)
 	{
-		missile->Release();
-		delete missile;
-		missile = nullptr;
+		attackManager->Release();
+		delete attackManager;
+		attackManager = nullptr;
+	}
+	
+	if (playerBomb)
+	{
+		playerBomb->Release();
+		delete playerBomb;
+		playerBomb = nullptr;
 	}
 }
 
@@ -126,10 +144,18 @@ void Player::Update()
 	if(movementActive)
 		Move(moveAngle);
 
-	if (KeyManager::GetInstance()->IsOnceKeyDown(VK_SPACE))
+	if (KeyManager::GetInstance()->IsOnceKeyDown('A'))
 		Fire();
-
-	missile->Update();
+	if (KeyManager::GetInstance()->IsOnceKeyDown('S'))
+	{
+		ActivateBomb();
+		playerBomb->Update(GetPos());
+	
+	}
+	if (attackManager)
+	{
+		attackManager->Update();
+	}
 }
 
 void Player::Render(HDC hdc)
@@ -138,9 +164,13 @@ void Player::Render(HDC hdc)
 	{
 		image->FrameRender(hdc, GetPos().x, GetPos().y, animFrame, 0, false);
 	}
-	if (missile)
+	if (attackManager)
 	{
-		missile->Render(hdc);
+		attackManager->Render(hdc);
+	}
+	if (playerBomb)
+	{
+		playerBomb->Render(hdc);
 	}
 }
 
@@ -161,6 +191,7 @@ void Player::Move(float degree)
 		currentPos.y = WINSIZE_Y - 24;
 
 	SetPos(currentPos);
+	playerCollision->SetRect(GetRectAtCenter(currentPos.x, currentPos.y, PLAYERWITHD, PLAYERHEIGHT));
 }
 
 void Player::Fire()
@@ -170,7 +201,10 @@ void Player::Fire()
 	4레벨에는 미사일 추가
 	미사일 매니저가 있어야 하겟는데
 	*/
-	missile->Fire(GetPos(), attackLevel);
+	if(attackManager)
+	{
+		attackManager->Fire(GetPos(), attackLevel);
+	}
 }
 
 void Player::IncreaseAttackLevel()
@@ -184,10 +218,17 @@ void Player::IncreaseAttackLevel()
 	}
 }
 
+void Player::IncreaseBomb()
+{
+	bombCount++;
+}
+
 void Player::ActivateBomb()
 {
 	if (bombCount <= 0)
 		return;
+	playerBomb->BombActivate(GetPos());
+	bombCount--;
 	/* 
 	 폭탄은 missileMgr에서 구현?
 	 폭탄의 collision과 겹치는 collision 계산

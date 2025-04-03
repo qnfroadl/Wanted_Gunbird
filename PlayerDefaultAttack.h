@@ -4,7 +4,7 @@
 class Image;
 class CollisionRect;
 
-class PlayerDefaultAttack : GameActor
+class PlayerDefaultAttack : public GameActor
 {
 private:
 	float speed;
@@ -18,7 +18,8 @@ public:
 	void Update();
 	void Render(HDC hdc);
 
-	void Fire(FPOINT pos, int level);
+	void Fire(FPOINT pos);
+	void Fire(int posX, int posY);
 	void Move();
 };
 

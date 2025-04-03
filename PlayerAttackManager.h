@@ -5,11 +5,13 @@
 
 class PlayerDefaultAttack;
 class PlayerMissileAttack;
-class PlayerAttackManager : GameObject
+class PlayerAttackManager : public GameObject
 {
 private:
-	PlayerDefaultAttack* defaultAttack;
 	vector<PlayerDefaultAttack*> defaultAttackVec;
+	vector<PlayerMissileAttack*> missileAttackVec;
+
+	void Fire(const FPOINT& pos, int level, vector<PlayerDefaultAttack*>& attack);
 public:
 	void Init();
 	void Release();

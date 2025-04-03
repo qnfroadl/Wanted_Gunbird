@@ -6,6 +6,7 @@
 #include "GameActor.h"
 #include "CommonFunction.h"
 #include "Enemy.h"
+#include "EffectManager.h"
 
 #define PDA_WIDTH 2
 #define PDA_HEIGHT 29
@@ -19,12 +20,14 @@ void PlayerDefaultAttack::CollisionDetected(GameObject* obj)
 
 		if (enemy->getHp() <= 0) this->SetActive(false);	// EnemyºñÈ°¼º
 		this->attackDefaultCollision->SetActive(false);
+
+		EffectManager::GetInstance()->PlayEffect(GetPos(), EEffectType::ShotImpact);
 	}
 }
 
 void PlayerDefaultAttack::Init()
 {
-	speed = 100;
+	speed = 2000;
 	angle = 0;
 	playerAttackDefault = ImageManager::GetInstance()->AddImage(EImageKey::PlayerAttackDefault,
 		L"assets/Sprites/Characters/tetsu_playerAttackDefault.bmp",
@@ -34,11 +37,13 @@ void PlayerDefaultAttack::Init()
 
 	FPOINT pos = GetPos();
 	RECT defaultRect = { pos.x, pos.y, pos.x + 2, pos.y + 29 };
+
 	attackDefaultCollision = CollisionManager::GetInstance()->CreateCollisionRect(this, defaultRect);
 	attackDefaultCollision->Bind([&](GameObject* obj)
 		{
 			this->CollisionDetected(obj);
-		});	SetActive(false);
+		});
+	SetActive(false);
 }
 
 void PlayerDefaultAttack::Release()
@@ -55,6 +60,11 @@ void PlayerDefaultAttack::Update()
 {
 	if(IsActive())
 		Move();
+	if (IsOutofScreen(GetPos()))
+	{
+		SetActive(false);
+		attackDefaultCollision->SetActive(false);
+	}
 }
 
 void PlayerDefaultAttack::Render(HDC hdc)
@@ -69,10 +79,19 @@ void PlayerDefaultAttack::Render(HDC hdc)
 
 }
 
-void PlayerDefaultAttack::Fire(FPOINT pos, int level)
+void PlayerDefaultAttack::Fire(FPOINT pos)
 {
 	SetPos(pos);
 	SetActive(true);
+	attackDefaultCollision->SetActive(true);
+}
+
+void PlayerDefaultAttack::Fire(int posX, int posY)
+{
+	SetPos(posX, posY);
+	SetActive(true);
+	attackDefaultCollision->SetActive(true);
+
 }
 
 void PlayerDefaultAttack::Move()

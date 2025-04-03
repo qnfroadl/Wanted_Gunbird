@@ -146,6 +146,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="MissilePattern.cpp" />
+    <ClCompile Include="PlayerBomb.cpp" />
     <ClCompile Include="PlayerDefaultAttack.cpp" />
     <ClCompile Include="PlayerMissileAttack.cpp" />
     <ClCompile Include="PlayerAttackManager.cpp" />
@@ -181,6 +182,7 @@
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="MissilePattern.h" />
+    <ClInclude Include="PlayerBomb.h" />
     <ClInclude Include="PlayerDefaultAttack.h" />
     <ClInclude Include="PlayerMissileAttack.h" />
     <ClInclude Include="PlayerAttackManager.h" />

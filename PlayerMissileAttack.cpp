@@ -4,24 +4,19 @@
 #include "TimerManager.h"
 #include "CollisionManager.h"
 #include "GameActor.h"
+#include "Enemy.h"
+#include "CommonFunction.h"
 
 void PlayerMissileAttack::CollisionDetected(GameObject* obj)
 {
 	auto tags = obj->GetTags();
-	if (0 < tags.count(GameTag::PlayerDefaultAttack))
+	if (0 < tags.count(GameTag::Enemy))
 	{
-		if (0 < tags.count(GameTag::Enemy))
-		{
-			// ∑Œƒœ¿Ã Ω √—æÀ∞˙ ∫Œµ˙«˚µ˚.
-			this->SetActive(false);	//Enemy∫Ò»∞º∫
-			obj->SetActive(false);	//Bullet∫Ò»∞º∫
-		}
-		else
-		{
-			//∑Œƒœ∞˙ ∫Œµ˙«˚µ˚.
-			this->SetActive(false);	// Enemy∫Ò»∞º∫
-			obj->SetActive(false);	// Rocket ∫Ò»∞º∫
-		}
+		Enemy* enemy = static_cast<Enemy*>(obj);
+		enemy->Damaged(10);
+
+		this->SetActive(false);
+		this->attackMissileCollision->SetActive(false);
 	}
 }
 
@@ -29,7 +24,7 @@ void PlayerMissileAttack::Init()
 {
 	missileElapsedFrame = 0.0f;
 	missileAnimFrame = 0;
-	speed = 100;
+	speed = 2000;
 	angle = 0;
 
 	playerAttackMissile = ImageManager::GetInstance()->AddImage(EImageKey::PlayerAttackMissile,
@@ -74,6 +69,11 @@ void PlayerMissileAttack::Update()
 			missileElapsedFrame = 0.0f;
 		}
 	}
+	if (IsOutofScreen(GetPos()))
+	{
+		SetActive(false);
+		attackMissileCollision->SetActive(false);
+	}
 }
 
 void PlayerMissileAttack::Render(HDC hdc)
@@ -91,7 +91,11 @@ void PlayerMissileAttack::Fire(FPOINT pos, int level)
 {
 	SetPos(pos);
 	if(!IsActive())
+	{
 		SetActive(true);
+		attackMissileCollision->SetActive(true);
+		missileAnimFrame = 0;
+	}
 }
 
 void PlayerMissileAttack::Move()
@@ -100,4 +104,5 @@ void PlayerMissileAttack::Move()
 	position.x += speed * TimerManager::GetInstance()->GetDeltaTime() * cosf(DEG_TO_RAD(-90));
 	position.y += speed * TimerManager::GetInstance()->GetDeltaTime() * sinf(DEG_TO_RAD(-90));
 	SetPos(position);
+	attackMissileCollision->SetRect(GetRectAtCenter(position.x, position.y, 40, 24));
 }

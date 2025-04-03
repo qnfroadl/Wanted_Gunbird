@@ -64,9 +64,6 @@
     <ClCompile Include="MissilePattern.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerMissileAttack.cpp" />
-    <ClCompile Include="PlayerAttackManager.cpp" />
-    <ClCompile Include="PlayerDefaultAttack.cpp" />
     <ClCompile Include="ItemManager.cpp">
       <Filter>Item</Filter>
     </ClCompile>
@@ -82,6 +79,17 @@
     </ClCompile>
     <ClCompile Include="ShotManager.cpp">
       <Filter>Boss</Filter>
+    <ClCompile Include="PlayerAttackManager.cpp">
+      <Filter>PlayerAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerDefaultAttack.cpp">
+      <Filter>PlayerAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerMissileAttack.cpp">
+      <Filter>PlayerAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerBomb.cpp">
+      <Filter>PlayerAttack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -155,9 +163,6 @@
     <ClInclude Include="MissilePattern.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerMissileAttack.h" />
-    <ClInclude Include="PlayerAttackManager.h" />
-    <ClInclude Include="PlayerDefaultAttack.h" />
     <ClInclude Include="ItemManager.h">
       <Filter>Item</Filter>
     </ClInclude>
@@ -173,6 +178,17 @@
     </ClInclude>
     <ClInclude Include="ShotManager.h">
       <Filter>Boss</Filter>
+    <ClInclude Include="PlayerAttackManager.h">
+      <Filter>PlayerAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerDefaultAttack.h">
+      <Filter>PlayerAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerMissileAttack.h">
+      <Filter>PlayerAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerBomb.h">
+      <Filter>PlayerAttack</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -202,6 +218,8 @@
     </Filter>
     <Filter Include="Boss">
       <UniqueIdentifier>{bab04b7f-6a60-4eda-835c-1ccc2f6e8fa2}</UniqueIdentifier>
+    <Filter Include="PlayerAttack">
+      <UniqueIdentifier>{770399b6-b8fc-47a9-b2f3-15c39d83daea}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
