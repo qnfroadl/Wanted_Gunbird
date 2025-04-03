@@ -87,6 +87,17 @@ void PlayerMissileAttack::Render(HDC hdc)
 	}
 }
 
+void PlayerMissileAttack::Fire(FPOINT pos)
+{
+	SetPos(pos);
+	if (!IsActive())
+	{
+		SetActive(true);
+		attackMissileCollision->SetActive(true);
+		missileAnimFrame = 0;
+	}
+}
+
 void PlayerMissileAttack::Fire(FPOINT pos, int level)
 {
 	SetPos(pos);

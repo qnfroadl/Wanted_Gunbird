@@ -21,7 +21,7 @@ void PlayerAttackManager::Fire(const FPOINT& pos, int level, vector<PlayerDefaul
 
 	}
 
-	if (level == 3)
+	if (level >= 3)
 	{
 		leftPos.x -= gap_X;
 		leftPos.y += gap_Y;
@@ -30,7 +30,11 @@ void PlayerAttackManager::Fire(const FPOINT& pos, int level, vector<PlayerDefaul
 
 		attack[6]->Fire(leftPos);
 		attack[7]->Fire(rightPos);
+	}
 
+	if (level == 4)
+	{
+		attack[8]->Fire(pos);
 	}
 
 }
@@ -94,13 +98,11 @@ void PlayerAttackManager::Fire(FPOINT pos, int level)
 	// 1레벨은 2발, 2레벨4발, 3레벨8발.
 
 	vector<PlayerDefaultAttack*> vecAttack;
-
 	PlayerDefaultAttack* attack = nullptr;
 	vector<PlayerDefaultAttack*>::iterator iter;
 
 	int attackCount = (1 << level);
-	if (level < 4)
-	{
+	
 		for (iter = defaultAttackVec.begin(); iter != defaultAttackVec.end(); iter++)
 		{
 			attack = *iter;
@@ -119,6 +121,4 @@ void PlayerAttackManager::Fire(FPOINT pos, int level)
 		{
 			Fire(pos, level, vecAttack);
 		}
-		
-	}
 }

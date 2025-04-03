@@ -20,6 +20,7 @@ public:
 	void Update();
 	void Render(HDC hdc);
 
+	void Fire(FPOINT pos);
 	void Fire(FPOINT pos, int level);
 	void Move();
 };
