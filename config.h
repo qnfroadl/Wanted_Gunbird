@@ -6,7 +6,7 @@
 #include <string>
 #include <iostream>
 #include "KeyManager.h"
-#include <string>
+#include <unordered_map>
 
 using namespace std;
 
@@ -18,22 +18,11 @@ using namespace std;
 #define DEG_TO_RAD(degree) ((3.14 / 180.0) * degree)
 #define RAD_TO_DEG(radian) ((180.0 / 3.14) * radian)
 
-
-typedef struct EnemyInformation {
-	const string& key;
-	const wchar_t* filePath;
-	float width;
-	float height;
-	int maxFrameX;
-	int maxFrameY; 
-	bool isTransparent; 
-	COLORREF transColor;
-} EnemyInfo;
-
-enum class EnemyType
+enum class EEnemyType
 {
+	FlyingEnemy,
+	MidBoss,
 };
-
 
 enum class GameTag
 {
@@ -59,7 +48,35 @@ enum class EImageKey
 	// 하단의 Effect 종류들은 FindImage로 찾아서 쓰기만 하면됩니다.
 	ExplosionPlayer, ExplosionSmall, ExplosionBig, ShotImpact,
 
+	// Enemy
+	FlyingEnemy, MidBoss, MidBossUpgrade,
+
+	// Missile
+	MidBossStar, MidBossPyramid,
 };
+
+typedef struct EnemyInformation {
+	EImageKey key;
+	const wchar_t* filePath;
+	int hp;
+	float width;
+	float height;
+	int maxFrameX;
+	int maxFrameY;
+	bool isTransparent;
+	COLORREF transColor;
+} EnemyImgInfo;
+
+typedef struct MissileImageInformation {
+	EImageKey key;
+	const wchar_t* filePath;	
+	float width;
+	float height;
+	int maxFrameX;
+	int maxFrameY;
+	bool isTransparent;
+	COLORREF transColor;
+} MissileImgInfo;
 
 enum class EEffectType
 {
@@ -105,12 +122,12 @@ typedef struct tagFPOINT
 	float y;
 } FPOINT;
 
-typedef struct missileInfo {
+typedef struct SpawnMissileInformation {
 	FPOINT startPos;
 	float fireDelay;
 	float speed;
 	float angle;
-} MissileInfo;
+} SpawnMissileInfo;
 
 typedef struct _Ellipse
 {

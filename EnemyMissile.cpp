@@ -32,7 +32,7 @@ EnemyMissile::~EnemyMissile()
 	//}
 }
 
-void EnemyMissile::Init(const string& key, const wchar_t* filePath, FPOINT startingPos, float width,
+void EnemyMissile::Init(EImageKey key, const wchar_t* filePath, FPOINT startingPos, float width,
 	float height, int maxFrameX, int maxFrameY, bool isTransparent, COLORREF transColor)
 {
 	this->width = width / (float)maxFrameX;
