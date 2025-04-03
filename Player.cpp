@@ -33,6 +33,8 @@ void Player::Init()
 	elapsedFrame = 0;
 	attackLevel = 4;
 	bombCount = 2;
+	bRightMove = false;
+	bLeftMove = false;
 
 	AddTag(GameTag::Player);
 	SetPos(WINSIZE_X / 2, WINSIZE_Y * 0.9);
@@ -42,6 +44,16 @@ void Player::Init()
 		744*2, 41*2, 24, 1, true, RGB(255, 0, 255));
 	if (!image)
 		return;
+	/*rightMoveImage = ImageManager::GetInstance()->AddImage(EImageKey::Player,
+		TEXT("assets/Sprites/Characters/testu_idle_spriteMerge.bmp"),
+		744 * 2, 41 * 2, 24, 1, true, RGB(255, 0, 255));
+	if (!rightMoveImage)
+		return;
+	leftMoveImage = ImageManager::GetInstance()->AddImage(EImageKey::Player,
+		TEXT("assets/Sprites/Characters/testu_idle_spriteMerge.bmp"),
+		744 * 2, 41 * 2, 24, 1, true, RGB(255, 0, 255));
+	if (!leftMoveImage)
+		return;*/
 
 	attackManager = new PlayerAttackManager;
 	attackManager->Init();
@@ -64,6 +76,20 @@ void Player::Release()
 		image->Release();
 		delete image;
 		image = nullptr;
+	}
+
+	if (leftMoveImage)
+	{
+		leftMoveImage->Release();
+		delete leftMoveImage;
+		leftMoveImage = nullptr;
+	}
+
+	if (rightMoveImage)
+	{
+		rightMoveImage->Release();
+		delete rightMoveImage;
+		rightMoveImage = nullptr;
 	}
 
 	if (attackManager)
@@ -110,36 +136,47 @@ void Player::Update()
 	else if (KeyManager::GetInstance()->IsStayKeyDown(VK_LEFT))
 	{
 		moveAngle = 180.0f;
+		bLeftMove = true;
 		movementActive = true;
 	}
 	else if (KeyManager::GetInstance()->IsStayKeyDown(VK_RIGHT))
 	{
 		moveAngle = 0.0f;
+		bRightMove = true;
 		movementActive = true;
 	}
 	if (KeyManager::GetInstance()->IsStayKeyDown(VK_UP) &&
 		(KeyManager::GetInstance()->IsStayKeyDown(VK_LEFT)))
 	{
 		moveAngle = 225.0f;
+		bLeftMove = true;
 		movementActive = true;
 	}
 	else if (KeyManager::GetInstance()->IsStayKeyDown(VK_UP) &&
 		(KeyManager::GetInstance()->IsStayKeyDown(VK_RIGHT)))
 	{
 		moveAngle = 315.0f;
+		bRightMove = true;
 		movementActive = true;
 	}
 	else if (KeyManager::GetInstance()->IsStayKeyDown(VK_DOWN) &&
 		(KeyManager::GetInstance()->IsStayKeyDown(VK_LEFT)))
 	{
 		moveAngle = 135.0f;
+		bLeftMove = true;
 		movementActive = true;
 	}
 	else if (KeyManager::GetInstance()->IsStayKeyDown(VK_DOWN) &&
 		(KeyManager::GetInstance()->IsStayKeyDown(VK_RIGHT)))
 	{
 		moveAngle = 45.0f;
+		bRightMove = true;
 		movementActive = true;
+	}
+	else
+	{
+		bLeftMove = false;
+		bRightMove = false;
 	}
 	if(movementActive)
 		Move(moveAngle);
@@ -149,7 +186,7 @@ void Player::Update()
 	if (KeyManager::GetInstance()->IsOnceKeyDown('S'))
 	{
 		ActivateBomb();
-		playerBomb->Update(GetPos());
+		playerBomb->Update();
 	
 	}
 	if (attackManager)
@@ -160,6 +197,18 @@ void Player::Update()
 
 void Player::Render(HDC hdc)
 {
+	if (playerBomb)
+	{
+		playerBomb->Render(hdc, GetPos());
+	}
+	if (bLeftMove && leftMoveImage)
+	{
+		leftMoveImage->FrameRender(hdc, GetPos().x, GetPos().y, animFrame, 0, false);
+	}
+	if (bRightMove && rightMoveImage)
+	{
+		rightMoveImage->FrameRender(hdc, GetPos().x, GetPos().y, animFrame, 0, false);
+	}
 	if (image)
 	{
 		image->FrameRender(hdc, GetPos().x, GetPos().y, animFrame, 0, false);
@@ -167,10 +216,6 @@ void Player::Render(HDC hdc)
 	if (attackManager)
 	{
 		attackManager->Render(hdc);
-	}
-	if (playerBomb)
-	{
-		playerBomb->Render(hdc);
 	}
 }
 

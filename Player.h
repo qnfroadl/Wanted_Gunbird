@@ -14,11 +14,15 @@ public:
 	int power;
 	int bombCount;
 	int animFrame;
-	int elapsedFrame;
+	float elapsedFrame;
 	int score;
 	float speed;
 	int attackLevel;
+	bool bRightMove;
+	bool bLeftMove;
 	Image* image;
+	Image* leftMoveImage;
+	Image* rightMoveImage;
 	//PlayerDefaultAttack* missile;
 	PlayerAttackManager* attackManager;
 	CollisionRect* playerCollision;
