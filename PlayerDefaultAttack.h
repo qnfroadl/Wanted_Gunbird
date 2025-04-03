@@ -9,6 +9,7 @@ class PlayerDefaultAttack : public GameActor
 private:
 	float speed;
 	float angle;
+	int damage;
 	Image* playerAttackDefault;
 	CollisionRect* attackDefaultCollision;
 	void CollisionDetected(GameObject* obj);

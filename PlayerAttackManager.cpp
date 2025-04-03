@@ -21,7 +21,7 @@ void PlayerAttackManager::Fire(const FPOINT& pos, int level, vector<PlayerDefaul
 
 	}
 
-	if (level == 3)
+	if (level >= 3)
 	{
 		leftPos.x -= gap_X;
 		leftPos.y += gap_Y;
@@ -30,7 +30,29 @@ void PlayerAttackManager::Fire(const FPOINT& pos, int level, vector<PlayerDefaul
 
 		attack[6]->Fire(leftPos);
 		attack[7]->Fire(rightPos);
+	}
 
+	/*if (level == 4)
+	{
+		attack[8]->Fire(pos);
+	}*/
+	if (level == 4)
+	{
+		attack[8]->Fire(pos);
+
+		// PlayerMissileAttack 발사 로직 추가
+		if (!missileAttackVec.empty())
+		{
+			// 사용 가능한 미사일 찾기
+			for (auto& missileAttack : missileAttackVec)
+			{
+				if (!missileAttack->IsActive())
+				{
+					missileAttack->Fire(pos, level); // 미사일 발사
+					break; // 첫 번째 비활성 미사일 발사 후 종료
+				}
+			}
+		}
 	}
 
 }
@@ -94,13 +116,11 @@ void PlayerAttackManager::Fire(FPOINT pos, int level)
 	// 1레벨은 2발, 2레벨4발, 3레벨8발.
 
 	vector<PlayerDefaultAttack*> vecAttack;
-
 	PlayerDefaultAttack* attack = nullptr;
 	vector<PlayerDefaultAttack*>::iterator iter;
 
 	int attackCount = (1 << level);
-	if (level < 4)
-	{
+	
 		for (iter = defaultAttackVec.begin(); iter != defaultAttackVec.end(); iter++)
 		{
 			attack = *iter;
@@ -119,6 +139,4 @@ void PlayerAttackManager::Fire(FPOINT pos, int level)
 		{
 			Fire(pos, level, vecAttack);
 		}
-		
-	}
 }

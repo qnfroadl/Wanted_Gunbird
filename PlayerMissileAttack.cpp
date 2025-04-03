@@ -6,6 +6,7 @@
 #include "GameActor.h"
 #include "Enemy.h"
 #include "CommonFunction.h"
+#include "EffectManager.h"
 
 void PlayerMissileAttack::CollisionDetected(GameObject* obj)
 {
@@ -17,6 +18,8 @@ void PlayerMissileAttack::CollisionDetected(GameObject* obj)
 
 		this->SetActive(false);
 		this->attackMissileCollision->SetActive(false);
+
+		EffectManager::GetInstance()->PlayEffect(GetPos(), EEffectType::ExplosionBig);
 	}
 }
 
@@ -25,7 +28,7 @@ void PlayerMissileAttack::Init()
 	this->AddTag(GameTag::PlayerMissileAttack);
 	missileElapsedFrame = 0.0f;
 	missileAnimFrame = 0;
-	speed = 2000;
+	speed = 3000;
 	angle = 0;
 
 	playerAttackMissile = ImageManager::GetInstance()->AddImage(EImageKey::PlayerAttackMissile,
@@ -85,6 +88,17 @@ void PlayerMissileAttack::Render(HDC hdc)
 		{
 			playerAttackMissile->FrameRender(hdc, GetPos().x, GetPos().y, missileAnimFrame, 0, false);
 		}
+	}
+}
+
+void PlayerMissileAttack::Fire(FPOINT pos)
+{
+	SetPos(pos);
+	if (!IsActive())
+	{
+		SetActive(true);
+		attackMissileCollision->SetActive(true);
+		missileAnimFrame = 0;
 	}
 }
 
