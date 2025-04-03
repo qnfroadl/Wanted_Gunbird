@@ -7,7 +7,7 @@
 
 HINSTANCE g_hInstance;	// 프로그램 인스턴스 핸들
 HWND g_hWnd;
-LPCWSTR g_lpszClassName = (LPCWSTR)TEXT("1994 Ginbird");
+LPCWSTR g_lpszClassName = (LPCWSTR)TEXT("1994 Gunbird");
 MainGame g_mainGame;
 
 

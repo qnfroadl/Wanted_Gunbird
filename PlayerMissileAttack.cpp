@@ -22,6 +22,7 @@ void PlayerMissileAttack::CollisionDetected(GameObject* obj)
 
 void PlayerMissileAttack::Init()
 {
+	this->AddTag(GameTag::PlayerMissileAttack);
 	missileElapsedFrame = 0.0f;
 	missileAnimFrame = 0;
 	speed = 2000;

@@ -95,7 +95,7 @@ void MainGame::Init()
 
 	canon = new BossShip();
 	canon->Init();
-	canon->SetPos(WINSIZE_X / 2, WINSIZE_Y/4);
+	canon->SetPos(WINSIZE_X / 2, -300);
 	canon->SetTarget(player);
 }
 
