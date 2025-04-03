@@ -7,6 +7,7 @@
 #include "PlayerAttackManager.h"
 #include "PlayerDefaultAttack.h"
 #include "PlayerMissileAttack.h"
+#include "PlayerBomb.h"
 #include "CollisionManager.h"
 #include "Item.h"
 
@@ -44,7 +45,8 @@ void Player::Init()
 
 	attackManager = new PlayerAttackManager;
 	attackManager->Init();
-
+	playerBomb = new PlayerBomb;
+	playerBomb->Init(GetPos());
 	FPOINT pos = GetPos();
 	RECT defaultRect = { pos.x - (PLAYERWITHD / 2), pos.y - (PLAYERHEIGHT / 2), pos.x + (PLAYERWITHD / 2), pos.y + (PLAYERHEIGHT / 2) };
 	playerCollision = CollisionManager::GetInstance()->CreateCollisionRect(this, defaultRect);
@@ -69,6 +71,13 @@ void Player::Release()
 		attackManager->Release();
 		delete attackManager;
 		attackManager = nullptr;
+	}
+	
+	if (playerBomb)
+	{
+		playerBomb->Release();
+		delete playerBomb;
+		playerBomb = nullptr;
 	}
 }
 
@@ -135,9 +144,14 @@ void Player::Update()
 	if(movementActive)
 		Move(moveAngle);
 
-	if (KeyManager::GetInstance()->IsOnceKeyDown(VK_SPACE))
+	if (KeyManager::GetInstance()->IsOnceKeyDown('A'))
 		Fire();
-
+	if (KeyManager::GetInstance()->IsOnceKeyDown('S'))
+	{
+		ActivateBomb();
+		playerBomb->Update(GetPos());
+	
+	}
 	if (attackManager)
 	{
 		attackManager->Update();
@@ -153,6 +167,10 @@ void Player::Render(HDC hdc)
 	if (attackManager)
 	{
 		attackManager->Render(hdc);
+	}
+	if (playerBomb)
+	{
+		playerBomb->Render(hdc);
 	}
 }
 
@@ -209,6 +227,8 @@ void Player::ActivateBomb()
 {
 	if (bombCount <= 0)
 		return;
+	playerBomb->BombActivate(GetPos());
+	bombCount--;
 	/* 
 	 ÆøÅºÀº missileMgr¿¡¼­ ±¸Çö?
 	 ÆøÅºÀÇ collision°ú °ãÄ¡´Â collision °è»ê

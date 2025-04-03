@@ -4,13 +4,13 @@
 class Image;
 class CollisionRect;
 
-class PlayerMissileAttack : GameActor
+class PlayerMissileAttack : public GameActor
 {
 private:
 	float missileElapsedFrame;
 	int missileAnimFrame;
 	float speed;
-	float angle;\
+	float angle;
 	Image* playerAttackMissile;
 	CollisionRect* attackMissileCollision;
 	void CollisionDetected(GameObject* obj);

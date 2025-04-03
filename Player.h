@@ -5,6 +5,7 @@
 class Image;
 class PlayerAttackManager;
 class CollisionRect;
+class PlayerBomb;
 class Player : public GameActor
 {
 public:
@@ -21,6 +22,7 @@ public:
 	//PlayerDefaultAttack* missile;
 	PlayerAttackManager* attackManager;
 	CollisionRect* playerCollision;
+	PlayerBomb* playerBomb;
 	void CollisionDetected(GameObject* obj);
 public:
 	void Init();

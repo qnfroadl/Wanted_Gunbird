@@ -6,6 +6,7 @@
 #include "GameActor.h"
 #include "CommonFunction.h"
 #include "Enemy.h"
+#include "EffectManager.h"
 
 #define PDA_WIDTH 2
 #define PDA_HEIGHT 29
@@ -19,6 +20,8 @@ void PlayerDefaultAttack::CollisionDetected(GameObject* obj)
 
 		this->SetActive(false);	// EnemyºñÈ°¼º
 		this->attackDefaultCollision->SetActive(false);
+
+		EffectManager::GetInstance()->PlayEffect(GetPos(), EEffectType::ShotImpact);
 	}
 }
 
@@ -34,6 +37,7 @@ void PlayerDefaultAttack::Init()
 
 	FPOINT pos = GetPos();
 	RECT defaultRect = { pos.x, pos.y, pos.x + 2, pos.y + 29 };
+
 	attackDefaultCollision = CollisionManager::GetInstance()->CreateCollisionRect(this, defaultRect);
 	attackDefaultCollision->Bind([&](GameObject* obj)
 		{

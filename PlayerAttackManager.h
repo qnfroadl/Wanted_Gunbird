@@ -5,7 +5,7 @@
 
 class PlayerDefaultAttack;
 class PlayerMissileAttack;
-class PlayerAttackManager : GameObject
+class PlayerAttackManager : public GameObject
 {
 private:
 	vector<PlayerDefaultAttack*> defaultAttackVec;
