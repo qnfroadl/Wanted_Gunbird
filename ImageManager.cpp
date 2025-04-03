@@ -20,8 +20,6 @@ void ImageManager::Release()
         it++;
     }
 
-
-
     Singleton::ReleaseInstance();
 }
 

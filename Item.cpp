@@ -7,6 +7,9 @@
 #include "TimerManager.h"
 #include "config.h"
 
+//test
+#include "EffectManager.h"
+
 #define LT 135
 #define RT 45
 #define LB 225
@@ -31,14 +34,14 @@ void Item::Init()
 
 	if (ItemType::BombAdd == this->type)
 	{
-		this->image = ImageManager::GetInstance()->AddImage("PickupBomb", TEXT("assets/Sprites/Misc/pickup_bomb.bmp"), 216, 16, 8, 1, true, RGB(255, 0, 255));
+		this->image = ImageManager::GetInstance()->AddImage(EImageKey::PickupBomb, TEXT("assets/Sprites/Misc/pickup_bomb.bmp"), 216, 16, 8, 1, true, RGB(255, 0, 255));
 		width = 27; // 216 / 8;
 		height = 16;
 	}
 	else 
 	{
 		// 파워업으로 변경 필요.
-		this->image = ImageManager::GetInstance()->AddImage("PickupBomb", TEXT("assets/Sprites/Misc/pickup_bomb.bmp"), 216, 16, 8, 1, true, RGB(255, 0, 255));
+		this->image = ImageManager::GetInstance()->AddImage(EImageKey::PickupPower, TEXT("assets/Sprites/Misc/pickup_bomb.bmp"), 216, 16, 8, 1, true, RGB(255, 0, 255));
 		width = 27; //216 / 8;
 		height = 16;
 	}
@@ -71,7 +74,8 @@ void Item::Update()
 void Item::Render(HDC hdc)
 {
 	FPOINT pos = GetPos();
-	if (8*4 <= curFrame)
+	
+	if (image->GetMaxFrameX() * 4 <= curFrame)
 	{
 		curFrame = 0;
 	}
@@ -86,7 +90,11 @@ void Item::Release()
 
 void Item::On_CollisionDetected(GameObject* obj)
 {
-	
+	if (obj->FindTag(GameTag::Player))
+	{
+		SetActive(false);
+		collision->SetActive(false);
+	}
 }
 
 void Item::MoveInWindow()
@@ -100,14 +108,17 @@ void Item::MoveInWindow()
 	else if(RectInRect(collision->GetRect(), RECT{ 0,0, WINSIZE_X, 3 }))
 	{	// 상단
 		angle = (angle == LT) ? LB : RB;
+
 	}
 	else if (RectInRect(collision->GetRect(), RECT{ WINSIZE_X - 3,0, WINSIZE_X, WINSIZE_Y }))
 	{	//오른쪽 벽
 		angle = (angle == RT) ? LT : LB;
+
 	}
 	else if (RectInRect(collision->GetRect(), RECT{ 0,WINSIZE_Y - 3, WINSIZE_X, WINSIZE_Y }))
 	{	// 하단
 		angle = (angle == LB) ? LT : RT;
+
 	}
 	
 	pos.x += TimerManager::GetInstance()->GetDeltaTime() * speed * cosf(DEG_TO_RAD(angle));

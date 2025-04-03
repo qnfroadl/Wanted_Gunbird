@@ -11,28 +11,29 @@ class Effect : public GameActor
 private:
 	Image* image;
 	int curFrame;
+	int skipFrame;
 
 public:
+	Effect();
 	void SetEffectKey(EEffectType key);
 	void Update();
-	void Render();
+	void Render(HDC hdc);
+
+	void SetSkipFrame(int skipFrame);
 
 };
-
 
 class EffectManager : public Singleton<EffectManager>
 {
 
 private:
-	std::unordered_set<Image*> setImages;
+	std::vector<Effect*> vecEffects;
 
 public:
 	void Init();
 	void Update();
-	void Render();
+	void Render(HDC hdc);
 	void Release();
 
 	void PlayEffect(const FPOINT& pos, EEffectType key);
-
 };
-
