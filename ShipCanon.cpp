@@ -7,12 +7,12 @@
 #include "Image.h"
 #include "TimerManager.h"
 
-void ShipCanon::On_CollisionDetected(GameObject* obj)
+void ShipCannon::On_CollisionDetected(GameObject* obj)
 {
 
 }
 
-void ShipCanon::UpdateCanonAngle()
+void ShipCannon::UpdateCanonAngle()
 {
 	float realAngle = GetAngle(GetPos(), target->GetPos());
 	float degAngle = RAD_TO_DEG(realAngle);
@@ -46,7 +46,7 @@ void ShipCanon::UpdateCanonAngle()
 
 }
 
-void ShipCanon::Init()
+void ShipCannon::Init()
 {
 	this->AddTag(GameTag::Boss_Canon);
 
@@ -77,7 +77,7 @@ void ShipCanon::Init()
 	fireDelay = 1;
 }
 
-void ShipCanon::Update()
+void ShipCannon::Update()
 {
 	if (nullptr != target)
 	{
@@ -95,7 +95,7 @@ void ShipCanon::Update()
 	}
 }
 
-void ShipCanon::Render(HDC hdc)
+void ShipCannon::Render(HDC hdc)
 {
 	if (nullptr != image)
 	{
@@ -103,28 +103,28 @@ void ShipCanon::Render(HDC hdc)
 	}
 }
 
-void ShipCanon::Release()
+void ShipCannon::Release()
 {
 
 }
 
-void ShipCanon::SetTarget(GameActor* target)
+void ShipCannon::SetTarget(GameActor* target)
 {
 	this->target = target;
 }
 
-void ShipCanon::SetActive(bool bActive)
+void ShipCannon::SetActive(bool bActive)
 {
 	GameActor::SetActive(bActive);
 	collision->SetActive(bActive);
 }
 
-void ShipCanon::SetFireDelay(float fireDelay)
+void ShipCannon::SetFireDelay(float fireDelay)
 {
 	this->fireDelay = fireDelay;
 }
 
-void ShipCanon::Fire()
+void ShipCannon::Fire()
 {
 	FPOINT leftPos = GetPos();
 	FPOINT rightPos = GetPos();
@@ -144,7 +144,7 @@ void ShipCanon::Fire()
 
 }
 
-void ShipCanon::AddHP(int addHp)
+void ShipCannon::AddHP(int addHp)
 {
 	this->hp += addHp;
 	if (this->hp <= 0)
@@ -153,7 +153,7 @@ void ShipCanon::AddHP(int addHp)
 	}
 }
 
-void ShipCanon::Dead()
+void ShipCannon::Dead()
 {
 	SetActive(false);
 }

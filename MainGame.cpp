@@ -18,7 +18,7 @@
 
 
 //
-#include "ShipCanon.h"
+#include "BossShip.h"
 
 void MainGame::EffectSimulation()
 {
@@ -93,10 +93,10 @@ void MainGame::Init()
 	// test
 	stageManager->Start();
 
-	canon = new ShipCanon();
+	canon = new BossShip();
 	canon->Init();
-	canon->SetPos(WINSIZE_X / 2, WINSIZE_Y / 2);
-	canon->SetTarget(this->player);
+	canon->SetPos(WINSIZE_X / 2, WINSIZE_Y/4);
+	canon->SetTarget(player);
 }
 
 void MainGame::Release()

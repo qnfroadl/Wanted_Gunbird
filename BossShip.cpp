@@ -22,28 +22,66 @@ void BossShip::Init()
 
 	for (int i = 0; i < 8; i++)
 	{
-		aryCanons[i] = new ShipCanon();
-		aryCanons[i]->Init();
+		aryCannons[i] = new ShipCannon();
+		aryCannons[i]->Init();
 	}
-
+	
 }
 
 void BossShip::Update()
 {
-
+	CannonPosUpdate();
+	for (int i = 0; i < 8; i++)
+	{
+		if (aryCannons[i]->IsActive())
+		{
+			aryCannons[i]->Update();
+		}
+	}
 }
 
 void BossShip::Render(HDC hdc)
 {
-	baseImage->Render(hdc, width, height);
+	baseImage->RenderCenter(hdc, GetPos().x, GetPos().y);
+
+	for (int i = 0; i < 8; i++)
+	{
+		if (aryCannons[i]->IsActive())
+		{
+			aryCannons[i]->Render(hdc);
+		}
+	}
 }
 
 void BossShip::Release()
 {
+	for (int i = 0; i < 8; i++)
+	{
+		aryCannons[i]->Release();	
+	}
+}
 
+void BossShip::SetTarget(GameActor* target)
+{
+	for (int i = 0; i < 8; i++)
+	{
+		aryCannons[i]->SetTarget(target);
+	}
 }
 
 void BossShip::AddMove(const FPOINT& movePos)
 {
+	
+}
 
+void BossShip::CannonPosUpdate()
+{
+	FPOINT pos = GetPos();
+	for (int i = 0; i < 2; i++)
+	{
+		aryCannons[0 + (4 * i)]->SetPos(pos.x - 70 * (1 - i * 2), pos.y - 50);
+		aryCannons[1 + (4 * i)]->SetPos(pos.x - 76 * (1 - i * 2), pos.y + 61);
+		aryCannons[2 + (4 * i)]->SetPos(pos.x - 45 * (1 - i * 2), pos.y + 88);
+		aryCannons[3 + (4 * i)]->SetPos(pos.x - 35 * (1 - i * 2), pos.y + 169);
+	}
 }

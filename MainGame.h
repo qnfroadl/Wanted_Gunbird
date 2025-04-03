@@ -8,7 +8,7 @@ class BackgroundUI;
 class Item;
 class StageManager;
 
-class ShipCanon;
+class BossShip;
 class MainGame : public GameObject
 {
 private:
@@ -30,7 +30,7 @@ private:
 
 	StageManager* stageManager;
 
-	ShipCanon* canon;
+	BossShip* canon;
 	void EffectSimulation();
 	void ItemSpawnSimulation();
 

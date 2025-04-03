@@ -4,7 +4,7 @@
 
 class Image;
 class CollisionRect;
-class ShipCanon : public GameActor
+class ShipCannon : public GameActor
 {
 
 private:

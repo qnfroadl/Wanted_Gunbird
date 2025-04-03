@@ -4,25 +4,26 @@
 #include <array>
 
 class Image;
-class ShipCanon;
+class ShipCannon;
 class BossShip : public GameActor
 {
 private:
 	Image* baseImage;	//	
 	Image* baseDestroyLeft;
 	Image* baseDestroyRight;
-
+	GameActor* target;
 	int width;
 	int height;
 
-	array<ShipCanon*, 8> aryCanons;
+	array<ShipCannon*, 8> aryCannons;
 public:
 	void Init();
 	void Update();
 	void Render(HDC hdc);
 	void Release();
+	void SetTarget(GameActor* target);
 
 	void AddMove(const FPOINT& movePos);
-
+	void CannonPosUpdate();
 };
 
