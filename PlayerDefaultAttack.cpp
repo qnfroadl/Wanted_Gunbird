@@ -79,11 +79,19 @@ void PlayerDefaultAttack::Render(HDC hdc)
 
 }
 
-void PlayerDefaultAttack::Fire(FPOINT pos, int level)
+void PlayerDefaultAttack::Fire(FPOINT pos)
 {
 	SetPos(pos);
 	SetActive(true);
 	attackDefaultCollision->SetActive(true);
+}
+
+void PlayerDefaultAttack::Fire(int posX, int posY)
+{
+	SetPos(posX, posY);
+	SetActive(true);
+	attackDefaultCollision->SetActive(true);
+
 }
 
 void PlayerDefaultAttack::Move()

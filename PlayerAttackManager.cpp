@@ -1,7 +1,15 @@
 #include "PlayerAttackManager.h"
 #include "PlayerDefaultAttack.h"
 #include "PlayerMissileAttack.h"
+#include <math.h>
 
+void PlayerAttackManager::Fire(const FPOINT& pos, int level, vector<PlayerDefaultAttack*>& attack)
+{
+	for (auto const& iter : attack)
+	{
+		iter->Fire(pos);
+	}
+}
 void PlayerAttackManager::Init()
 {
 	defaultAttackVec.reserve(AMMUNITION);
@@ -10,10 +18,10 @@ void PlayerAttackManager::Init()
 		PlayerDefaultAttack* defaultAttack = new PlayerDefaultAttack();
 		defaultAttack->Init();
 		defaultAttackVec.push_back(defaultAttack);
+		PlayerMissileAttack* missile = new PlayerMissileAttack();
+		missile->Init();
+		missileAttackVec.push_back(missile);
 	}
-	PlayerMissileAttack* missile = new PlayerMissileAttack();
-	missile->Init();
-	missileAttackVec.push_back(missile);
 }
 
 void PlayerAttackManager::Release()
@@ -59,16 +67,29 @@ void PlayerAttackManager::Render(HDC hdc)
 
 void PlayerAttackManager::Fire(FPOINT pos, int level)
 {
+	// 1레벨은 2발, 2레벨4발, 3레벨8발.
+
+	vector<PlayerDefaultAttack*> vecAttack;
+
 	PlayerDefaultAttack* attack = nullptr;
 	vector<PlayerDefaultAttack*>::iterator iter;
-	for (iter = defaultAttackVec.begin(); iter != defaultAttackVec.end(); iter++)
+	
+	if(level < 4)
 	{
-		attack = *iter;
-
-		if(false == attack->IsActive())
+		for (iter = defaultAttackVec.begin(); iter != defaultAttackVec.end(); iter++)
 		{
-			attack->Fire(pos, level);
-			break;
+			attack = *iter;
+
+			if (false == attack->IsActive())
+			{
+				vecAttack.push_back(attack);
+				if (sqrt(level) == vecAttack.size())
+				{
+					break;
+				}
+			}
 		}
+
+		Fire(pos, level, vecAttack);
 	}
 }

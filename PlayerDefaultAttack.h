@@ -18,7 +18,8 @@ public:
 	void Update();
 	void Render(HDC hdc);
 
-	void Fire(FPOINT pos, int level);
+	void Fire(FPOINT pos);
+	void Fire(int posX, int posY);
 	void Move();
 };
 
