@@ -13,11 +13,11 @@ void PlayerDefaultAttack::CollisionDetected(GameObject* obj)
 {
  	auto tags = obj->GetTags();
 	if (0 < tags.count(GameTag::Enemy))
-	{
+	{ 
 		Enemy* enemy = static_cast<Enemy*>(obj);
 		enemy->Damaged(10);
 
-		this->SetActive(false);	// Enemy비활성
+		if (enemy->getHp() <= 0) this->SetActive(false);	// Enemy비활성
 		this->attackDefaultCollision->SetActive(false);
 	}
 }

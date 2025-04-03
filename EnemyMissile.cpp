@@ -23,24 +23,25 @@ EnemyMissile::EnemyMissile(float speed, float angle)
 
 EnemyMissile::~EnemyMissile()
 {
-	if (image)
-	{
-		image->Release();
-		delete image;
-		image = nullptr;
-	}
+	// 에러 나는 이유
+	//if (image)
+	//{
+	//	image->Release();
+	//	delete image;
+	//	image = nullptr;
+	//}
 }
 
 void EnemyMissile::Init(const string& key, const wchar_t* filePath, FPOINT startingPos, float width,
 	float height, int maxFrameX, int maxFrameY, bool isTransparent, COLORREF transColor)
 {
-	this->width = width;
-	this->height= height;
+	this->width = width / (float)maxFrameX;
+	this->height= height / (float)maxFrameY;
 
 	image = ImageManager::GetInstance()->AddImage(key, filePath, width, height,
 		maxFrameX, maxFrameY, isTransparent, transColor);
 	
-	collision = CollisionManager::GetInstance()->CreateCollisionRect(this, RECT{});
+	collision = CollisionManager::GetInstance()->CreateCollisionRect(this, RECT{});	
 	collision->Bind([&](GameObject* obj)
 		{
 			this->On_CollisionDetected(obj);
@@ -51,6 +52,7 @@ void EnemyMissile::Init(const string& key, const wchar_t* filePath, FPOINT start
 
 void EnemyMissile::Release()
 {
+	CollisionManager::GetInstance()->DeleteCollision(collision);
 }
 
 void EnemyMissile::Update()
@@ -62,8 +64,8 @@ void EnemyMissile::Update()
 		// collision 설정
 		collision->SetRect(GetRectAtCenter(pos.x, pos.y, width, height));						
 
-		pos.x += speed * cosf(angle);
-		pos.y += speed * sinf(angle);
+		pos.x += speed * cosf(DEG_TO_RAD(angle));
+		pos.y += speed * sinf(DEG_TO_RAD(angle));
 		SetPos(pos);
 
 		// animation
@@ -89,6 +91,17 @@ void EnemyMissile::Render(HDC hdc)
 	}
 }
 
+const RECT& EnemyMissile::getRect()
+{
+	return collision->GetRect();
+}
+
 void EnemyMissile::On_CollisionDetected(GameObject* obj)
 {
+	//auto tags = obj->GetTags();
+	//if (0 < tags.count(GameTag::Player))
+	//{
+	//	obj->SetActive(false);
+	//	this->SetActive(false);
+	//}
 }

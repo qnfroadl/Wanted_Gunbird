@@ -2,15 +2,8 @@
 #include "EnemyMissile.h"
 #include "MissilePattern.h"
 #include "TimerManager.h"
+#include "CommonFunction.h"
 
-
-EnemyMissileManager::EnemyMissileManager()
-{	
-}
-
-EnemyMissileManager::~EnemyMissileManager()
-{
-}
 
 void EnemyMissileManager::Fire(FPOINT pos, float angle, MissileType* type)
 {
@@ -20,10 +13,9 @@ void EnemyMissileManager::Fire(FPOINT pos, MissilePattern* pattern)
 {
 	std::vector<MissileInfo> missilesInfo = pattern->getMissilesInfo();
 
+	// fire ���� �־�ΰ� Update �� ���ǿ� ������ fire
 	for (int i = 0; i < missilesInfo.size(); i++)
-	{
-		vecMissileInfo.push_back(missilesInfo[i]);
-	}
+		listMissileInfo.push_back(missilesInfo[i]);
 }
 
 void EnemyMissileManager::Init()
@@ -32,40 +24,64 @@ void EnemyMissileManager::Init()
 
 void EnemyMissileManager::Release()
 {
-	for (int i = 0; i < vecMissiles.size(); i++)
+	for (auto it = listMissiles.begin(); it != listMissiles.end(); it++)
 	{
-		vecMissiles[i]->Release();
-		delete vecMissiles[i];
+		(*it)->Release();
+		delete (*it);
+		it = listMissiles.erase(it);
 	}
-	vecMissiles.clear();
 }
 
 void EnemyMissileManager::Update()
 {
 	float accumulatedTime = TimerManager::GetInstance()->GetAccumulatedTime();
 	
-	for (const MissileInfo& info : vecMissileInfo)
+	// ���ǿ� ������ �̻��� ����
+	for (auto it = listMissileInfo.begin(); it != listMissileInfo.end();)
 	{
-		if (info.fireDelay > accumulatedTime)
-		{			
-			EnemyMissile* missile = new EnemyMissile(info.speed, info.angle);
+		if ((*it).fireDelay > accumulatedTime)
+		{						
+			EnemyMissile* missile = new EnemyMissile((*it).speed, (*it).angle);
+			missile->Init("Mid Boss Missile", TEXT("assets/Sprites/Enemies/MidBoss_Star.bmp"), 
+				(*it).startPos, 288, 45, 8, 1, true, RGB(255, 0, 255));
+			listMissiles.push_back(missile);	
 
-			missile->Init("Mid Boss Missile", TEXT("assets/Sprites/Enemies/boss_ball_one.bmp"), info.startPos, 5, 5, 1, 1, true, RGB(255, 255, 255));
-
-			vecMissiles.push_back(missile);
+			// ���������� �� �̻��Ͽ� ���� ������ �ı�
+			it = listMissileInfo.erase(it);
+		}
+		else
+		{
+			it++;
 		}
 	}
 
-	for (int i = 0; i < vecMissiles.size(); i++)
-	{
-		vecMissiles[i]->Update();
-	}
+	// ������ ��� �̻��� Update
+	for (auto it = listMissiles.begin(); it != listMissiles.end(); it++)	
+		(*it)->Update();
 }
 
 void EnemyMissileManager::Render(HDC hdc)
 {
-	for (int i = 0; i < vecMissiles.size(); i++)
+	for (auto it = listMissiles.begin(); it != listMissiles.end();)
 	{
-		vecMissiles[i]->Render(hdc);
+		if (IsOutofScreen((*it)->getRect(), 0.0f))
+		{
+			(*it)->Release();
+			delete (*it);
+			it = listMissiles.erase(it);
+		}
+		else
+		{
+			(*it)->Render(hdc);
+			it++;
+		}
 	}
+}
+
+EnemyMissileManager::EnemyMissileManager()
+{	
+}
+
+EnemyMissileManager::~EnemyMissileManager()
+{
 }

@@ -13,7 +13,7 @@ class EnemyManager: public Singleton<EnemyManager>
 private:
 	std::deque<Enemy*> enemys;
 
-	Enemy* CreateEnemy(int enemytType);
+	Enemy* CreateEnemy(int enemyType);
 
 public:
 	bool IsLiveEnmey();

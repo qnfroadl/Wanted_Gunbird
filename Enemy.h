@@ -16,6 +16,7 @@ class Enemy: public GameActor
 	float speed;
 	float elapsedTime;
 	float fireTime;
+	float firePeriod;
 	class CollisionRect* collision;
 	class ActionPattern* pattern;		
 	std::deque<class MissilePattern*> missilePatterns;
@@ -32,6 +33,8 @@ public:
 		animFrame = 0;
 		speed = 0;
 		elapsedTime = 0;
+		fireTime = 0;
+		firePeriod = 2.0;
 		collision = nullptr;
 		pattern = nullptr;
 		enemyMissileManager = nullptr;
@@ -55,9 +58,11 @@ public:
 	void Damaged(int damage);
 	void Dead();
 
-	ActionPattern* getPattern()
+	inline ActionPattern* getPattern()
 	{
 		return pattern;
 	}
+
+	inline int getHp() { return hp; }
 };
 

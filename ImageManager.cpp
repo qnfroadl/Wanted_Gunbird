@@ -49,7 +49,8 @@ Image* ImageManager::AddImage(const string& key, const wchar_t* filePath, int wi
     return nullptr;
 }
 
-Image* ImageManager::AddImage(const string& key, const wchar_t* filePath, int width, int height, int maxFrameX, int maxFrameY, bool isTransparent, COLORREF transColor)
+Image* ImageManager::AddImage(const string& key, const wchar_t* filePath, 
+    int width, int height, int maxFrameX, int maxFrameY, bool isTransparent, COLORREF transColor)
 {
     Image* image = FindImage(key);
     if (nullptr != image)

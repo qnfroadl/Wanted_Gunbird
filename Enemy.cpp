@@ -12,13 +12,14 @@ void Enemy::Init(const string& key, const wchar_t* filePath, float width, float 
 	int maxFrameX, int maxFrameY, bool isTransparent, COLORREF transColor)
 {
 	this->AddTag(GameTag::Enemy);
+
 	image = ImageManager::GetInstance()->AddImage(key, filePath, width, height, 
 		maxFrameX, maxFrameY, isTransparent, transColor);
 
-	this->width = width;
-	this->height = height;
+	this->width = width / float(maxFrameX);
+	this->height = height / float(maxFrameY);
 
-	pattern = new ActionPattern(100.0, 100.0, 500.0);
+	pattern = new ActionPattern(100.0, 0.0, 500.0);
 	
 	FPOINT startPos = pattern->getStartPoint();
 	SetPos(startPos);
@@ -43,16 +44,14 @@ void Enemy::Fire()
 {
 	if (!missilePatterns.empty())
 	{
+		FPOINT pos = GetPos();
 		MissilePattern* pattern = missilePatterns.front();
 		missilePatterns.pop_front();
 
 		// missileManager한테 넘겨주기
-		FPOINT pos = GetPos();
 		EnemyMissileManager::GetInstance()->Fire(pos, pattern);
 	}
 }
-
-
 
 void Enemy::Release()
 {
@@ -61,6 +60,8 @@ void Enemy::Release()
 		delete pattern;
 		pattern = nullptr;
 	}
+	
+	CollisionManager::GetInstance()->DeleteCollision(collision);
 }
 
 void Enemy::Update()
@@ -94,12 +95,12 @@ void Enemy::Update()
 			elapsedTime = 0.0f;
 		}
 
-		if (fireTime > 3.0f)
+		// 주기마다 fire
+		if (fireTime > firePeriod)
 		{
-			if (rand() % 2)
-				setMissilePattern(4, 0.1f, 5, 90.0f, 90.0f);
-			else
-				setMissilePattern(4, 0.1f, 5, 120.0f, 120.0f);
+			float angle = float(rand() % 120 + 40);
+			setMissilePattern(2, 1.0f, 5, angle, angle);
+
 			Fire();
 			fireTime = 0.0f;
 		}
@@ -123,16 +124,24 @@ void Enemy::On_CollisionDetected(GameObject* obj)
 
 void Enemy::Dead()
 {
-	SetActive(false);
 	collision->SetActive(false);
+	collision->SetRect(RECT{ 0,0,0,0 });
+	SetActive(false);
 }
-
+ 
 void Enemy::Damaged(int damage)
 {
 	hp -= damage;
 
-	if (hp <= 0)
+	if (hp >0 && hp < 40)
 	{
-		Dead();
+		//image 바꾸기, missile 바꾸기
+		Init("Mid Boss Upgrade", TEXT("assets/Sprites/Enemies/MidBoss.bmp"),
+			410, 73, 5, 1, true, RGB(255, 0, 255));
 	}
-}
+		
+	if (hp <= 0)
+ 	 {
+	  	Dead();
+	}
+ }

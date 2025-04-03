@@ -1,7 +1,7 @@
 #pragma once
 #include <deque>
 #include "GameActor.h"
-
+#include <memory>
 
 class EnemyMissile: public GameActor
 {
@@ -22,9 +22,12 @@ public:
 
 	void Init(const string& key, const wchar_t* filePath, FPOINT startingPos, float width,
 		float height, int maxFrameX, int maxFrameY, bool isTransparent, COLORREF transColor);
+
 	void Release() override;
 	void Update() override;
 	void Render(HDC hdc) override;
+
+	const RECT & getRect();
 
 	void On_CollisionDetected(GameObject* obj);
 
