@@ -8,6 +8,7 @@
 
 class Enemy: public GameActor
 {
+	EImageKey key;
 	int score;
 	int hp;
 	class Image* image;
@@ -42,7 +43,7 @@ public:
 
 	virtual ~Enemy() {};
 
-	void Init(const string& key, const wchar_t* filePath, float width, float height,
+	void Init(EImageKey key, const wchar_t* filePath, float width, float height,
 		int maxFrameX, int maxFrameY, bool isTransparent, COLORREF transColor);
 
 	void setMissilePattern(int fireCount, float fireDelay, float speed, float angleMin, float angleMax);

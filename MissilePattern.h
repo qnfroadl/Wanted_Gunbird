@@ -23,6 +23,6 @@ public:
 
 	FPOINT getStartPoint();
 
-	std::vector<MissileInfo> getMissilesInfo();
+	std::vector<SpawnMissileInfo> getMissilesInfo();
 };
 

@@ -30,15 +30,15 @@ FPOINT MissilePattern::getStartPoint()
     return startPos;
 }
 
-std::vector<MissileInfo> MissilePattern::getMissilesInfo()
+std::vector<SpawnMissileInfo> MissilePattern::getMissilesInfo()
 {
-    std::vector<MissileInfo> missilesInfo;
+    std::vector<SpawnMissileInfo> missilesInfo;
 
     if (angleMin == angleMax)
     {
         for (int i = 0; i < fireCount; i++)
         {
-            MissileInfo info{ startPos, accumulatedTime + (fireDelay * i), speed, angleMin };
+            SpawnMissileInfo info{ startPos, accumulatedTime + (fireDelay * i), speed, angleMin };
             missilesInfo.push_back(info);
         }
     }
@@ -48,7 +48,7 @@ std::vector<MissileInfo> MissilePattern::getMissilesInfo()
         for (int i = 0; i < fireCount; i++)
         {
             float angle = angleMin + theta * i;
-            MissileInfo info{ startPos, fireDelay, speed, angle };
+            SpawnMissileInfo info{ startPos, fireDelay, speed, angle };
             missilesInfo.push_back(info);
         }
     }
