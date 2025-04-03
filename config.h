@@ -22,6 +22,7 @@ enum class EEnemyType
 {
 	FlyingEnemy,
 	MidBoss,
+
 };
 
 enum class GameTag
