@@ -31,7 +31,7 @@ void Player::Init()
 {
 	animFrame = 0;
 	elapsedFrame = 0;
-	attackLevel = 1;
+	attackLevel = 3;
 	bombCount = 2;
 
 	AddTag(GameTag::Player);
