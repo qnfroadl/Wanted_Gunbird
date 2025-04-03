@@ -171,5 +171,6 @@ void ShipCannon::AddHP(int addHp)
 
 void ShipCannon::Dead()
 {
+	EffectManager::GetInstance()->PlayEffect(GetPos(), EEffectType::ExplosionNormal);
 	SetActive(false);
 }

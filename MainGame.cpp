@@ -26,15 +26,15 @@ void MainGame::EffectSimulation()
 
 	if (KeyManager::GetInstance()->IsOnceKeyDown(VK_F1))
 	{
-		EffectManager::GetInstance()->PlayEffect(FPOINT{ WINSIZE_X / 2,WINSIZE_Y / 2 }, EEffectType::ExplosionBig);
+		EffectManager::GetInstance()->PlayEffect(FPOINT{ WINSIZE_X / 2,WINSIZE_Y / 2 }, EEffectType::ExplosionSmall);
 	}
 	else if (KeyManager::GetInstance()->IsOnceKeyDown(VK_F2))
 	{
-		EffectManager::GetInstance()->PlayEffect(FPOINT{ WINSIZE_X / 2,WINSIZE_Y / 2 }, EEffectType::ExplosionSmall);
+		EffectManager::GetInstance()->PlayEffect(FPOINT{ WINSIZE_X / 2,WINSIZE_Y / 2 }, EEffectType::ExplosionNormal);
 	}
 	else if (KeyManager::GetInstance()->IsOnceKeyDown(VK_F3))
 	{
-		EffectManager::GetInstance()->PlayEffect(FPOINT{ WINSIZE_X / 2,WINSIZE_Y / 2 }, EEffectType::ExplosionPlayer);
+		EffectManager::GetInstance()->PlayEffect(FPOINT{ WINSIZE_X / 2,WINSIZE_Y / 2 }, EEffectType::ExplosionBig);
 	}
 	else if (KeyManager::GetInstance()->IsOnceKeyDown(VK_F4))
 	{

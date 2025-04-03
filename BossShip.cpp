@@ -63,6 +63,12 @@ void BossShip::Destroyed()
 
 	EffectManager::GetInstance();
 	
+
+
+	if (10 < elapsedTime)
+	{
+		state = State::Disappear;
+	}
 }
 
 void BossShip::Disappear()

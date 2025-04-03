@@ -25,7 +25,7 @@ void Shot::On_CollisionDetected(GameObject* obj)
 		// 충 돌 처 리
 
 		this->SetActive(false);
-		EffectManager::GetInstance()->PlayEffect(GetPos(), EEffectType::ExplosionPlayer);
+		EffectManager::GetInstance()->PlayEffect(GetPos(), EEffectType::ExplosionNormal);
 	}
 }
 

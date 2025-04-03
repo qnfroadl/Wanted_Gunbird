@@ -52,14 +52,14 @@ void EffectManager::Init()
 	vecEffects.reserve(100);
 
 	// 이펙트들 추가 할 예정
-	ImageManager::GetInstance()->AddImage(EImageKey::ExplosionPlayer,
-		L"assets/Sprites/Effects/PlayerExplosion.bmp", 279, 31, 9, 1, true, RGB(255, 0, 255));
-
 	ImageManager::GetInstance()->AddImage(EImageKey::ExplosionSmall,
 		L"assets/Sprites/Effects/PlayerExplosion.bmp", 279, 31, 9, 1, true, RGB(255, 0, 255));
 
+	ImageManager::GetInstance()->AddImage(EImageKey::ExplosionNormal,
+		L"assets/Sprites/Effects/PlayerExplosion.bmp", 279 * 2, 31 * 2, 9, 1, true, RGB(255, 0, 255));
+
 	ImageManager::GetInstance()->AddImage(EImageKey::ExplosionBig,
-		L"assets/Sprites/Effects/PlayerExplosion.bmp", 279, 31, 9, 1, true, RGB(255, 0, 255));
+		L"assets/Sprites/Effects/PlayerExplosion.bmp", 279 * 4, 31 * 4, 9, 1, true, RGB(255, 0, 255));
 
 	ImageManager::GetInstance()->AddImage(EImageKey::ShotImpact,
 		L"assets/Sprites/Effects/ShotImpact.bmp", 255, 42, 17, 1, true, RGB(255, 0, 255));

@@ -45,7 +45,7 @@ enum class EImageKey
 	ShipBase, ShipDestroyedLeft, ShipDestroyedRight, ShipDestroyed,
 	PlayerBomb,
 
-	ExplosionPlayer, ExplosionSmall, ExplosionBig, ShotImpact,
+	 ExplosionSmall, ExplosionNormal, ExplosionBig, ShotImpact,
 
 	// Enemy
 	FlyingEnemy, MidBoss, MidBossUpgrade,
@@ -79,8 +79,8 @@ typedef struct MissileImageInformation {
 
 enum class EEffectType
 {
-	ExplosionPlayer = EImageKey::ExplosionPlayer,
 	ExplosionSmall= EImageKey::ExplosionSmall,
+	ExplosionNormal = EImageKey::ExplosionNormal,
 	ExplosionBig = EImageKey::ExplosionBig,
 	ShotImpact = EImageKey::ShotImpact,
 };
