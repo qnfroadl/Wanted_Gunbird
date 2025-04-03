@@ -58,16 +58,18 @@ void PlayerBomb::Release()
 
 void PlayerBomb::Update(FPOINT playerPos)
 {
-	
-	elapsedFrame += TimerManager::GetInstance()->GetDeltaTime();
-	if (elapsedFrame > 1.0f)
+	if(IsActive())
 	{
-		animFrame++;
-		if (animFrame >= bombImage->GetMaxFrameX())
+		elapsedFrame += TimerManager::GetInstance()->GetDeltaTime();
+		if (elapsedFrame > 1)
 		{
-			animFrame = 0;
+			animFrame++;
+			if (animFrame >= bombImage->GetMaxFrameX())
+			{
+				animFrame = 0;
+			}
+			elapsedFrame = 0;
 		}
-		elapsedFrame = 0.0f;
 	}
 	
 }

@@ -32,9 +32,27 @@ void PlayerAttackManager::Fire(const FPOINT& pos, int level, vector<PlayerDefaul
 		attack[7]->Fire(rightPos);
 	}
 
+	/*if (level == 4)
+	{
+		attack[8]->Fire(pos);
+	}*/
 	if (level == 4)
 	{
 		attack[8]->Fire(pos);
+
+		// PlayerMissileAttack 발사 로직 추가
+		if (!missileAttackVec.empty())
+		{
+			// 사용 가능한 미사일 찾기
+			for (auto& missileAttack : missileAttackVec)
+			{
+				if (!missileAttack->IsActive())
+				{
+					missileAttack->Fire(pos, level); // 미사일 발사
+					break; // 첫 번째 비활성 미사일 발사 후 종료
+				}
+			}
+		}
 	}
 
 }
