@@ -13,10 +13,11 @@ MissilePattern::MissilePattern()
     accumulatedTime = 0.0f;
 }
 
-void MissilePattern::Init(FPOINT startPos, int fireCount, float fireDelay, float speed, float angleMin, float angleMax)
+void MissilePattern::Init(EImageKey key, FPOINT startPos, int fireCount, float fireDelay, float speed, float angleMin, float angleMax)
 {
     accumulatedTime = TimerManager::GetInstance()->GetAccumulatedTime();
 
+    this->key = key;
     this->startPos = startPos;
     this->fireCount = fireCount;
     this->fireDelay = fireDelay;
@@ -38,7 +39,7 @@ std::vector<SpawnMissileInfo> MissilePattern::getMissilesInfo()
     {
         for (int i = 0; i < fireCount; i++)
         {
-            SpawnMissileInfo info{ startPos, accumulatedTime + (fireDelay * i), speed, angleMin };
+            SpawnMissileInfo info{ key, startPos, accumulatedTime + (fireDelay * i), speed, angleMin };
             missilesInfo.push_back(info);
         }
     }
@@ -48,7 +49,7 @@ std::vector<SpawnMissileInfo> MissilePattern::getMissilesInfo()
         for (int i = 0; i < fireCount; i++)
         {
             float angle = angleMin + theta * i;
-            SpawnMissileInfo info{ startPos, fireDelay, speed, angle };
+            SpawnMissileInfo info{ key, startPos, accumulatedTime + fireDelay, speed, angle };
             missilesInfo.push_back(info);
         }
     }

@@ -123,6 +123,7 @@ typedef struct tagFPOINT
 } FPOINT;
 
 typedef struct SpawnMissileInformation {
+	EImageKey key;
 	FPOINT startPos;
 	float fireDelay;
 	float speed;

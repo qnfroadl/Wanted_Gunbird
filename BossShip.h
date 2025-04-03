@@ -8,14 +8,28 @@ class ShipCannon;
 class BossShip : public GameActor
 {
 private:
+	enum class State {
+		Begin, Fight, Destroyed, End
+	};
+	State state;
 	Image* baseImage;	//	
 	Image* baseDestroyLeft;
 	Image* baseDestroyRight;
 	GameActor* target;
+	int speed;
+	float moveAngle;
 	int width;
 	int height;
+	bool bCannonsLive;
+	int elapsedTime;
 
 	array<ShipCannon*, 8> aryCannons;
+
+	void Appear();
+	void MoveMove();
+	void Destroyed();
+	void Disappear();
+
 public:
 	void Init();
 	void Update();
@@ -23,7 +37,7 @@ public:
 	void Release();
 	void SetTarget(GameActor* target);
 
-	void AddMove(const FPOINT& movePos);
+	void Move(const FPOINT& movePos);
 	void CannonPosUpdate();
 };
 

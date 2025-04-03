@@ -7,8 +7,10 @@
 
 void EnemyMissileManager::InitMissile()
 {
-	missileImgInfoMap[EEnemyType::MidBoss] = { EImageKey::MidBossStar,
+	missileImgInfoMap[EImageKey::MidBoss] = { EImageKey::MidBossStar,
 		TEXT("assets/Sprites/Enemies/MidBoss_Star.bmp"), 288, 45, 8, 1, true, RGB(255, 0, 255) };
+	missileImgInfoMap[EImageKey::MidBossUpgrade] = { EImageKey::MidBossPyramid,
+	TEXT("assets/Sprites/Enemies/MidBoss_Pyramid.bmp"), 789.0f/2.0f, 195.0f / 2.0f, 10, 1, true, RGB(255, 0, 255) };
 }
 
 
@@ -42,13 +44,13 @@ void EnemyMissileManager::Release()
 void EnemyMissileManager::Update()
 {
 	float accumulatedTime = TimerManager::GetInstance()->GetAccumulatedTime();
-		
+	
 	for (auto it = listMissileInfo.begin(); it != listMissileInfo.end();)
 	{
 		// 조건에 맞으면 미사일 새로 만들기
 		if ((*it).fireDelay > accumulatedTime)
 		{						
-			EnemyMissile* missile = CreateMissile(EEnemyType::MidBoss, &(*it));
+			EnemyMissile* missile = CreateMissile((*it).key, &(*it));
 			listMissiles.push_back(missile);				
 			it = listMissileInfo.erase(it);
 		}
@@ -80,11 +82,11 @@ void EnemyMissileManager::Render(HDC hdc)
 	}
 }
 
-EnemyMissile* EnemyMissileManager::CreateMissile(EEnemyType enemyType, SpawnMissileInfo* it)
+EnemyMissile* EnemyMissileManager::CreateMissile(EImageKey key, SpawnMissileInfo* it)
 {
 	// 적 타입에 따른 미사일 생성.	
 	EnemyMissile* missile = new EnemyMissile((*it).speed, (*it).angle);
-	MissileImgInfo info = missileImgInfoMap[enemyType];
+	MissileImgInfo info = missileImgInfoMap[key];
 	missile->Init(
 		info.key,
 		info.filePath,
@@ -94,7 +96,7 @@ EnemyMissile* EnemyMissileManager::CreateMissile(EEnemyType enemyType, SpawnMiss
 		info.maxFrameX,
 		info.maxFrameY,
 		info.isTransparent,
-		info.transColor);	
+		info.transColor);
 
 	return missile;
 }

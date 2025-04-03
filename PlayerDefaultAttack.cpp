@@ -27,6 +27,7 @@ void PlayerDefaultAttack::CollisionDetected(GameObject* obj)
 
 void PlayerDefaultAttack::Init()
 {
+	this->AddTag(GameTag::PlayerDefaultAttack);
 	speed = 2000;
 	angle = 0;
 	damage = 1;
@@ -103,4 +104,10 @@ void PlayerDefaultAttack::Move()
 	SetPos(position);
 
 	attackDefaultCollision->SetRect(GetRectAtCenter(position.x, position.y, PDA_WIDTH, PDA_HEIGHT));
+}
+
+void PlayerDefaultAttack::SetActive(bool bActive)
+{
+	GameActor::SetActive(bActive);
+	attackDefaultCollision->SetActive(bActive);
 }

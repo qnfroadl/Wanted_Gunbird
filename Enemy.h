@@ -50,6 +50,8 @@ public:
 
 	void Fire();
 
+	void Fire(EImageKey key);
+
 	void Release() override;
 	void Update() override;
 	void Render(HDC hdc) override;

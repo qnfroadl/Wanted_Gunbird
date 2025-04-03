@@ -6,10 +6,25 @@
 #include "ImageManager.h"
 #include "Image.h"
 #include "TimerManager.h"
+#include "PlayerDefaultAttack.h"
+#include "EffectManager.h"
 
 void ShipCannon::On_CollisionDetected(GameObject* obj)
 {
-
+	if(obj->FindTag(GameTag::PlayerDefaultAttack))
+	{
+		obj->SetActive(false);
+		this->AddHP(-1);
+		EffectManager::GetInstance()->PlayEffect(GetPos(), EEffectType::ShotImpact);
+	}
+	else if(obj->FindTag(GameTag::PlayerMissileAttack))
+	{
+		this->AddHP(-1);
+	}
+	else if (obj->FindTag(GameTag::PlayerBomb))
+	{
+		this->AddHP(-1);
+	}
 }
 
 void ShipCannon::UpdateCanonAngle()
@@ -50,7 +65,8 @@ void ShipCannon::Init()
 {
 	this->AddTag(GameTag::Boss_Canon);
 
-	ratio = 1;
+	this->hp = 5;
+	this->ratio = 1;
 
 	ImageManager::GetInstance()->AddImage(EImageKey::Canon_210,
 		L"assets/Sprites/Enemies/Boss/210.bmp", 40 * ratio, 40 * ratio, true, RGB(255,0,255));

@@ -22,5 +22,7 @@ public:
 	void Fire(FPOINT pos);
 	void Fire(int posX, int posY);
 	void Move();
+
+	void SetActive(bool bActive) override;
 };
 

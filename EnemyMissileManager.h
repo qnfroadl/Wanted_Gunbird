@@ -15,9 +15,9 @@ private:
 	std::vector<class EnemyMissile*>::iterator iterMissiles;
 	
 	std::list<SpawnMissileInfo> listMissileInfo;
-	std::unordered_map<EEnemyType, MissileImgInfo> missileImgInfoMap;
+	std::unordered_map<EImageKey, MissileImgInfo> missileImgInfoMap;
 
-	EnemyMissile* CreateMissile(EEnemyType enemyType, SpawnMissileInfo* it);
+	EnemyMissile* CreateMissile(EImageKey key, SpawnMissileInfo* it);
 
 public:
 	EnemyMissileManager();
