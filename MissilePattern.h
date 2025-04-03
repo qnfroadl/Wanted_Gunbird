@@ -5,6 +5,7 @@
 class MissilePattern
 {
 private:
+	EImageKey key;
 	FPOINT startPos;
 	int fireCount;
 	float fireDelay;
@@ -19,7 +20,7 @@ public:
 
 	virtual ~MissilePattern() {};
 
-	void Init(FPOINT startPos, int fireCount, float fireDelay, float speed, float angleMin, float angleMax);
+	void Init(EImageKey key, FPOINT startPos, int fireCount, float fireDelay, float speed, float angleMin, float angleMax);
 
 	FPOINT getStartPoint();
 

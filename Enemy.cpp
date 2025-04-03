@@ -36,7 +36,7 @@ void Enemy::setMissilePattern(int fireCount, float fireDelay, float speed, float
 {
 	MissilePattern* pattern = new MissilePattern();
 	FPOINT pos = GetPos();
-	pattern->Init(pos, fireCount, fireDelay, speed, angleMin, angleMax);
+	pattern->Init(key, pos, fireCount, fireDelay, speed, angleMin, angleMax);
 	
 	missilePatterns.push_back(pattern);
 }
@@ -97,13 +97,25 @@ void Enemy::Update()
 		}
 
 		// 주기마다 fire
-		if (fireTime > firePeriod)
+		if (key == EImageKey::MidBoss)
 		{
-			float angle = float(rand() % 120 + 40);
-			setMissilePattern(2, 1.0f, 5, angle, angle);
-
-			Fire();
-			fireTime = 0.0f;
+			if (fireTime > 1.0f)
+			{
+				float angle = float(rand() % 120 + 40);
+				setMissilePattern(2, 1.0f, 5, angle, angle);
+				Fire();
+				fireTime = 0.0f;
+			}
+		}
+		// 주기마다 fire
+		if (key == EImageKey::MidBossUpgrade)
+		{
+			if (fireTime > 0.5f)
+			{				
+				setMissilePattern(4, 1.0f, 5, 40, 160);
+				Fire();
+				fireTime = 0.0f;
+			}
 		}
 	}
 }
@@ -134,10 +146,13 @@ void Enemy::Damaged(int damage)
 {
 	hp -= damage;
 
-	if (hp >0 && hp < 100)
+	if (key == EImageKey::MidBoss)
 	{
-		if (key == EImageKey::MidBoss)
+		if (hp > 0 && hp < 1000)
+		{
+			key = EImageKey::MidBossUpgrade;
 			image = ImageManager::GetInstance()->FindImage(EImageKey::MidBossUpgrade);
+		}
 	}
 		
 	if (hp <= 0)
