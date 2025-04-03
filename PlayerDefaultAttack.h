@@ -4,7 +4,7 @@
 class Image;
 class CollisionRect;
 
-class PlayerDefaultAttack : GameActor
+class PlayerDefaultAttack : public GameActor
 {
 private:
 	float speed;

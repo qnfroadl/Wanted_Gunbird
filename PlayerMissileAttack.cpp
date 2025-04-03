@@ -69,7 +69,7 @@ void PlayerMissileAttack::Update()
 			missileElapsedFrame = 0.0f;
 		}
 	}
-	if (GetPos().y < 0)
+	if (IsOutofScreen(GetPos()))
 	{
 		SetActive(false);
 		attackMissileCollision->SetActive(false);

@@ -56,6 +56,11 @@ void PlayerDefaultAttack::Update()
 {
 	if(IsActive())
 		Move();
+	if (IsOutofScreen(GetPos()))
+	{
+		SetActive(false);
+		attackDefaultCollision->SetActive(false);
+	}
 }
 
 void PlayerDefaultAttack::Render(HDC hdc)

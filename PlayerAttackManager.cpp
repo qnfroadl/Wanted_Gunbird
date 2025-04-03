@@ -64,6 +64,11 @@ void PlayerAttackManager::Fire(FPOINT pos, int level)
 	for (iter = defaultAttackVec.begin(); iter != defaultAttackVec.end(); iter++)
 	{
 		attack = *iter;
-		attack->Fire(pos, level);
+
+		if(false == attack->IsActive())
+		{
+			attack->Fire(pos, level);
+			break;
+		}
 	}
 }

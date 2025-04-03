@@ -42,16 +42,17 @@ void Player::Init()
 	if (!image)
 		return;
 
-	attackManager = new PlayerAttackManager();
+	attackManager = new PlayerAttackManager;
 	attackManager->Init();
 
 	FPOINT pos = GetPos();
-	RECT defaultRect = { pos.x-(PLAYERWITHD/2), pos.y-(PLAYERHEIGHT/2), pos.x + (PLAYERWITHD/2), pos.y + (PLAYERHEIGHT/2)};
+	RECT defaultRect = { pos.x - (PLAYERWITHD / 2), pos.y - (PLAYERHEIGHT / 2), pos.x + (PLAYERWITHD / 2), pos.y + (PLAYERHEIGHT / 2) };
 	playerCollision = CollisionManager::GetInstance()->CreateCollisionRect(this, defaultRect);
 	playerCollision->Bind([&](GameObject* obj)
 		{
 			this->CollisionDetected(obj);
-		});
+		}
+	);
 }
 
 void Player::Release()
@@ -62,6 +63,7 @@ void Player::Release()
 		delete image;
 		image = nullptr;
 	}
+
 	if (attackManager)
 	{
 		attackManager->Release();
@@ -181,7 +183,7 @@ void Player::Fire()
 	4레벨에는 미사일 추가
 	미사일 매니저가 있어야 하겟는데
 	*/
-	if (attackManager)
+	if(attackManager)
 	{
 		attackManager->Fire(GetPos(), attackLevel);
 	}
