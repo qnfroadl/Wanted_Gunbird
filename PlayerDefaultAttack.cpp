@@ -40,7 +40,7 @@ void PlayerDefaultAttack::Init()
 	FPOINT pos = GetPos();
 	RECT defaultRect = { pos.x, pos.y, pos.x + 2, pos.y + 29 };
 
-	attackDefaultCollision = CollisionManager::GetInstance()->CreateCollisionRect(this, defaultRect);
+	attackDefaultCollision = CollisionManager::GetInstance()->CreateCollisionRect(CollisionLayer::PlayerAttack, this, defaultRect);
 	attackDefaultCollision->Bind([&](GameObject* obj)
 		{
 			this->CollisionDetected(obj);

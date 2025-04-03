@@ -83,7 +83,7 @@ void ShipCannon::Init()
 
 	image = ImageManager::GetInstance()->FindImage(EImageKey::Canon_270);
 	
-	collision = CollisionManager::GetInstance()->CreateCollisionRect(this, RECT{});
+	collision = CollisionManager::GetInstance()->CreateCollisionRect(CollisionLayer::Enemy, this, RECT{});
 	collision->Bind([&](GameObject* obj)
 		{
 			On_CollisionDetected(obj);

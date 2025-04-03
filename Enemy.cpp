@@ -41,7 +41,7 @@ void Enemy::Init(EEnemyType type, EImageKey key, const wchar_t* filePath, float 
 	FPOINT startPos = actionPattern->getStartPoint();
 	SetPos(startPos);
 
-	collision = CollisionManager::GetInstance()->CreateCollisionRect(this, RECT{});
+	collision = CollisionManager::GetInstance()->CreateCollisionRect(CollisionLayer::Enemy, this, RECT{});
 	collision->Bind([&](GameObject* obj)
 		{
 			this->On_CollisionDetected(obj);

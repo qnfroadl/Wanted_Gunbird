@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <functional>
 #include <unordered_set>
+#include <vector>
 #include "Singleton.h"
 
 enum class CollisionType
@@ -26,8 +27,8 @@ class Collision : public GameObject
 {
 
 private:
+	CollisionLayer layer;
 	GameObject* obj;
-	bool bActive;
 	std::function<void(GameObject* obj)> detection;
 	CollisionType type;
 	unordered_set<wstring> tags;
@@ -41,9 +42,6 @@ public:
 		detection = func;
 	}
 	
-	void SetActive(bool bActive);
-	bool GetActive();
-
 	void SetGameObject(GameObject* obj);
 	GameObject* GetGameObject();
 
@@ -72,47 +70,33 @@ public:
 
 };
 
-class CollisionEllipse : public Collision
-{
-private:
-	CEllipse ellipse;
-
-public:
-	CollisionEllipse();
-	void SetEllipse(int x, int y, int width, int height);
-	CEllipse GetEllipse();
-	void Render(HDC hdc) override;
-
-	void AddPos(float x, float y) override;
-
-};
-
 // CollisionManager
 class CollisionManager : public Singleton<CollisionManager>, public GameObject
 {
-	private:
-	
-		unordered_map<GameObject*, list<Collision*>> collisionMap;
+private:
+	int checkCount;
+	unordered_map<CollisionLayer, unordered_set<Collision*>>* layerCollisionMap;
+	unordered_map<CollisionLayer, uint8_t> layerMaskMap;
 
-		unordered_map<CollisionLayer, std::pair<GameObject*, list<Collision*>>> layerMap;
-		unordered_map<CollisionLayer, uint8_t> layerMaskMap;
+	HBRUSH brush;
+	HPEN pen;
 
-		void CollisionDetect(list<Collision*>& colList1, list<Collision*>& colList2);
-		void Detect(Collision* c1, Collision* c2);
-		HBRUSH brush;
-		HPEN pen;
-	public:
-		CollisionEllipse* CreateCollisionEllipse(GameObject* obj, int x, int y, int width, int height);
-		CollisionRect* CreateCollisionRect(GameObject* obj, const RECT& rt);
+	void CollisionDetect(const unordered_set<Collision*>& setColl1, const unordered_set<Collision*>& setColl2);
+	void Detect(Collision* c1, Collision* c2);
 
-		void DeleteCollision(Collision* coll);
+public:
+	CollisionRect* CreateCollisionRect(CollisionLayer layer, GameObject* obj, const RECT& rt);
 
-		void Init() override;
-		void Update() override;
-		void Render(HDC hdc) override;
-		void Release() override;
-		void CollisionDetect();
+	void DeleteCollision(Collision* coll);
 
-		CollisionManager& operator =(CollisionManager&) = delete;
+	void Init() override;
+	void Update() override;
+	void Render(HDC hdc) override;
+	void Release() override;
+	void CollisionDetect();
+
+	CollisionManager& operator =(CollisionManager&) = delete;
+
+	int GetCheckCount();
+	int GetCollisionCount();
 };
-

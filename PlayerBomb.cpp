@@ -38,7 +38,7 @@ void PlayerBomb::Init(FPOINT playerPos)
 	pos = playerPos;
 	RECT bombtRect = { pos.x - bombWidth / 2, pos.y - bombHeight / 2, pos.x + bombWidth / 2, pos.y + bombHeight / 2 };
 
-	bombCollision = CollisionManager::GetInstance()->CreateCollisionRect(this, bombtRect);
+	bombCollision = CollisionManager::GetInstance()->CreateCollisionRect(CollisionLayer::PlayerAttack, this, bombtRect);
 	bombCollision->Bind([&](GameObject* obj)
 		{
 			this->CollisionDetected(obj);

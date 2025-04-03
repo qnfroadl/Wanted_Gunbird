@@ -35,7 +35,7 @@ void Shot::Init()
 	shotImage = ImageManager::GetInstance()->AddImage(EImageKey::CanonShot, 
 	L"assets/Sprites/Misc/shot.bmp",70 * ratio,7 * ratio,10,1,true, RGB(255,0,255));
 
-	collision = CollisionManager::GetInstance()->CreateCollisionRect(this, RECT{0,0,0,0});
+	collision = CollisionManager::GetInstance()->CreateCollisionRect(CollisionLayer::EnemyAttack, this, RECT{0,0,0,0});
 	collision->Bind([&](GameObject* obj)
 		{
 			this->On_CollisionDetected(obj);

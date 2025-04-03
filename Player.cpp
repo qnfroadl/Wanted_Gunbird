@@ -49,7 +49,7 @@ void Player::Init()
 	playerBomb->Init(GetPos());
 	FPOINT pos = GetPos();
 	RECT defaultRect = { pos.x - (PLAYERWITHD/2), pos.y - (PLAYERHEIGHT/2), pos.x + (PLAYERWITHD/2), pos.y + (PLAYERHEIGHT/2) };
-	playerCollision = CollisionManager::GetInstance()->CreateCollisionRect(this, defaultRect);
+	playerCollision = CollisionManager::GetInstance()->CreateCollisionRect(CollisionLayer::Player, this, defaultRect);
 	playerCollision->Bind([&](GameObject* obj)
 		{
 			this->CollisionDetected(obj);

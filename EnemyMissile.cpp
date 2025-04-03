@@ -41,7 +41,7 @@ void EnemyMissile::Init(EImageKey key, const wchar_t* filePath, FPOINT startingP
 	image = ImageManager::GetInstance()->AddImage(key, filePath, width, height,
 		maxFrameX, maxFrameY, isTransparent, transColor);
 	
-	collision = CollisionManager::GetInstance()->CreateCollisionRect(this, RECT{});	
+	collision = CollisionManager::GetInstance()->CreateCollisionRect(CollisionLayer::EnemyAttack, this, RECT{});
 	collision->Bind([&](GameObject* obj)
 		{
 			this->On_CollisionDetected(obj);
