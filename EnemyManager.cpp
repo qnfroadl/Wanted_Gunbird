@@ -32,6 +32,11 @@ void EnemyManager::InitEnemy()
 
 	enemyInfoMap[EEnemyType::FlyingEnemy] = { EImageKey::FlyingEnemy,
 	TEXT("assets/Sprites/Enemies/flying_missile.bmp"), 2, 240.0f, 30.0f, 8, 1, true, RGB(255, 0, 255) };
+
+	enemyInfoMap[EEnemyType::BeeCopter] = { EImageKey::BeeCopter,
+	TEXT("assets/Sprites/Enemies/enemy_beecopter.bmp"), 2, 194.0f, 105.0f, 3, 1, true, RGB(255, 255, 255) };
+
+	//SpawnEnemy(FPOINT{ 300.0f, 100.0f }, EEnemyType::MidBoss);
 }
 
 bool EnemyManager::IsLiveEnmey()
@@ -60,10 +65,12 @@ void EnemyManager::Update()
 {
 	// Enemy 일정시간마다 스폰
 	generateTime += TimerManager::GetInstance()->GetDeltaTime();
-	if (generateTime > 0.8f)
+	if (generateTime > 1.0f)
 	{
 		int x = rand() % WINSIZE_X;
-		SpawnEnemy(FPOINT{ float(x), 50.0}, EEnemyType::FlyingEnemy);
+		int y = rand() % (WINSIZE_Y/2);
+		//SpawnEnemy(FPOINT{ float(x), 50.0 }, EEnemyType::FlyingEnemy);
+		SpawnEnemy(FPOINT{ float(x), float(y) }, EEnemyType::BeeCopter);
 		generateTime = 0.0f;
 	}
 
@@ -110,6 +117,7 @@ void EnemyManager::Render(HDC hdc)
 	}
 }
 
+// 스폰 시 collision 박스가 창과 충돌하면 사라지므로 주의
 void EnemyManager::SpawnEnemy(const FPOINT& pos, EEnemyType enemyType)
 {
 	Enemy* enemy = CreateEnemy(enemyType);

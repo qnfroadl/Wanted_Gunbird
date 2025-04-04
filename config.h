@@ -22,7 +22,7 @@ enum class EEnemyType
 {
 	FlyingEnemy,
 	MidBoss,
-
+	BeeCopter,
 };
 
 enum class GameTag
@@ -51,7 +51,7 @@ enum class EImageKey
 	 ExplosionSmall, ExplosionNormal, ExplosionBig, ShotImpact,
 
 	// Enemy
-	FlyingEnemy, MidBossBasic, MidBossUpgrade,
+	FlyingEnemy, MidBossBasic, MidBossUpgrade, BeeCopter,
 
 	// Missile
 	MidBossStar, MidBossPyramid,
