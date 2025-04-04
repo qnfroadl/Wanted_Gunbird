@@ -189,7 +189,7 @@ void Enemy::Damaged(int damage)
 
 	if (key == EImageKey::MidBossBasic)
 	{
-		if (hp > 0 && hp < 1000)
+		if (hp > 0 && hp < 50)
 		{
 			key = EImageKey::MidBossUpgrade;
 			image = ImageManager::GetInstance()->FindImage(EImageKey::MidBossUpgrade);
