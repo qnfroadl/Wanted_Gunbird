@@ -186,11 +186,6 @@ void Player::Move(float degree)
 
 void Player::Fire()
 {
-	/*
-	레벨에 비례해서 총알 추가
-	4레벨에는 미사일 추가
-	미사일 매니저가 있어야 하겟는데
-	*/
 	if(attackManager)
 	{
 		attackManager->Fire(GetPos(), attackLevel);
