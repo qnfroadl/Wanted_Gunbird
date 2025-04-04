@@ -14,11 +14,7 @@ private:
 	int power;
 	int bombCount;
 	int animFrame;
-	int leftAnimFrame;
-	int rightAnimFrame;
 	float elapsedFrame;
-	float leftElapsedFrame;
-	float rightElapsedFrame;
 	int score;
 	float speed;
 	int attackLevel;
