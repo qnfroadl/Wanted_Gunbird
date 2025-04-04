@@ -49,12 +49,12 @@ void PlayerMissileAttack::Init()
 
 void PlayerMissileAttack::Release()
 {
-	if (playerAttackMissile)
+	/*if (playerAttackMissile)
 	{
 		playerAttackMissile->Release();
 		delete playerAttackMissile;
 		playerAttackMissile = nullptr;
-	}
+	}*/
 }
 
 void PlayerMissileAttack::Update()

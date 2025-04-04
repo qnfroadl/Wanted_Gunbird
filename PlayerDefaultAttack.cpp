@@ -50,12 +50,12 @@ void PlayerDefaultAttack::Init()
 
 void PlayerDefaultAttack::Release()
 {
-	if (playerAttackDefault)
+	/*if (playerAttackDefault)
 	{
 		playerAttackDefault->Release();
 		delete playerAttackDefault;
 		playerAttackDefault = nullptr;
-	}
+	}*/
 }
 
 void PlayerDefaultAttack::Update()

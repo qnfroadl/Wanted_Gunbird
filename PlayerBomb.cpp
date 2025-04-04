@@ -53,12 +53,12 @@ void PlayerBomb::Init(FPOINT playerPos)
 
 void PlayerBomb::Release()
 {
-	if (!bombImage)
+	/*if (!bombImage)
 	{
 		bombImage->Release();
 		delete bombImage;
 		bombImage = nullptr;
-	}
+	}*/
 }
 
 void PlayerBomb::Update()

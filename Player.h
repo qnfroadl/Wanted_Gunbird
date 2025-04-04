@@ -10,7 +10,7 @@ class Player : public GameActor
 {
 private:
 	bool isActive;
-	int hp;
+	int life;
 	int power;
 	int bombCount;
 	int animFrame;
@@ -20,6 +20,8 @@ private:
 	int attackLevel;
 	bool bRightMove;
 	bool bLeftMove;
+	float respawnTime;
+	bool bIsDead;
 	Image* image;
 	Image* leftMoveImage;
 	Image* rightMoveImage;
@@ -42,4 +44,6 @@ public:
 	void ActivateBomb();
 
 	int GetBombCount();
+	void Dead();
+	void Respawn();
 };

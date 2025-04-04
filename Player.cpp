@@ -25,17 +25,33 @@ void Player::CollisionDetected(GameObject* obj)
 	{
 		IncreaseBomb();
 	}
+	if (0 < tags.count(GameTag::Enemy))
+	{
+		Dead();
+		if (life > 0)
+		{
+			Respawn();
+			/*respawnTime += TimerManager::GetInstance()->GetDeltaTime();
+			if (respawnTime >= 1.0f)
+			{
+				Respawn();
+				respawnTime = 0.0f;
+			}*/
+		}
+	}
 }
 
 void Player::Init()
 {
+	life = 2;
 	animFrame = 0;
 	elapsedFrame = 0;
 	attackLevel = 1;
 	bombCount = 2;
 	bRightMove = false;
 	bLeftMove = false;
-
+	respawnTime = 0.0f;
+	bIsDead = false;
 	AddTag(GameTag::Player);
 	SetPos(WINSIZE_X / 2, WINSIZE_Y * 0.9);
 	speed = 500.0f;
@@ -71,7 +87,7 @@ void Player::Init()
 
 void Player::Release()
 {
-	if (image)
+	/*if (image)
 	{
 		image->Release();
 		delete image;
@@ -90,7 +106,7 @@ void Player::Release()
 		rightMoveImage->Release();
 		delete rightMoveImage;
 		rightMoveImage = nullptr;
-	}
+	}*/
 
 	if (attackManager)
 	{
@@ -200,7 +216,7 @@ void Player::Render(HDC hdc)
 	if (playerBomb)
 	{
 		playerBomb->Render(hdc, GetPos());
-	}
+	}/*
 	if (bLeftMove && leftMoveImage)
 	{
 		leftMoveImage->FrameRender(hdc, GetPos().x, GetPos().y, animFrame, 0, false);
@@ -208,8 +224,8 @@ void Player::Render(HDC hdc)
 	if (bRightMove && rightMoveImage)
 	{
 		rightMoveImage->FrameRender(hdc, GetPos().x, GetPos().y, animFrame, 0, false);
-	}
-	if (image)
+	}*/
+	if (image && !bIsDead)
 	{
 		image->FrameRender(hdc, GetPos().x, GetPos().y, animFrame, 0, false);
 	}
@@ -254,13 +270,10 @@ void Player::Fire()
 
 void Player::IncreaseAttackLevel()
 {
-	if (true/*레벨 업 조건*/)
-	{
-		if (attackLevel >= 4)
-			attackLevel = 4;
-		else
-			attackLevel++;
-	}
+	if (attackLevel >= 4)
+		attackLevel = 4;
+	else
+		attackLevel++;
 }
 
 void Player::IncreaseBomb()
@@ -284,4 +297,26 @@ void Player::ActivateBomb()
 int Player::GetBombCount()
 {
 	return this->bombCount;
+}
+
+void Player::Dead()
+{
+	//SetActive(false);
+	bIsDead = true;
+	playerCollision->SetActive(false);
+	attackManager->SetActive(false);
+	playerBomb->SetActive(false);
+}
+
+void Player::Respawn()
+{
+	life--;
+	bIsDead = false;
+	SetPos(WINSIZE_X / 2, WINSIZE_Y * 0.9);
+	playerCollision->SetActive(true);
+	attackManager->SetActive(true);
+	playerBomb->SetActive(true);
+	ImageManager::GetInstance()->AddImage(EImageKey::Player,
+		TEXT("assets/Sprites/Characters/testu_idle_spriteMerge.bmp"),
+		744 * 2, 41 * 2, 24, 1, true, RGB(255, 0, 255));
 }
