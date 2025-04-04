@@ -16,9 +16,9 @@
 #include "ShotManager.h"
 #include "ItemManager.h"
 
-
 //
 #include "BossShip.h"
+#include "BossBird.h"
 
 void MainGame::UpdateCollisionPerformance()
 {
@@ -112,6 +112,12 @@ void MainGame::Init()
 	canon->Init();
 	canon->SetPos(WINSIZE_X / 2, -300);
 	canon->SetTarget(player);
+	canon->SetActive(false);
+
+	bird = new BossBird();
+	bird->Init();
+	bird->SetPos(WINSIZE_X / 2, WINSIZE_Y / 2);
+	bird->SetTarget(player);
 }
 
 void MainGame::Release()
@@ -176,7 +182,8 @@ void MainGame::Update()
 	ShotManager::GetInstance()->Update();
 	CollisionManager::GetInstance()->Update();
 
-	canon->Update();
+	// canon->Update();
+	bird->Update();
 	EffectManager::GetInstance()->Update();
 
 	UpdateCollisionPerformance();
@@ -196,7 +203,8 @@ void MainGame::Render()
 	player->Render(hBackBufferDC);
 	stageManager->Render(hBackBufferDC);
 	ItemManager::GetInstance()->Render(hBackBufferDC);
-	canon->Render(hBackBufferDC);
+	// canon->Render(hBackBufferDC);
+	bird->Render(hBackBufferDC);
 	ShotManager::GetInstance()->Render(hBackBufferDC);
 
 	//enemyMissileManager->Render(hBackBufferDC);

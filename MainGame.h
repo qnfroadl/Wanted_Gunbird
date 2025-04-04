@@ -8,6 +8,7 @@ class BackgroundUI;
 class Item;
 class StageManager;
 class BossShip;
+class BossBird;
 class MainGame : public GameObject
 {
 private:
@@ -27,6 +28,7 @@ private:
 	StageManager* stageManager;
 
 	BossShip* canon;
+	BossBird* bird;
 
 	// 콜리젼매니저 체크용
 	int collCount;

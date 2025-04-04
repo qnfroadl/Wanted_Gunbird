@@ -60,7 +60,14 @@ void StageManager::StepCheck()
 			if (deqStageInfo[curStep].spawnDelay <= elapsedTime)
 			{
 				elapsedTime = 0;
-				EnemyManager::GetInstance()->SpawnEnemy(deqStageInfo[curStep].startPos, EEnemyType(deqStageInfo[curStep].enemyType));
+				if (0 < deqStageInfo[curStep].enemyCount)
+				{
+					deqStageInfo[curStep].enemyCount--;
+					EnemyManager::GetInstance()->SpawnEnemy(deqStageInfo[curStep].startPos, EEnemyType(deqStageInfo[curStep].enemyType));
+				}
+				else {
+					curStep++;
+				}
 
 			}
 		}
@@ -100,8 +107,6 @@ void StageManager::Release()
 void StageManager::Start()
 {
 	curStep = 0;
-
-
 
 	// test
 	// EnemyManager::GetInstance()->SpawnEnemy(FPOINT{200,200}, 0);
