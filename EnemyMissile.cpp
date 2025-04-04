@@ -5,7 +5,7 @@
 #include "TimerManager.h"
 #include "CollisionManager.h"
 #include "MissilePattern.h"
-
+#include "EffectManager.h"
 
 EnemyMissile::EnemyMissile(float speed, float angle)
 {
@@ -98,10 +98,9 @@ const RECT& EnemyMissile::getRect()
 
 void EnemyMissile::On_CollisionDetected(GameObject* obj)
 {
-	//auto tags = obj->GetTags();
-	//if (0 < tags.count(GameTag::Player))
-	//{
-	//	obj->SetActive(false);
-	//	this->SetActive(false);
-	//}
+	if (obj->FindTag(GameTag::Player))
+	{
+		this->SetActive(false);
+		EffectManager::GetInstance()->PlayEffect(GetPos(), EEffectType::ExplosionNormal);
+	}
 }
