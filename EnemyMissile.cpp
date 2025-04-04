@@ -98,9 +98,16 @@ const RECT& EnemyMissile::getRect()
 
 void EnemyMissile::On_CollisionDetected(GameObject* obj)
 {
-	if (obj->FindTag(GameTag::Player))
+	if (obj->FindTag(GameTag::PlayerDefaultAttack))
 	{
-		this->SetActive(false);
-		EffectManager::GetInstance()->PlayEffect(GetPos(), EEffectType::ExplosionNormal);
+		EffectManager::GetInstance()->PlayEffect(GetPos(), EEffectType::ShotImpact);
+	}
+	else if (obj->FindTag(GameTag::PlayerMissileAttack))
+	{
+		EffectManager::GetInstance()->PlayEffect(GetPos(), EEffectType::ShotImpact);
+	}
+	else if (obj->FindTag(GameTag::PlayerBomb))
+	{
+		EffectManager::GetInstance()->PlayEffect(GetPos(), EEffectType::ShotImpact);
 	}
 }

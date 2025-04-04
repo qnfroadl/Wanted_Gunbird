@@ -214,6 +214,20 @@ void MainGame::Update()
 	}
 	EffectManager::GetInstance()->Update();
 
+	if (stageManager->IsFinal())
+	{
+		if (nullptr == ship)
+		{
+			SpawnShip();
+		}
+		
+		if (false == ship->IsActive() && nullptr == bird)
+		{
+			SpawnBird();
+		}
+	}
+
+
 	UpdateCollisionPerformance();
 	EffectSimulation();
 	ItemSpawnSimulation();

@@ -74,7 +74,7 @@ void StageManager::StepCheck()
 	}
 	else {
 		// 스테이지 잡몹 시나리오 종료.
-
+		bFinal = true;
 	}
 }
 
@@ -85,6 +85,7 @@ void StageManager::Init()
 	stageAlert = nullptr;
 	elapsedTime = 0;
 	spawnDelayTime = 0;
+	bFinal = false;
 }
 
 void StageManager::Update()
@@ -115,4 +116,9 @@ void StageManager::Start()
 
 	// test
 	// EnemyManager::GetInstance()->SpawnEnemy(FPOINT{200,200}, 0);
+}
+
+bool StageManager::IsFinal()
+{
+	return bFinal && !EnemyManager::GetInstance()->IsLiveEnmey();
 }
