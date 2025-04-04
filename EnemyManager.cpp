@@ -6,7 +6,7 @@
 
 Enemy* EnemyManager::CreateEnemy(EEnemyType enemyType)
 {
-	// Å¸ÀÔ¿¡ µû¸¥ Àû »ý¼º.
+	// Å¸ï¿½Ô¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 	EnemyImgInfo info = enemyInfoMap[enemyType];
 	Enemy* enemy = new Enemy(info.hp);
 	enemy->Init(
@@ -46,7 +46,7 @@ bool EnemyManager::IsLiveEnmey()
 
 void EnemyManager::Init()
 {
-	// enemyµé Á¤º¸ ÃÊ±âÈ­
+	// enemyï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
 	InitEnemy();
 	generateTime = 0.0f;
 }
@@ -63,7 +63,8 @@ void EnemyManager::Release()
 
 void EnemyManager::Update()
 {
-	// Enemy ÀÏÁ¤½Ã°£¸¶´Ù ½ºÆù
+	// Enemy ï¿½ï¿½ï¿½ï¿½ï¿½Ã°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	//SpawnEnemy(FPOINT{ 300.0f, 100.0f }, EEnemyType::MidBoss);
 	generateTime += TimerManager::GetInstance()->GetDeltaTime();
 	if (generateTime > 1.0f)
 	{
@@ -71,10 +72,12 @@ void EnemyManager::Update()
 		int y = rand() % (WINSIZE_Y/2);
 		//SpawnEnemy(FPOINT{ float(x), 50.0 }, EEnemyType::FlyingEnemy);
 		// SpawnEnemy(FPOINT{ float(x), float(y) }, EEnemyType::BeeCopter);
+		//SpawnEnemy(FPOINT{ float(x), -10.0 }, EEnemyType::FlyingEnemy);
+		//SpawnEnemy(FPOINT{ float(x), float(y) }, EEnemyType::BeeCopter);
 		generateTime = 0.0f;
 	}
 
-	// Enemy ¾÷µ¥ÀÌÆ®
+	// Enemy ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 	Enemy* enemy = nullptr;
 	auto it = enemys.begin();
 	while (it != enemys.end())
@@ -101,14 +104,14 @@ void EnemyManager::Render(HDC hdc)
 	auto it = enemys.begin();
 	while (it != enemys.end())
 	{
-		// È­¸é ¹ÛÀ¸·Î ¹þ¾î³ª¸é Á¦°Å
-		if (IsOutofScreen((*it)->getRect(), -150))
+		// È­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½î³ªï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		if (IsOutofScreen((*it)->getRect(), -150.0f))
 		{
 			(*it)->Release();
 			delete (*it);
 			it = enemys.erase(it);
 		}
-		else		// ³²Àº ¾ÖµéÀº ·»´õ
+		else		// ï¿½ï¿½ï¿½ï¿½ ï¿½Öµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		{
 			enemy = (*it);
 			enemy->Render(hdc);
@@ -117,7 +120,7 @@ void EnemyManager::Render(HDC hdc)
 	}
 }
 
-// ½ºÆù ½Ã collision ¹Ú½º°¡ Ã¢°ú Ãæµ¹ÇÏ¸é »ç¶óÁö¹Ç·Î ÁÖÀÇ
+// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ collision ï¿½Ú½ï¿½ï¿½ï¿½ Ã¢ï¿½ï¿½ ï¿½æµ¹ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ ï¿½ï¿½ï¿½ï¿½
 void EnemyManager::SpawnEnemy(const FPOINT& pos, EEnemyType enemyType)
 {
 	Enemy* enemy = CreateEnemy(enemyType);
