@@ -53,7 +53,7 @@ void Item::Init()
 		MessageBox(NULL, TEXT("item not loaded"), NULL,NULL);
 	}
 
-	collision = CollisionManager::GetInstance()->CreateCollisionRect(this, RECT{-100,-100, -100,-100});
+	collision = CollisionManager::GetInstance()->CreateCollisionRect(CollisionLayer::Item, this, RECT{-100,-100, -100,-100});
 	collision->Bind([&](GameObject* obj)
 		{
 			this->On_CollisionDetected(obj);

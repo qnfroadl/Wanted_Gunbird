@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="ActionPattern.cpp" />
     <ClCompile Include="BackgroundUI.cpp" />
+    <ClCompile Include="BossBird.cpp" />
     <ClCompile Include="BossShip.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="EffectManager.cpp" />
@@ -164,6 +165,7 @@
   <ItemGroup>
     <ClInclude Include="ActionPattern.h" />
     <ClInclude Include="BackgroundUI.h" />
+    <ClInclude Include="BossBird.h" />
     <ClInclude Include="BossShip.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="CommonFunction.h" />

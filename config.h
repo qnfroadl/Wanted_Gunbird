@@ -22,6 +22,7 @@ enum class EEnemyType
 {
 	FlyingEnemy,
 	MidBoss,
+
 };
 
 enum class GameTag
@@ -45,14 +46,16 @@ enum class EImageKey
 	ShipBase, ShipDestroyedLeft, ShipDestroyedRight, ShipDestroyed,
 	PlayerBomb,
 
-	// 하단의 Effect 종류들은 FindImage로 찾아서 쓰기만 하면됩니다.
-	ExplosionPlayer, ExplosionSmall, ExplosionBig, ShotImpact,
+	 ExplosionSmall, ExplosionNormal, ExplosionBig, ShotImpact,
 
 	// Enemy
-	FlyingEnemy, MidBoss, MidBossUpgrade,
+	FlyingEnemy, MidBossBasic, MidBossUpgrade,
 
 	// Missile
 	MidBossStar, MidBossPyramid,
+
+	//Background
+	BG_SeaBottom, BG_SeaLoop,
 };
 
 typedef struct EnemyInformation {
@@ -80,8 +83,8 @@ typedef struct MissileImageInformation {
 
 enum class EEffectType
 {
-	ExplosionPlayer = EImageKey::ExplosionPlayer,
 	ExplosionSmall= EImageKey::ExplosionSmall,
+	ExplosionNormal = EImageKey::ExplosionNormal,
 	ExplosionBig = EImageKey::ExplosionBig,
 	ShotImpact = EImageKey::ShotImpact,
 };

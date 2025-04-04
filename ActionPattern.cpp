@@ -7,6 +7,7 @@ ActionPattern::ActionPattern(int paddingX,int paddingUpY,int paddingDownY)
 {
 	isLoop = true;
 	isCurve = false;
+	isRight = false;
 
 	this->paddingX = paddingX;
 	this->paddingUpY = paddingUpY;
@@ -16,7 +17,6 @@ ActionPattern::ActionPattern(int paddingX,int paddingUpY,int paddingDownY)
 	posList.push_back(FPOINT{ 500, 200 });
 
 	dir = { 0.0f, 0.0f };
-	if (isCurve) dir.x = 1.0f;
 	dirAccumulated = 0;
 
 	speed = 1.0f;
@@ -27,8 +27,6 @@ ActionPattern::ActionPattern(int paddingX,int paddingUpY,int paddingDownY)
 
 	origin = { 0.0f, 0.0f };
 	dest = { 0.0f, 0.0f };
-
-	setLinearDir();
 }
 
 ActionPattern::~ActionPattern()
@@ -58,11 +56,17 @@ void ActionPattern::setLinearDir()
 
 void ActionPattern::setCurveDir()
 {	
-	angle++;
-	//dir.x = cosf(DEG_TO_RAD(angle));
-	//dir.y = sinf(DEG_TO_RAD(angle));
-	 		
-	dir.y = sinf(DEG_TO_RAD(angle));
+	angle++; 		
+	if (isRight)
+	{
+		dir.x = -cosf(DEG_TO_RAD(angle));
+	}
+	else
+	{
+		dir.x = cosf(DEG_TO_RAD(angle));
+	}
+
+	dir.y += 0.02f;
 }
 
 VEC2 ActionPattern::move(const RECT& rt)
@@ -70,25 +74,19 @@ VEC2 ActionPattern::move(const RECT& rt)
 
 	if (isLoop)  
 	{
-		// random pause
-		if (std::rand() % randomStopFreq) return VEC2{ 0.0f, 0.0f };
-
 		if (isCurve)
 		{
 			setCurveDir();
-;		}
-
-		// random direction change
-		if (std::rand() % randomDirChange == 0)
+		}
+		else			// random pause
 		{
-			dir = -dir;
+			if (std::rand() % randomStopFreq) return VEC2{ 0.0f, 0.0f };
 		}
 
-		// if it is out of the box
-		if (IsOutofScreen(rt, paddingX, paddingUpY, paddingDownY))
-		{	
-			angle = angle + 45;
-			dir = - dir;			
+		// in linear movement, random direction change
+		if (std::rand() % randomDirChange == 0 && isCurve == false)
+		{
+			dir = -dir;
 		}
 		
 		return dir * speed;		

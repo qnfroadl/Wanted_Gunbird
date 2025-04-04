@@ -1,9 +1,9 @@
 #pragma once
 
 #include "GameObject.h"
-
-#define BACK_WIDTH 228
-#define BACK_HEIGHT 2108
+#include <array>
+#define BACK_WIDTH 600
+#define BACK_HEIGHT 1000
 
 class Image;
 class BackgroundUI : public GameObject
@@ -12,27 +12,30 @@ private:
 	int life;
 	int bomb;
 	int score;
-	int curFrame;
+	float moveY;
 
 	float speed;
 	
-	Image* imageBackground;
+	int bottomIndex;
+	int topIndex;
+	array< Image*, 2> loopBackground;
+	
 	Image* imageLife;
 	Image* imageBomb;
+	bool bFinal;
 
 	wchar_t szText[10];
 	wchar_t dTimeText[40];
 public:
 	void Init();
-	void Release();
-	void Render(HDC hdc);
 	void Update();
+	void Render(HDC hdc);
 
 	void SetSpeed(float speed);
-
+	void SetFinal(bool bFinal);
 	void SetLife(int lifeCount);
 	void SetBomb(int bombCount);
 	void SetScore(int score);
-	
+
 };
 

@@ -7,6 +7,7 @@
 #include <fstream>
 #include <sstream>
 #include "EnemyManager.h"
+#include "TimerManager.h"
 
 void StageManager::LoadStageInfo()
 {
@@ -46,13 +47,24 @@ void StageManager::StepCheck()
 {
 	if (deqStageInfo.size() <= curStep && curStep < deqStageInfo.size())
 	{
-		deqStageInfo[curStep];
+		
+		if (deqStageInfo[curStep].deadCheck && EnemyManager::GetInstance()->IsLiveEnmey())
+		{
+			return;
+		}
+		float deltaTime = TimerManager::GetInstance()->GetDeltaTime();
+		deqStageInfo[curStep].stepTime -= deltaTime;
+		if (deqStageInfo[curStep].stepTime < 0)
+		{
+			elapsedTime += deltaTime;
+			if (deqStageInfo[curStep].spawnDelay <= elapsedTime)
+			{
+				elapsedTime = 0;
+				EnemyManager::GetInstance()->SpawnEnemy(deqStageInfo[curStep].startPos, EEnemyType(deqStageInfo[curStep].enemyType));
 
-
-
-
+			}
+		}
 	}
-	
 }
 
 void StageManager::Init()
@@ -60,9 +72,7 @@ void StageManager::Init()
 	curStep = -1;
 	LoadStageInfo();
 	stageAlert = nullptr;
-	curFrame = 0;
-	maxFrame = 0;
-
+	elapsedTime = 0;
 }
 
 void StageManager::Update()

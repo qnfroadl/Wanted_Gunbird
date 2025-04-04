@@ -7,6 +7,7 @@ class ActionPattern
 {
 	bool isLoop;
 	bool isCurve;
+	bool isRight;
 
 	int paddingX;
 	int paddingUpY;
@@ -38,6 +39,8 @@ public:
 	FPOINT getStartPoint();
 
 	void setLinearDir();
+
+	inline void setRight() { isRight = true; };
 
 	void setCurveDir();
 

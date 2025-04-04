@@ -21,16 +21,6 @@ void Collision::SetType(CollisionType type)
     this->type = type;
 }
 
-void Collision::SetActive(bool bActive)
-{
-    this->bActive = bActive;
-}
-
-bool Collision::GetActive()
-{
-    return this->bActive;
-}
-
 /**/
 
 CollisionRect::CollisionRect()
@@ -51,7 +41,7 @@ void CollisionRect::SetRect(const RECT& rt)
 
 void CollisionRect::Render(HDC hdc)
 {
-    if (this->GetActive())
+    if (this->IsActive())
     {
         RenderRect(hdc, ctRect.left, ctRect.top, ctRect.right - ctRect.left, ctRect.bottom - ctRect.top);
     }
@@ -65,64 +55,64 @@ void CollisionRect::AddPos(float x, float y)
     ctRect.bottom += y;
 }
 
-CollisionEllipse* CollisionManager::CreateCollisionEllipse(GameObject* obj, int x, int y, int width, int height)
+CollisionRect* CollisionManager::CreateCollisionRect(CollisionLayer layer, GameObject* obj, const RECT& rt)
 {
-    if (nullptr == obj)
+    CollisionRect* coll = nullptr;
+    if (nullptr != obj)
     {
-        return nullptr;
+        //   매번 생성이 아니라, 콜리젼 풀에서 가져오는 방식이라면? 
+        coll = new CollisionRect();
+        coll->SetGameObject(obj);
+        coll->SetRect(rt);
+        coll->SetType(CollisionType::RECT);
+        coll->layer = layer;
+        (*layerCollisionMap)[layer].insert(coll);
     }
 
-    // CollisionEllipse* coll = new CollisionEllipse();
-    // coll->SetActive(true);
-    // coll->SetGameObject(obj);
-    // coll->SetEllipse(x,y,width, height);
-    // coll->SetType(CollisionType::ELLIPSE);
-    // 
-    // collisionMap[obj].push_back(coll);
-
-    return nullptr;
-}
-
-CollisionRect* CollisionManager::CreateCollisionRect(GameObject* obj, const RECT& rt)
-{
-    if (nullptr == obj)
-    {
-        return nullptr;
-    }
-
-    CollisionRect* coll = new CollisionRect();
-    coll->SetActive(true);
-    coll->SetGameObject(obj);
-    coll->SetRect(rt);
-    coll->SetType(CollisionType::RECT);
-
-    collisionMap[obj].push_back(coll);
-   
     return coll;
+
 }
 
 void CollisionManager::DeleteCollision(Collision* coll)
 {
     if (nullptr != coll)
     {
-        list<Collision*>& list = collisionMap.at(coll->GetGameObject());
-        list.remove(coll);
+        unordered_set<Collision*>& setCollision = (*layerCollisionMap)[coll->layer];
+        setCollision.erase(coll);
+
+        // 콜리젼 풀 만들어서 해당 풀에 반환하는 식이면 더 좋을듯.
         delete coll;
     }
+  
 }
 
 void CollisionManager::Init()
 {
+
     brush = (HBRUSH)GetStockObject(HOLLOW_BRUSH);
     pen = CreatePen(PS_SOLID, 3, RGB(0, 255, 0));
+    this->checkCount = 0;
 
+    layerCollisionMap = new unordered_map<CollisionLayer, unordered_set<Collision*>>();
 
+    (*layerCollisionMap)[CollisionLayer::Player].reserve(10);
+    (*layerCollisionMap)[CollisionLayer::PlayerAttack].reserve(200);
+    (*layerCollisionMap)[CollisionLayer::Enemy].reserve(50);
+    (*layerCollisionMap)[CollisionLayer::EnemyAttack].reserve(200);
+    (*layerCollisionMap)[CollisionLayer::Item].reserve(10);
+
+    layerMaskMap[CollisionLayer::Player] = uint8_t(CollisionLayer::Enemy) | uint8_t(CollisionLayer::EnemyAttack) | uint8_t(CollisionLayer::Item);
+    layerMaskMap[CollisionLayer::PlayerAttack] = uint8_t(CollisionLayer::Enemy);
+    layerMaskMap[CollisionLayer::Enemy] = uint8_t(CollisionLayer::Player) | uint8_t(CollisionLayer::PlayerAttack);
+    layerMaskMap[CollisionLayer::EnemyAttack] = uint8_t(CollisionLayer::Player);
+    layerMaskMap[CollisionLayer::Item] = uint8_t(CollisionLayer::Player);
 
 }
 
 void CollisionManager::Update()
 {
-    CollisionDetect();
+    checkCount = 0;
+    CollisionDetect();   
 }
 
 void CollisionManager::Render(HDC hdc)
@@ -130,11 +120,9 @@ void CollisionManager::Render(HDC hdc)
     HBRUSH oldBrush = (HBRUSH)SelectObject(hdc, brush);
     HPEN oldPen = (HPEN)SelectObject(hdc, pen);
 
-    list<GameObject*> ownerList;
-
-    for (const auto& pair : collisionMap)
+    for (const auto& pair : (*layerCollisionMap))
     {
-        for (auto col : collisionMap[pair.first])
+        for (Collision* col : pair.second)
         {
             if (col->IsActive())
             {
@@ -149,6 +137,8 @@ void CollisionManager::Render(HDC hdc)
 
 void CollisionManager::Release()
 {
+    // layerMap
+    // 남아있는 콜리젼 해제
     DeleteObject(brush);
     DeleteObject(pen);
 
@@ -157,50 +147,67 @@ void CollisionManager::Release()
 
 void CollisionManager::CollisionDetect()
 {
-    list<GameObject*> ownerList;
-
-    for (const auto& pair : collisionMap)
+    uint8_t mask;
+    for (const auto& pair : *layerCollisionMap)
     {
-        ownerList.push_back(pair.first);
+        mask = layerMaskMap[pair.first];
+
+        for (const auto& pair2 : *layerCollisionMap)
+        {
+            // 검사 해야하는 레이어라면
+            if (mask & uint8_t(pair2.first))    
+            {
+                CollisionDetect(pair.second, pair2.second);
+            }
+        }
     }
-
-   list<GameObject*>::iterator it = ownerList.begin();
-   list<GameObject*>::iterator itBack = ownerList.end();
-
-   if (it == ownerList.end())
-   {
-        return;
-   }
-  
-   while (it != ownerList.end())
-   {
-
-       itBack = ownerList.end();
-       itBack--;
-
-       while (it != itBack)
-       {
-           list<Collision*>& colList1 = collisionMap.at(*it);
-           list<Collision*>& colList2 = collisionMap.at(*itBack);
-
-            CollisionDetect(colList1, colList2);
-          
-            itBack--;
-       }
-
-       it++;
-   }
 }
 
-void CollisionManager::CollisionDetect(list<Collision*>& colList1, list<Collision*>& colList2)
+int CollisionManager::GetCheckCount()
 {
-    for (auto col1 : colList1)
+    return this->checkCount;
+}
+
+int CollisionManager::GetCollisionCount()
+{
+    int collisionCount = 0;
+    auto it = layerCollisionMap->begin();
+    while (it != layerCollisionMap->end())
     {
-        for (auto col2 : colList2)
+        collisionCount += it->second.size();
+        it++;
+    }
+    return collisionCount;
+}
+
+int CollisionManager::GetActivecollisionCount()
+{
+    // 성능 문제되면 호출 금지.
+    int collisionCount = 0;
+    for (const auto& pair : *layerCollisionMap)
+    {
+        for (const auto& col : pair.second)
         {
-            if (col1->bActive && col2->bActive)
+            if (col->IsActive())
             {
-                Detect(col1, col2);
+                collisionCount++;
+            }
+        }
+    }
+   
+    return collisionCount;
+}
+
+void CollisionManager::CollisionDetect(const unordered_set<Collision*>& setColl1, const  unordered_set<Collision*>& setColl2)
+{
+    for (auto c1 : setColl1)
+    {
+        for (auto c2 : setColl2)
+        {
+            if (c1->IsActive() && c2->IsActive())
+            {
+                checkCount++;
+                Detect(c1, c2);
             }
         }
     }
@@ -208,79 +215,16 @@ void CollisionManager::CollisionDetect(list<Collision*>& colList1, list<Collisio
 
 void CollisionManager::Detect(Collision* c1, Collision* c2)
 {
-    if (nullptr != c1 && nullptr != c2)
-    {   
-        if (c1->GetType() == CollisionType::RECT && c2->GetType() == CollisionType::RECT)
-        {
-            CollisionRect* rt1 = static_cast<CollisionRect*>(c1);
-            CollisionRect* rt2 = static_cast<CollisionRect*>(c2);
-            if (RectInRect(rt1->GetRect(), rt2->GetRect()))
-            {
-                // 충돌.
-                c1->detection(c2->obj);
-                c2->detection(c1->obj);
-            }
-        }
-        else if (c1->GetType() == CollisionType::ELLIPSE && c2->GetType() == CollisionType::ELLIPSE)
-        {
-            CEllipse cel1 = ((CollisionEllipse*)c1)->GetEllipse();
-            CEllipse cel2 = ((CollisionEllipse*)c1)->GetEllipse();
-            if (EllipseInEllipse(cel1, cel2))
-            {
-                c1->detection(c2->obj);
-                c2->detection(c1->obj);
-            }
-        }
-        else 
-        {
-            CEllipse cel;
-            RECT rt;
-            if (c1->GetType() == CollisionType::ELLIPSE)
-            {
-                cel = ((CollisionEllipse*)c1)->GetEllipse();
-                rt = ((CollisionRect*)c2)->GetRect();
-            }
-            else {
-                rt = ((CollisionRect*)c1)->GetRect();
-                cel = ((CollisionEllipse*)c2)->GetEllipse();
-            }
-
-            if (RectInEllipse(rt, cel))
-            {
-                c1->detection(c2->obj);
-                c2->detection(c1->obj);
-            }
-        }
-    }
-}
-
-CollisionEllipse::CollisionEllipse()
-{
-    
-}
-
-void CollisionEllipse::SetEllipse(int x, int y, int width, int height)
-{
-    this->ellipse.centerX = x;
-    this->ellipse.centerY = y;
-    this->ellipse.width = width;
-    this->ellipse.height = height;
-
-}
-
-CEllipse CollisionEllipse::GetEllipse()
-{
-    return this->ellipse;
-}
-
-void CollisionEllipse::Render(HDC hdc)
-{
-    if (this->GetActive())
+    if (c1->GetType() == CollisionType::RECT && c2->GetType() == CollisionType::RECT)
     {
-        RenderEllipseAtCenter(hdc, this->ellipse.centerX, this->ellipse.centerY, this->ellipse.width, this->ellipse.height);
-    }
-}
+        CollisionRect* rt1 = static_cast<CollisionRect*>(c1);
+        CollisionRect* rt2 = static_cast<CollisionRect*>(c2);
 
-void CollisionEllipse::AddPos(float x, float y)
-{
+        if (RectInRect(rt1->GetRect(), rt2->GetRect()))
+        {
+            // 충돌.
+            c1->detection(c2->obj);
+            c2->detection(c1->obj);
+        }
+    }
 }

@@ -69,7 +69,6 @@ public:
 
 	// 화면에 출력
 	void Render(HDC hdc, int destX = 0, int destY = 0);
-	void RenderStretch(HDC hdc, int width, int height);
 
 	void RenderCenter(HDC hdc, int destX = 0, int destY = 0);
 

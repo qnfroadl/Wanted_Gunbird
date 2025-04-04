@@ -39,7 +39,7 @@ void PlayerMissileAttack::Init()
 
 	FPOINT pos = GetPos();
 	RECT defaultRect = { pos.x, pos.y, pos.x+2, pos.y+29 };
-	attackMissileCollision = CollisionManager::GetInstance()->CreateCollisionRect(this, defaultRect);
+	attackMissileCollision = CollisionManager::GetInstance()->CreateCollisionRect(CollisionLayer::PlayerAttack, this, defaultRect);
 	attackMissileCollision->Bind([&](GameObject* obj)
 		{
 			this->CollisionDetected(obj);
