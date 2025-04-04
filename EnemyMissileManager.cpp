@@ -69,7 +69,7 @@ void EnemyMissileManager::Render(HDC hdc)
 {
 	for (auto it = listMissiles.begin(); it != listMissiles.end();)
 	{
-		if (IsOutofScreen((*it)->getRect(), 0.0f))
+		if (IsOutofScreen((*it)->getRect(), -50.0f))
 		{
 			(*it)->Release();
 			delete (*it);
