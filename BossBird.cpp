@@ -286,8 +286,8 @@ void BossBird::Init()
 
 	this->width = 253 * RATIO;
 	this->height = 100 * RATIO;
-	leftHP = 50;
-	rightHP = 50;
+	leftHP = 100;
+	rightHP = 100;
 	speed = 300;
 	attackStep = 0;
 

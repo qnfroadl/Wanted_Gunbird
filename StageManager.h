@@ -28,7 +28,7 @@ private:
 	Image* stageAlert;		// 엘리트 출현, 보스 출현시 경고 띠용띠용 이미지
 	float elapsedTime;
 	float spawnDelayTime;
-
+	bool bFinal;
 	void LoadStageInfo();
 	void StepCheck();
 
@@ -40,5 +40,6 @@ public:
 	
 	void Start();
 	
+	bool IsFinal();
 	
 };

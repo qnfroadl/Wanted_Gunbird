@@ -26,7 +26,7 @@ Enemy* EnemyManager::CreateEnemy(EEnemyType enemyType)
 void EnemyManager::InitEnemy()
 {
 	enemyInfoMap[EEnemyType::MidBoss] = { EImageKey::MidBossBasic, 
-		TEXT("assets/Sprites/Enemies/MidBoss_Idle.bmp"), 20, 410.0f * 1.5, 73.0f * 1.5, 5, 1, true, RGB(255, 0, 255) };
+		TEXT("assets/Sprites/Enemies/MidBoss_Idle.bmp"), 50, 410.0f * 1.5, 73.0f * 1.5, 5, 1, true, RGB(255, 0, 255) };
 	ImageManager::GetInstance()->AddImage(EImageKey::MidBossUpgrade, 
 		TEXT("assets/Sprites/Enemies/MidBossUpgrade.bmp"), 552.0f * 1.5, 91.0f * 1.5, 6, 1, true, RGB(255, 0, 255));
 
