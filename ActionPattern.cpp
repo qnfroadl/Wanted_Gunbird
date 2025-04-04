@@ -13,9 +13,6 @@ ActionPattern::ActionPattern(int paddingX,int paddingUpY,int paddingDownY)
 	this->paddingUpY = paddingUpY;
 	this->paddingDownY = paddingDownY;
 
-	posList.push_back(FPOINT{ WINSIZE_X/2.0f, 200 });	// starting point
-	posList.push_back(FPOINT{ 500, 200 });
-
 	dir = { 0.0f, 0.0f };
 	dirAccumulated = 0;
 
@@ -46,11 +43,8 @@ FPOINT ActionPattern::getStartPoint()
 
 void ActionPattern::setLinearDir()
 {
-		origin = posList[0];		
-		dest = posList[1];
-
-		dir.x = dest.x - origin.x;
-		dir.y = dest.y - origin.y;
+		dir.x = 1.0f;
+		dir.y = 0.0f;
 		dir.normalize();
 }
 

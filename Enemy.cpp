@@ -27,17 +27,26 @@ void Enemy::Init(EEnemyType type, EImageKey key, const wchar_t* filePath, float 
 	{
 		actionPattern = new ActionPattern(100.0, 0.0, 500.0);
 		actionPattern->setLinearDir();
+		actionPattern->pushfront(FPOINT{300.0f, 50.0f });
 	}
 	if (type == EEnemyType::FlyingEnemy)
 	{
 		actionPattern = new ActionPattern(0.0, 0.0, 0.0);
 		actionPattern->setIsCurve(true);
 		float x = rand() % WINSIZE_X;
-		actionPattern->pushfront(FPOINT{ x / 2.0f, 200 });
+		actionPattern->pushfront(FPOINT{ x / 2.0f, 200 });	// starting point
 		if (rand() % 2==1)
 		{
-			actionPattern->setIsCurve(true);
+			actionPattern->setIsRight();
 		}
+	}
+	if (type == EEnemyType::BeeCopter)
+	{
+		actionPattern = new ActionPattern(0.0, 0.0, 0.0);
+		actionPattern->setLinearDir();
+		float x = rand() % WINSIZE_X;
+		float y = rand() % (WINSIZE_Y/2);
+		actionPattern->pushfront(FPOINT{ x, y });	// starting point
 	}
 	
 	FPOINT startPos = actionPattern->getStartPoint();

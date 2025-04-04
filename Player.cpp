@@ -25,33 +25,15 @@ void Player::CollisionDetected(GameObject* obj)
 	{
 		IncreaseBomb();
 	}
-	if (0 < tags.count(GameTag::Enemy))
-	{
-		Dead();
-		if (life > 0)
-		{
-			Respawn();
-			/*respawnTime += TimerManager::GetInstance()->GetDeltaTime();
-			if (respawnTime >= 1.0f)
-			{
-				Respawn();
-				respawnTime = 0.0f;
-			}*/
-		}
-	}
 }
 
 void Player::Init()
 {
-	life = 2;
 	animFrame = 0;
 	elapsedFrame = 0;
 	attackLevel = 1;
 	bombCount = 2;
-	bRightMove = false;
-	bLeftMove = false;
-	respawnTime = 0.0f;
-	bIsDead = false;
+
 	AddTag(GameTag::Player);
 	SetPos(WINSIZE_X / 2, WINSIZE_Y * 0.9);
 	speed = 500.0f;
@@ -60,21 +42,9 @@ void Player::Init()
 		744*2, 41*2, 24, 1, true, RGB(255, 0, 255));
 	if (!image)
 		return;
-	/*rightMoveImage = ImageManager::GetInstance()->AddImage(EImageKey::Player,
-		TEXT("assets/Sprites/Characters/testu_idle_spriteMerge.bmp"),
-		744 * 2, 41 * 2, 24, 1, true, RGB(255, 0, 255));
-	if (!rightMoveImage)
-		return;
-	leftMoveImage = ImageManager::GetInstance()->AddImage(EImageKey::Player,
-		TEXT("assets/Sprites/Characters/testu_idle_spriteMerge.bmp"),
-		744 * 2, 41 * 2, 24, 1, true, RGB(255, 0, 255));
-	if (!leftMoveImage)
-		return;*/
 
 	attackManager = new PlayerAttackManager;
 	attackManager->Init();
-	playerBomb = new PlayerBomb;
-	playerBomb->Init(GetPos());
 	FPOINT pos = GetPos();
 	RECT defaultRect = { pos.x - (PLAYERWITHD/2), pos.y - (PLAYERHEIGHT/2), pos.x + (PLAYERWITHD/2), pos.y + (PLAYERHEIGHT/2) };
 	playerCollision = CollisionManager::GetInstance()->CreateCollisionRect(CollisionLayer::Player, this, defaultRect);
@@ -87,27 +57,6 @@ void Player::Init()
 
 void Player::Release()
 {
-	/*if (image)
-	{
-		image->Release();
-		delete image;
-		image = nullptr;
-	}
-
-	if (leftMoveImage)
-	{
-		leftMoveImage->Release();
-		delete leftMoveImage;
-		leftMoveImage = nullptr;
-	}
-
-	if (rightMoveImage)
-	{
-		rightMoveImage->Release();
-		delete rightMoveImage;
-		rightMoveImage = nullptr;
-	}*/
-
 	if (attackManager)
 	{
 		attackManager->Release();
@@ -115,12 +64,12 @@ void Player::Release()
 		attackManager = nullptr;
 	}
 	
-	if (playerBomb)
-	{
-		playerBomb->Release();
-		delete playerBomb;
-		playerBomb = nullptr;
-	}
+	// if (playerBomb)
+	// {
+	// 	playerBomb->Release();
+	// 	delete playerBomb;
+	// 	playerBomb = nullptr;
+	// }
 }
 
 void Player::Update()
@@ -152,47 +101,36 @@ void Player::Update()
 	else if (KeyManager::GetInstance()->IsStayKeyDown(VK_LEFT))
 	{
 		moveAngle = 180.0f;
-		bLeftMove = true;
 		movementActive = true;
 	}
 	else if (KeyManager::GetInstance()->IsStayKeyDown(VK_RIGHT))
 	{
 		moveAngle = 0.0f;
-		bRightMove = true;
 		movementActive = true;
 	}
 	if (KeyManager::GetInstance()->IsStayKeyDown(VK_UP) &&
 		(KeyManager::GetInstance()->IsStayKeyDown(VK_LEFT)))
 	{
 		moveAngle = 225.0f;
-		bLeftMove = true;
 		movementActive = true;
 	}
 	else if (KeyManager::GetInstance()->IsStayKeyDown(VK_UP) &&
 		(KeyManager::GetInstance()->IsStayKeyDown(VK_RIGHT)))
 	{
 		moveAngle = 315.0f;
-		bRightMove = true;
 		movementActive = true;
 	}
 	else if (KeyManager::GetInstance()->IsStayKeyDown(VK_DOWN) &&
 		(KeyManager::GetInstance()->IsStayKeyDown(VK_LEFT)))
 	{
 		moveAngle = 135.0f;
-		bLeftMove = true;
 		movementActive = true;
 	}
 	else if (KeyManager::GetInstance()->IsStayKeyDown(VK_DOWN) &&
 		(KeyManager::GetInstance()->IsStayKeyDown(VK_RIGHT)))
 	{
 		moveAngle = 45.0f;
-		bRightMove = true;
 		movementActive = true;
-	}
-	else
-	{
-		bLeftMove = false;
-		bRightMove = false;
 	}
 	if(movementActive)
 		Move(moveAngle);
@@ -201,8 +139,7 @@ void Player::Update()
 		Fire();
 	if (KeyManager::GetInstance()->IsOnceKeyDown('S'))
 	{
-		ActivateBomb();
-		playerBomb->Update();
+		// ActivateBomb();
 	
 	}
 	if (attackManager)
@@ -213,19 +150,7 @@ void Player::Update()
 
 void Player::Render(HDC hdc)
 {
-	if (playerBomb)
-	{
-		playerBomb->Render(hdc, GetPos());
-	}/*
-	if (bLeftMove && leftMoveImage)
-	{
-		leftMoveImage->FrameRender(hdc, GetPos().x, GetPos().y, animFrame, 0, false);
-	}
-	if (bRightMove && rightMoveImage)
-	{
-		rightMoveImage->FrameRender(hdc, GetPos().x, GetPos().y, animFrame, 0, false);
-	}*/
-	if (image && !bIsDead)
+	if (image)
 	{
 		image->FrameRender(hdc, GetPos().x, GetPos().y, animFrame, 0, false);
 	}
@@ -233,6 +158,10 @@ void Player::Render(HDC hdc)
 	{
 		attackManager->Render(hdc);
 	}
+	// if (playerBomb)
+	// {
+	// 	playerBomb->Render(hdc);
+	// }
 }
 
 void Player::Move(float degree)
@@ -270,10 +199,13 @@ void Player::Fire()
 
 void Player::IncreaseAttackLevel()
 {
-	if (attackLevel >= 4)
-		attackLevel = 4;
-	else
-		attackLevel++;
+	if (true/*레벨 업 조건*/)
+	{
+		if (attackLevel >= 4)
+			attackLevel = 4;
+		else
+			attackLevel++;
+	}
 }
 
 void Player::IncreaseBomb()
@@ -285,7 +217,7 @@ void Player::ActivateBomb()
 {
 	if (bombCount <= 0)
 		return;
-	playerBomb->BombActivate(GetPos());
+	// playerBomb->BombActivate(GetPos());
 	bombCount--;
 	/* 
 	 폭탄은 missileMgr에서 구현?
@@ -297,26 +229,4 @@ void Player::ActivateBomb()
 int Player::GetBombCount()
 {
 	return this->bombCount;
-}
-
-void Player::Dead()
-{
-	//SetActive(false);
-	bIsDead = true;
-	playerCollision->SetActive(false);
-	attackManager->SetActive(false);
-	playerBomb->SetActive(false);
-}
-
-void Player::Respawn()
-{
-	life--;
-	bIsDead = false;
-	SetPos(WINSIZE_X / 2, WINSIZE_Y * 0.9);
-	playerCollision->SetActive(true);
-	attackManager->SetActive(true);
-	playerBomb->SetActive(true);
-	ImageManager::GetInstance()->AddImage(EImageKey::Player,
-		TEXT("assets/Sprites/Characters/testu_idle_spriteMerge.bmp"),
-		744 * 2, 41 * 2, 24, 1, true, RGB(255, 0, 255));
 }

@@ -71,6 +71,22 @@ void MainGame::ItemSpawnSimulation()
 	
 }
 
+void MainGame::SpawnShip()
+{
+	ship = new BossShip();
+	ship->Init();
+	ship->SetPos(WINSIZE_X / 2, -300);
+	ship->SetTarget(player);
+}
+
+void MainGame::SpawnBird()
+{
+	bird = new BossBird();
+	bird->Init();
+	bird->SetPos(WINSIZE_X / 2, WINSIZE_Y);
+	bird->SetTarget(player);
+}
+
 void MainGame::Init()
 {
 	CollisionManager::GetInstance()->Init();
@@ -108,16 +124,9 @@ void MainGame::Init()
 	// test
 	stageManager->Start();
 
-	canon = new BossShip();
-	canon->Init();
-	canon->SetPos(WINSIZE_X / 2, -300);
-	canon->SetTarget(player);
-	canon->SetActive(false);
-
-	bird = new BossBird();
-	bird->Init();
-	bird->SetPos(WINSIZE_X / 2, WINSIZE_Y / 2);
-	bird->SetTarget(player);
+	ship = nullptr;
+	bird = nullptr;
+	
 }
 
 void MainGame::Release()
@@ -157,6 +166,19 @@ void MainGame::Release()
 		stageManager = nullptr;
 	}
 
+	if (ship)
+	{
+		ship->Release();
+		delete ship;
+		ship = nullptr;
+	}
+
+	if (bird)
+	{
+		bird->Release();
+		delete bird;
+		bird = nullptr;
+	}
 	/*if (enemyMissileManager)
 	{
 		enemyMissileManager->Release();
@@ -182,8 +204,14 @@ void MainGame::Update()
 	ShotManager::GetInstance()->Update();
 	CollisionManager::GetInstance()->Update();
 
-	// canon->Update();
-	bird->Update();
+	if (ship)
+	{
+		ship->Update();
+	}
+	if (bird)
+	{
+		bird->Update();
+	}
 	EffectManager::GetInstance()->Update();
 
 	UpdateCollisionPerformance();
@@ -197,14 +225,20 @@ void MainGame::Render()
 	HDC hBackBufferDC = backBuffer->GetMemDC();
 
 	backgroundUI->Render(hBackBufferDC);
-	
 
 	EnemyManager::GetInstance()->Render(hBackBufferDC);
 	player->Render(hBackBufferDC);
 	stageManager->Render(hBackBufferDC);
 	ItemManager::GetInstance()->Render(hBackBufferDC);
 	// canon->Render(hBackBufferDC);
-	bird->Render(hBackBufferDC);
+	if (ship)
+	{
+		ship->Render(hBackBufferDC);
+	}
+	if (bird)
+	{
+		bird->Render(hBackBufferDC);
+	}
 	ShotManager::GetInstance()->Render(hBackBufferDC);
 
 	//enemyMissileManager->Render(hBackBufferDC);

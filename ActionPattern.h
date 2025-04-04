@@ -40,7 +40,7 @@ public:
 
 	void setLinearDir();
 
-	inline void setRight() { isRight = true; };
+	inline void setIsRight() { isRight = true; };
 
 	void setCurveDir();
 

@@ -20,9 +20,11 @@ using namespace std;
 
 enum class EEnemyType
 {
-	FlyingEnemy,
-	MidBoss,
+	FlyingEnemy = 0,
+	BeeCopter = 1,
 
+
+	MidBoss = 10,
 };
 
 enum class GameTag
@@ -51,7 +53,7 @@ enum class EImageKey
 	 ExplosionSmall, ExplosionNormal, ExplosionBig, ShotImpact,
 
 	// Enemy
-	FlyingEnemy, MidBossBasic, MidBossUpgrade,
+	FlyingEnemy, MidBossBasic, MidBossUpgrade, BeeCopter,
 
 	// Missile
 	MidBossStar, MidBossPyramid,

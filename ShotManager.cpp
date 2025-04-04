@@ -96,6 +96,11 @@ void ShotManager::ClearAllShot()
 	}
 }
 
+void ShotManager::Fire(float x, float y, float angle, float speed)
+{
+	this->Fire(FPOINT{x,y}, angle, speed);
+}
+
 void ShotManager::Fire(const FPOINT& pos, float angle, float speed)
 {
 	Shot* shot = nullptr;

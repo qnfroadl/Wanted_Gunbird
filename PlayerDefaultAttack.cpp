@@ -23,6 +23,11 @@ void PlayerDefaultAttack::CollisionDetected(GameObject* obj)
 
 		EffectManager::GetInstance()->PlayEffect(GetPos(), EEffectType::ShotImpact);
 	}
+	else if (0 < tags.count(GameTag::BossEnemy))
+	{
+
+		EffectManager::GetInstance()->PlayEffect(GetPos(), EEffectType::ShotImpact);
+	}
 }
 
 void PlayerDefaultAttack::Init()
