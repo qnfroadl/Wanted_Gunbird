@@ -45,21 +45,21 @@ void StageManager::LoadStageInfo()
 
 void StageManager::StepCheck()
 {
-	if (deqStageInfo.size() <= curStep && curStep < deqStageInfo.size())
+	if (curStep < deqStageInfo.size())
 	{
-		
 		if (deqStageInfo[curStep].deadCheck && EnemyManager::GetInstance()->IsLiveEnmey())
 		{
 			return;
 		}
+
 		float deltaTime = TimerManager::GetInstance()->GetDeltaTime();
 		deqStageInfo[curStep].stepTime -= deltaTime;
 		if (deqStageInfo[curStep].stepTime < 0)
 		{
-			elapsedTime += deltaTime;
-			if (deqStageInfo[curStep].spawnDelay <= elapsedTime)
+			spawnDelayTime += deltaTime;
+			if (deqStageInfo[curStep].spawnDelay <= spawnDelayTime)
 			{
-				elapsedTime = 0;
+				spawnDelayTime = 0;
 				if (0 < deqStageInfo[curStep].enemyCount)
 				{
 					deqStageInfo[curStep].enemyCount--;
@@ -72,6 +72,10 @@ void StageManager::StepCheck()
 			}
 		}
 	}
+	else {
+		// 스테이지 잡몹 시나리오 종료.
+
+	}
 }
 
 void StageManager::Init()
@@ -80,6 +84,7 @@ void StageManager::Init()
 	LoadStageInfo();
 	stageAlert = nullptr;
 	elapsedTime = 0;
+	spawnDelayTime = 0;
 }
 
 void StageManager::Update()

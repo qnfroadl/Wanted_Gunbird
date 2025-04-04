@@ -6,43 +6,165 @@
 #include "CollisionManager.h"
 #include "TimerManager.h"
 #include "EffectManager.h"
+#include "ShotManager.h"
 
 #define RATIO 1.5f
 void BossBird::Appear()
 {
-	// 화면 상단까지 이동하고 도착하면 날개핌.
-	elapsedTime += TimerManager::GetInstance()->GetDeltaTime();
-	if (1 < elapsedTime && elapsedTime < 2)
+	if (Move(FPOINT{ WINSIZE_X / 2, WINSIZE_Y / 4 }))
 	{
-		baseImage = ImageManager::GetInstance()->FindImage(EImageKey::BirdAppear2);
+		// 화면 상단까지 이동하고 도착하면 날개핌.
+		elapsedTime += TimerManager::GetInstance()->GetDeltaTime();
+		if (0.5 < elapsedTime && elapsedTime < 1)
+		{
+			baseImage = ImageManager::GetInstance()->FindImage(EImageKey::BirdAppear2);
+		}
+		else if (1 <= elapsedTime)
+		{
+			baseImage = ImageManager::GetInstance()->FindImage(EImageKey::BirdBase);
+			left->SetActive(true);
+			right->SetActive(true);
+			this->state = State::Fight;
+			speed = 100;
+			elapsedTime = 0;
+		}
 	}
-	else if (2 <= elapsedTime)
-	{
-		baseImage = ImageManager::GetInstance()->FindImage(EImageKey::BirdBase);
-	}
-
 }
 
-void BossBird::MoveMove()
+void BossBird::Fight()	//Fight
 {
-	//좌우 무빙 계속.
+	float deltaTime = TimerManager::GetInstance()->GetDeltaTime();
+	elapsedTime += deltaTime;
 
-	
+	FPOINT deltaPos;
+	deltaPos.x = deltaTime * speed * cosf(DEG_TO_RAD(moveAngle));
+	deltaPos.y = deltaTime * speed * -sinf(DEG_TO_RAD(moveAngle));
+
+	AddPos(deltaPos);
+
+	FPOINT leftPos = GetPos();
+	FPOINT rightPos = GetPos();
+
+	leftPos.x -= this->width / 2;
+	rightPos.x += this->width / 2;
+
+
+	if (IsOutofScreen(leftPos))
+	{
+		moveAngle = 0;
+	}
+	else if (IsOutofScreen(rightPos))
+	{
+		moveAngle = 180;
+	}
+
+	if (1.5 < elapsedTime)
+	{
+		elapsedTime = 0.f;
+		Attack();
+	}
+
 }
 
 void BossBird::Destroyed()
 {
+	// n초동안 파괴 이펙트
+	elapsedTime += TimerManager::GetInstance()->GetDeltaTime();
+	if (0 == step && 0.5 < elapsedTime)
+	{
+		step++;
+		DestroyedEffect(60, 70, EEffectType::ExplosionNormal);
+		DestroyedEffect(60, -50, EEffectType::ExplosionBig);
+	}
+	else if (1 == step && 1 < elapsedTime)
+	{
+		step++;
+		DestroyedEffect(-80, -80, EEffectType::ExplosionSmall);
+		DestroyedEffect(-80, 80, EEffectType::ExplosionBig);
+	}
+	else if (2 == step && 1.5 < elapsedTime)
+	{
+		step++;
+		DestroyedEffect(-80, -40, EEffectType::ExplosionBig);
+		DestroyedEffect(-80, 55, EEffectType::ExplosionSmall);
+	}
+	else if (3 == step && 2 < elapsedTime)
+	{
+		step++;
+		DestroyedEffect(-100, -40, EEffectType::ExplosionBig);
+		DestroyedEffect(-80, 55, EEffectType::ExplosionSmall);
+	}
+	else if (4 == step && 2.5 < elapsedTime)
+	{
+		step++;
+		DestroyedEffect(-50, -50, EEffectType::ExplosionNormal);
+		DestroyedEffect(-80, 45, EEffectType::ExplosionBig);
+	}
+	else if (5 == step && 3 < elapsedTime)
+	{
+		step++;
+		DestroyedEffect(-100, -50, EEffectType::ExplosionNormal);
+		DestroyedEffect(-80, 40, EEffectType::ExplosionBig);
+	}
+	else if (6 == step && 3.5 < elapsedTime)
+	{
+		step++;
+		DestroyedEffect(-80, -50, EEffectType::ExplosionNormal);
+		DestroyedEffect(-100, 40, EEffectType::ExplosionBig);
+	}
+	else if (7 == step && 4 < elapsedTime)
+	{
+		step++;
+		DestroyedEffect(-100, -40, EEffectType::ExplosionBig);
+		DestroyedEffect(-80, 50, EEffectType::ExplosionSmall);
+	}
 
+	if (4 < elapsedTime)
+	{
+		step = 0;
+		elapsedTime = 0;
+		state = State::Disappear;
+		speed = 300;
+	}
 }
 
 void BossBird::DestroyedEffect(float dx, float dy, EEffectType type)
 {
+	FPOINT pos = GetPos();
 
+	pos.x += dx;
+	pos.y -= (dy + 80);
+
+	EffectManager::GetInstance()->PlayEffect(pos, type);
+
+	pos.x -= dx * 2;
+	pos.y += (dy * 2) - 80;
+
+	EffectManager::GetInstance()->PlayEffect(pos, type);
 }
 
 void BossBird::Disappear()
 {
 
+}
+
+bool BossBird::Move(const FPOINT& destPos)
+{
+	float angle = GetAngle(GetPos(), destPos);
+	float deltaTime = TimerManager::GetInstance()->GetDeltaTime();
+
+	FPOINT pos = GetPos();
+	if (abs(pos.x - destPos.x) < 10 && abs(pos.y - destPos.y) < 10)
+	{
+		// 이미 도착했다.
+		return true;
+	}
+
+	pos.x += deltaTime * speed * cosf(angle);
+	pos.y += deltaTime * speed * -sinf(angle);
+	SetPos(pos);
+
+	return false;
 }
 
 void BossBird::Damaged(int& hp, int damage)
@@ -53,24 +175,29 @@ void BossBird::Damaged(int& hp, int damage)
 		hp = 0;
 	}
 
+	
 	if (leftHP == 0)
 	{
-
+		baseImage = ImageManager::GetInstance()->FindImage(EImageKey::BirdDestroyLeft);
+		left->SetActive(false);
 	}
-	else if (rightHP == 0)
+	if (rightHP == 0)
 	{
-
+		baseImage = ImageManager::GetInstance()->FindImage(EImageKey::BirdDestroyRight);
+		right->SetActive(false);
 	}
-	else if (bodyHP == 0)
+	if (leftHP == 0 && rightHP == 0)
 	{
-
+		baseImage = ImageManager::GetInstance()->FindImage(EImageKey::BirdDestroy);
+		left->SetActive(false);
+		right->SetActive(false);
 	}
-
 
 	// 체력 깍기
-	if (bodyHP + leftHP + rightHP == 0)
+	if (leftHP + rightHP == 0)
 	{	// 사망
 		state = State::Destroyed;
+		elapsedTime = 0;
 	}
 }
 
@@ -80,39 +207,89 @@ void BossBird::On_CollisionDetected(GameObject* obj, int& hp)
 	{
 		obj->SetActive(false);
 		Damaged(hp, 1);
-		EffectManager::GetInstance()->PlayEffect(GetPos(), EEffectType::ShotImpact);
+		// EffectManager::GetInstance()->PlayEffect(GetPos(), EEffectType::ShotImpact);
 	}
 	else if (obj->FindTag(GameTag::PlayerMissileAttack))
 	{
 		obj->SetActive(false);
 		Damaged(hp, 2);
-		EffectManager::GetInstance()->PlayEffect(GetPos(), EEffectType::ShotImpact);
+		// EffectManager::GetInstance()->PlayEffect(GetPos(), EEffectType::ShotImpact);
 	}
 	
 }
 
+void BossBird::UpdateCollisionRect()
+{
+	FPOINT pos = GetPos();
+
+	left->SetRect(GetRectAtCenter(pos.x - 60 * RATIO, pos.y-80, 120 * RATIO, 30 * RATIO));
+	right->SetRect(GetRectAtCenter(pos.x + 60 * RATIO, pos.y-80, 120 * RATIO, 30 * RATIO));
+
+}
+
+void BossBird::Attack()
+{
+	FPOINT pos = GetPos();
+
+	if (leftHP == 0)
+	{	//우측만 강한 공격
+		// ShotManager::GetInstance()->Fire()
+	}
+	else if (rightHP == 0)
+	{	//좌측만 강한 공격.
+
+	}
+	else 
+	{	// 넓은 공격.
+		attackStep++;
+		if (attackStep < 5)
+		{
+			
+			for (int i = 0; i < 5; i++)
+			{
+				ShotManager::GetInstance()->Fire(pos.x + leftAttackPos[i].x, pos.y + leftAttackPos[i].y, -90 + 10, 300);
+				ShotManager::GetInstance()->Fire(pos.x + leftAttackPos[i].x, pos.y + leftAttackPos[i].y, -90 - 10, 300);
+				ShotManager::GetInstance()->Fire(pos.x - leftAttackPos[i].x, pos.y + leftAttackPos[i].y, -90 + 10, 300);
+				ShotManager::GetInstance()->Fire(pos.x - leftAttackPos[i].x, pos.y + leftAttackPos[i].y, -90 - 10, 300);
+			}
+		}
+		else if(attackStep < 10)
+		{
+			for (int i = 0; i < 5; i++)
+			{
+				ShotManager::GetInstance()->Fire(pos.x + leftAttackPos[i].x, pos.y + leftAttackPos[i].y, -90 + 10, 300);
+				ShotManager::GetInstance()->Fire(pos.x + leftAttackPos[i].x, pos.y + leftAttackPos[i].y, -90 - 10, 300);
+				ShotManager::GetInstance()->Fire(pos.x - leftAttackPos[i].x, pos.y + leftAttackPos[i].y, -90 + 10, 300);
+				ShotManager::GetInstance()->Fire(pos.x - leftAttackPos[i].x, pos.y + leftAttackPos[i].y, -90 - 10, 300);
+			}
+		}
+	}
+}
 
 void BossBird::Init()
 {
+	AddTag(GameTag::BossEnemy);
 	left = CollisionManager::GetInstance()->CreateCollisionRect(CollisionLayer::Enemy, this, RECT{});
 	left->Bind([&](GameObject* obj)
 		{
 			On_CollisionDetected(obj, leftHP);
 		});
-	body = CollisionManager::GetInstance()->CreateCollisionRect(CollisionLayer::Enemy, this, RECT{});
-	body->Bind([&](GameObject* obj)
-		{
-			On_CollisionDetected(obj, bodyHP);
-		});
+	
 	right = CollisionManager::GetInstance()->CreateCollisionRect(CollisionLayer::Enemy, this, RECT{});
 	right->Bind([&](GameObject* obj)
 		{
 			On_CollisionDetected(obj, rightHP);
 		});
 
+	left->SetActive(false);
+	right->SetActive(false);
+
+	this->width = 253 * RATIO;
+	this->height = 100 * RATIO;
 	leftHP = 50;
 	rightHP = 50;
-	bodyHP = 100;
+	speed = 300;
+	attackStep = 0;
 
 	baseImage = ImageManager::GetInstance()->AddImage(EImageKey::BirdAppear1, L"assets/Sprites/Enemies/Boss/Bird_Appear1.bmp", 75 * RATIO, 295 * RATIO, true, RGB(255, 0, 255));
 	ImageManager::GetInstance()->AddImage(EImageKey::BirdAppear2, L"assets/Sprites/Enemies/Boss/Bird_Appear2.bmp", 179 * RATIO, 295 * RATIO, true, RGB(255, 0, 255));
@@ -124,17 +301,25 @@ void BossBird::Init()
 	propellerImage = ImageManager::GetInstance()->AddImage(EImageKey::BirdPropeller, 
 		L"assets/Sprites/Enemies/Boss/propeller.bmp", 240 * RATIO, 35 * RATIO, 3, 1, true, RGB(255,0,255));
 
+	leftAttackPos[0] = FPOINT{ -93* RATIO, -56* RATIO};
+	leftAttackPos[1] = FPOINT{ -85* RATIO, -47* RATIO};
+	leftAttackPos[2] = FPOINT{ -69* RATIO, -42* RATIO};
+	leftAttackPos[3] = FPOINT{ -51* RATIO, -40* RATIO};
+	leftAttackPos[4] = FPOINT{ -36* RATIO, -39* RATIO};
+
 }
 
 void BossBird::Update()
 {
+	UpdateCollisionRect();
+
 	if (State::Begin == state)
 	{
 		Appear();
 	}
 	else if (State::Fight == state)
 	{
-		MoveMove();
+		Fight();
 		
 	}
 	else if (State::Destroyed == state)
@@ -150,8 +335,6 @@ void BossBird::Update()
 		SetActive(false);
 		// dead.
 	}
-
-
 
 	// 프로펠러
 	propellerTime += TimerManager::GetInstance()->GetDeltaTime();
@@ -175,9 +358,7 @@ void BossBird::Render(HDC hdc)
 void BossBird::Release()
 {
 	CollisionManager::GetInstance()->DeleteCollision(left);
-	CollisionManager::GetInstance()->DeleteCollision(body);
 	CollisionManager::GetInstance()->DeleteCollision(right);
-
 		
 }
 

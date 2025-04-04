@@ -70,7 +70,7 @@ void EnemyManager::Update()
 		int x = rand() % WINSIZE_X;
 		int y = rand() % (WINSIZE_Y/2);
 		//SpawnEnemy(FPOINT{ float(x), 50.0 }, EEnemyType::FlyingEnemy);
-		SpawnEnemy(FPOINT{ float(x), float(y) }, EEnemyType::BeeCopter);
+		// SpawnEnemy(FPOINT{ float(x), float(y) }, EEnemyType::BeeCopter);
 		generateTime = 0.0f;
 	}
 
@@ -102,7 +102,7 @@ void EnemyManager::Render(HDC hdc)
 	while (it != enemys.end())
 	{
 		// 화면 밖으로 벗어나면 제거
-		if (IsOutofScreen((*it)->getRect(), 0.0f))
+		if (IsOutofScreen((*it)->getRect(), -150))
 		{
 			(*it)->Release();
 			delete (*it);

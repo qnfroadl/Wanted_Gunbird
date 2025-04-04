@@ -22,7 +22,7 @@ private:
 	//PlayerDefaultAttack* missile;
 	PlayerAttackManager* attackManager;
 	CollisionRect* playerCollision;
-	PlayerBomb* playerBomb;
+	// PlayerBomb* playerBomb;
 	void CollisionDetected(GameObject* obj);
 
 public:

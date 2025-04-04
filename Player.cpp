@@ -45,8 +45,6 @@ void Player::Init()
 
 	attackManager = new PlayerAttackManager;
 	attackManager->Init();
-	playerBomb = new PlayerBomb;
-	playerBomb->Init(GetPos());
 	FPOINT pos = GetPos();
 	RECT defaultRect = { pos.x - (PLAYERWITHD/2), pos.y - (PLAYERHEIGHT/2), pos.x + (PLAYERWITHD/2), pos.y + (PLAYERHEIGHT/2) };
 	playerCollision = CollisionManager::GetInstance()->CreateCollisionRect(CollisionLayer::Player, this, defaultRect);
@@ -59,13 +57,6 @@ void Player::Init()
 
 void Player::Release()
 {
-	if (image)
-	{
-		image->Release();
-		delete image;
-		image = nullptr;
-	}
-
 	if (attackManager)
 	{
 		attackManager->Release();
@@ -73,12 +64,12 @@ void Player::Release()
 		attackManager = nullptr;
 	}
 	
-	if (playerBomb)
-	{
-		playerBomb->Release();
-		delete playerBomb;
-		playerBomb = nullptr;
-	}
+	// if (playerBomb)
+	// {
+	// 	playerBomb->Release();
+	// 	delete playerBomb;
+	// 	playerBomb = nullptr;
+	// }
 }
 
 void Player::Update()
@@ -148,8 +139,7 @@ void Player::Update()
 		Fire();
 	if (KeyManager::GetInstance()->IsOnceKeyDown('S'))
 	{
-		ActivateBomb();
-		playerBomb->Update(GetPos());
+		// ActivateBomb();
 	
 	}
 	if (attackManager)
@@ -168,10 +158,10 @@ void Player::Render(HDC hdc)
 	{
 		attackManager->Render(hdc);
 	}
-	if (playerBomb)
-	{
-		playerBomb->Render(hdc);
-	}
+	// if (playerBomb)
+	// {
+	// 	playerBomb->Render(hdc);
+	// }
 }
 
 void Player::Move(float degree)
@@ -227,7 +217,7 @@ void Player::ActivateBomb()
 {
 	if (bombCount <= 0)
 		return;
-	playerBomb->BombActivate(GetPos());
+	// playerBomb->BombActivate(GetPos());
 	bombCount--;
 	/* 
 	 ÆøÅºÀº missileMgr¿¡¼­ ±¸Çö?

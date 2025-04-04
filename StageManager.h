@@ -14,7 +14,7 @@ typedef struct _StageInfo
 	FPOINT startPos;					//적 스폰 위치,
 	int enemyType;						//적 종류
 	int enemyCount;						//적 수
-	int spawnDelay;						//적 여러마리 스폰시 딜레이
+	float spawnDelay;						//적 여러마리 스폰시 딜레이
 	
 }StageInfo;
 
@@ -27,6 +27,7 @@ private:
 	
 	Image* stageAlert;		// 엘리트 출현, 보스 출현시 경고 띠용띠용 이미지
 	float elapsedTime;
+	float spawnDelayTime;
 
 	void LoadStageInfo();
 	void StepCheck();

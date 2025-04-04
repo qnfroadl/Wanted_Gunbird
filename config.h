@@ -20,9 +20,11 @@ using namespace std;
 
 enum class EEnemyType
 {
-	FlyingEnemy,
-	MidBoss,
-	BeeCopter,
+	FlyingEnemy = 0,
+	BeeCopter = 1,
+
+
+	MidBoss = 10,
 };
 
 enum class GameTag

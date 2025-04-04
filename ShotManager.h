@@ -20,6 +20,7 @@ public:
 	void Release();
 
 	void ClearAllShot();
+	void Fire(float x, float y, float angle, float speed);
 	void Fire(const FPOINT& pos, float angle, float speed);
 
 };
