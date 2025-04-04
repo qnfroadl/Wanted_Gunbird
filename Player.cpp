@@ -30,7 +30,11 @@ void Player::CollisionDetected(GameObject* obj)
 void Player::Init()
 {
 	animFrame = 0;
-	elapsedFrame = 0;
+	leftAnimFrame = 0;
+	rightAnimFrame = 0;
+	elapsedFrame = 0.0f;
+	leftElapsedFrame = 0.0f;
+	rightElapsedFrame = 0.0f;
 	attackLevel = 1;
 	bombCount = 2;
 	bRightMove = false;
@@ -41,19 +45,19 @@ void Player::Init()
 	speed = 500.0f;
 	image = ImageManager::GetInstance()->AddImage(EImageKey::Player,
 		TEXT("assets/Sprites/Characters/testu_idle_spriteMerge.bmp"),
-		744*2, 41*2, 24, 1, true, RGB(255, 0, 255));
+		(744 * 2), (41 * 2), 24, 1, true, RGB(255, 0, 255));
 	if (!image)
 		return;
-	/*rightMoveImage = ImageManager::GetInstance()->AddImage(EImageKey::Player,
-		TEXT("assets/Sprites/Characters/testu_idle_spriteMerge.bmp"),
-		744 * 2, 41 * 2, 24, 1, true, RGB(255, 0, 255));
+	rightMoveImage = ImageManager::GetInstance()->AddImage(EImageKey::Player,
+		TEXT("assets/Sprites/Characters/testu_moveRight_spriteMerge.bmp"),
+		(1122 * 2), (45 * 2), 33, 1, true, RGB(255, 0, 255));
 	if (!rightMoveImage)
 		return;
 	leftMoveImage = ImageManager::GetInstance()->AddImage(EImageKey::Player,
-		TEXT("assets/Sprites/Characters/testu_idle_spriteMerge.bmp"),
-		744 * 2, 41 * 2, 24, 1, true, RGB(255, 0, 255));
+		TEXT("assets/Sprites/Characters/tetsu_moveLeft_spriteMerge.bmp"),
+		(960 * 2), (40 * 2), 32, 1, true, RGB(255, 0, 255));
 	if (!leftMoveImage)
-		return;*/
+		return;
 
 	attackManager = new PlayerAttackManager;
 	attackManager->Init();
@@ -117,6 +121,26 @@ void Player::Update()
 		if (animFrame >= image->GetMaxFrameX())
 		{
 			animFrame = 0;
+		}
+	}
+	leftElapsedFrame++;
+	if (leftElapsedFrame > 1)
+	{
+		leftElapsedFrame = 0;
+		leftAnimFrame++;
+		if (leftAnimFrame >= leftMoveImage->GetMaxFrameX())
+		{
+			leftAnimFrame = 0;
+		}
+	}
+	rightElapsedFrame++;
+	if (rightElapsedFrame > 1)
+	{
+		rightElapsedFrame = 0;
+		rightAnimFrame++;
+		if (rightAnimFrame >= rightMoveImage->GetMaxFrameX())
+		{
+			rightAnimFrame = 0;
 		}
 	}
 	// 시간이 나면 좌,우 움직임 스프라이트도 넣는다
@@ -201,17 +225,17 @@ void Player::Render(HDC hdc)
 	{
 		playerBomb->Render(hdc, GetPos());
 	}
-	if (bLeftMove && leftMoveImage)
-	{
-		leftMoveImage->FrameRender(hdc, GetPos().x, GetPos().y, animFrame, 0, false);
-	}
-	if (bRightMove && rightMoveImage)
-	{
-		rightMoveImage->FrameRender(hdc, GetPos().x, GetPos().y, animFrame, 0, false);
-	}
 	if (image)
 	{
 		image->FrameRender(hdc, GetPos().x, GetPos().y, animFrame, 0, false);
+	}
+	if (bLeftMove && leftMoveImage)
+	{
+		leftMoveImage->FrameRender(hdc, GetPos().x, GetPos().y, leftAnimFrame, 0, false);
+	}
+	if (bRightMove && rightMoveImage)
+	{
+		rightMoveImage->FrameRender(hdc, GetPos().x, GetPos().y, rightAnimFrame, 0, false);
 	}
 	if (attackManager)
 	{
@@ -274,11 +298,6 @@ void Player::ActivateBomb()
 		return;
 	playerBomb->BombActivate(GetPos());
 	bombCount--;
-	/* 
-	 폭탄은 missileMgr에서 구현?
-	 폭탄의 collision과 겹치는 collision 계산
-	 겹치면 release()
-	*/
 }
 
 int Player::GetBombCount()
