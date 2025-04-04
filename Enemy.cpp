@@ -7,6 +7,8 @@
 #include "ActionPattern.h"
 #include "MissilePattern.h"
 #include "EnemyMissileManager.h"
+#include "EffectManager.h"
+
 
 void Enemy::Init(EEnemyType type, EImageKey key, const wchar_t* filePath, float width, float height,
 	int maxFrameX, int maxFrameY, bool isTransparent, COLORREF transColor)
@@ -146,8 +148,18 @@ void Enemy::Render(HDC hdc)
 
 void Enemy::On_CollisionDetected(GameObject* obj)
 {
-	
-
+	if (obj->FindTag(GameTag::PlayerDefaultAttack))
+	{
+		EffectManager::GetInstance()->PlayEffect(GetPos(), EEffectType::ShotImpact);
+	}
+	else if (obj->FindTag(GameTag::PlayerMissileAttack))
+	{
+		EffectManager::GetInstance()->PlayEffect(GetPos(), EEffectType::ShotImpact);
+	}
+	else if (obj->FindTag(GameTag::PlayerBomb))
+	{
+		EffectManager::GetInstance()->PlayEffect(GetPos(), EEffectType::ShotImpact);
+	}
 }
 
 void Enemy::Dead()
