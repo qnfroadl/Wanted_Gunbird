@@ -161,10 +161,6 @@ void BossShip::Init()
 
 	baseImage = ImageManager::GetInstance()->AddImage(EImageKey::ShipBase,
 		L"assets/Sprites/Enemies/Boss/Base.bmp", width, height, true, RGB(255,0,255));
-	ImageManager::GetInstance()->AddImage(EImageKey::ShipDestroyedLeft,
-		L"assets/Sprites/Enemies/Boss/Base_Destroyed_Left.bmp", 65, 120, true, RGB(255, 0, 255));
-	ImageManager::GetInstance()->AddImage(EImageKey::ShipDestroyedRight,
-		L"assets/Sprites/Enemies/Boss/Base_Destroyed_Right.bmp", 64, 120, true, RGB(255, 0, 255));
 	ImageManager::GetInstance()->AddImage(EImageKey::ShipDestroyed,
 		L"assets/Sprites/Enemies/Boss/Base_Destroyed.bmp", width, height, true, RGB(255, 0, 255));
 	

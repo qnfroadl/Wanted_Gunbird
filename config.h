@@ -43,7 +43,9 @@ enum class EImageKey
 	Canon_210, Canon_250, Canon_270, Canon_290, Canon_330,
 
 	// Boss_Ship
-	ShipBase, ShipDestroyedLeft, ShipDestroyedRight, ShipDestroyed,
+	ShipBase, ShipDestroyed,
+	// Boss_Bird
+	BirdAppear1, BirdAppear2, BirdBase, BirdDestroyLeft, BirdDestroyRight, BirdDestroy,BirdPropeller,
 	PlayerBomb,
 
 	 ExplosionSmall, ExplosionNormal, ExplosionBig, ShotImpact,
