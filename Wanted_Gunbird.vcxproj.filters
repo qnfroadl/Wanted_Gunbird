@@ -25,9 +25,6 @@
     <ClCompile Include="TimerManager.cpp">
       <Filter>Timer</Filter>
     </ClCompile>
-    <ClCompile Include="SampleEnemy.cpp">
-      <Filter>Sample</Filter>
-    </ClCompile>
     <ClCompile Include="MainGame.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -126,9 +123,6 @@
     </ClInclude>
     <ClInclude Include="TimerManager.h">
       <Filter>Timer</Filter>
-    </ClInclude>
-    <ClInclude Include="SampleEnemy.h">
-      <Filter>Sample</Filter>
     </ClInclude>
     <ClInclude Include="MainGame.h">
       <Filter>Header</Filter>

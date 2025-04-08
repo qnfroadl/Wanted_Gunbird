@@ -258,7 +258,7 @@ void MainGame::Render()
 	//enemyMissileManager->Render(hBackBufferDC);
 	EnemyMissileManager::GetInstance()->Render(hBackBufferDC);
 	EffectManager::GetInstance()->Render(hBackBufferDC);
-	CollisionManager::GetInstance()->Render(hBackBufferDC);
+	// CollisionManager::GetInstance()->Render(hBackBufferDC);
 
 	// wsprintf(szText, TEXT("Mouse X : %d, Y : %d"), mousePosX, mousePosY);
 	// TextOut(hBackBufferDC, 20, 60, szText, wcslen(szText));
