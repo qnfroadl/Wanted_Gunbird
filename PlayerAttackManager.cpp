@@ -56,7 +56,7 @@ void PlayerAttackManager::Fire(const FPOINT& pos, int level, vector<PlayerDefaul
 	}
 
 }
-void PlayerAttackManager::Init()
+void PlayerAttackManager::
 {
 	defaultAttackVec.reserve(AMMUNITION);
 	for (int i = 0; i < AMMUNITION; i++)
